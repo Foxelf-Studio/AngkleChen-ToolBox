@@ -1,0 +1,38 @@
+# Build results
+bin/
+obj/
+publish/
+
+# Visual Studio / Rider
+.vs/
+.idea/
+*.suo
+*.user
+
+# NuGet
+packages/
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+
+# Temporary files
+*.tmp
+~$*
+
+# 工具文件夹（不包含在仓库中）
+工具/
+扩展工具/
+Result/
+发布/
+
+# 编译输出
+陈叔叔工具箱.exe
+*.7z
+*.exe
+
+# Claude
+.claude/
