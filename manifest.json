@@ -1,0 +1,103 @@
+{
+  "version": "1.0.0",
+  "releaseDate": "2026-06-30",
+  "changelog": "",
+  "minUpgradeVersion": "1.0.0",
+  "files": {
+    "陈叔叔工具箱.exe": {
+      "sha256": "0410cedc3d97cf057c43ce591dbd6be2857a2eb978c1b28ee650eac772e7fe5f",
+      "size": 142721928,
+      "url": "patches/陈叔叔工具箱.exe"
+    },
+    "App.xaml": {
+      "sha256": "dd1491b892be72356db6859302013495d854c017847a308b6ee98316cb09aa01",
+      "size": 18650,
+      "url": "patches/App.xaml"
+    },
+    "App.xaml.cs": {
+      "sha256": "7fbb307abc30bca4b55e696f4c114e1d26012ece5a3ebeed333405f8f9b1933d",
+      "size": 310,
+      "url": "patches/App.xaml.cs"
+    },
+    "MainWindow.xaml": {
+      "sha256": "8a058b15a495521c7fb2f73235bd92ef8fe22e166f843f66da70b1f3c9c80fc5",
+      "size": 22361,
+      "url": "patches/MainWindow.xaml"
+    },
+    "MainWindow.xaml.cs": {
+      "sha256": "b4881a140234b8599ef096ee468901d87034f1ebc29b065ff7bb009b6bd4e17f",
+      "size": 46055,
+      "url": "patches/MainWindow.xaml.cs"
+    },
+    "AssemblyInfo.cs": {
+      "sha256": "3fac2af92385f676e9a941befd23fe38f0a5fa6167d4a3a88f07e730c5595ca3",
+      "size": 643,
+      "url": "patches/AssemblyInfo.cs"
+    },
+    "旧电脑拯救工具箱.csproj": {
+      "sha256": "15c629cc766f3180defb1747fc8b034e211f6f1b00e2b34b718a525df622c412",
+      "size": 742,
+      "url": "patches/旧电脑拯救工具箱.csproj"
+    },
+    "logo.ico": {
+      "sha256": "6fd681b41b36f5d88654e3ea072b3b32a3bf38cd49b56d9cbf0c7357aa536716",
+      "size": 1016964,
+      "url": "patches/logo.ico"
+    },
+    "logo.png": {
+      "sha256": "2e4fed58db84372df16ee8261da6cc428dc374ca8cca6d3e69929265acb12178",
+      "size": 1016942,
+      "url": "patches/logo.png"
+    },
+    "Controls/SettingsPanel.xaml": {
+      "sha256": "debbebd4cee0323a21a4a0c5ddda925bdae06003b5f9f619ad8c4ec5541de9e6",
+      "size": 12737,
+      "url": "patches/Controls/SettingsPanel.xaml"
+    },
+    "Controls/ToolCard.xaml": {
+      "sha256": "485a888c1db717878c514b79cab10553e3a12ff1a47011e984bb5e4922645e3c",
+      "size": 3251,
+      "url": "patches/Controls/ToolCard.xaml"
+    },
+    "Controls/UpdateDialog.xaml": {
+      "sha256": "a2b9677abf7443811a60f87b93873599bfb4f3b55dab45c34cc5117d8bbb678a",
+      "size": 10251,
+      "url": "patches/Controls/UpdateDialog.xaml"
+    },
+    "Controls/SettingsPanel.xaml.cs": {
+      "sha256": "007da99731aef1c9bad9cdf0c05927cfb9bc62a9582592834f00ed0db29f1591",
+      "size": 4133,
+      "url": "patches/Controls/SettingsPanel.xaml.cs"
+    },
+    "Controls/ToolCard.xaml.cs": {
+      "sha256": "0038de49ddc57ce20126968cf054eaf93e7b9a6fa4901077e169b4ee91b80714",
+      "size": 10447,
+      "url": "patches/Controls/ToolCard.xaml.cs"
+    },
+    "Controls/UpdateDialog.xaml.cs": {
+      "sha256": "b3305d63d46ab0ba8a03f1600cc48821e7841f9ff4f068a22fefd192baab9940",
+      "size": 6005,
+      "url": "patches/Controls/UpdateDialog.xaml.cs"
+    },
+    "Helpers/IconHelper.cs": {
+      "sha256": "727f6294bb0bfc325a323eee2caa0972471ff48d0cc142fcf4c80ff7459e6ad2",
+      "size": 2338,
+      "url": "patches/Helpers/IconHelper.cs"
+    },
+    "Helpers/UpdateChecker.cs": {
+      "sha256": "a0128f6541ca427d02532fb9d2037fa7fb03b3429b60d571674c9e9740e50e48",
+      "size": 7599,
+      "url": "patches/Helpers/UpdateChecker.cs"
+    },
+    "Helpers/VersionInfo.cs": {
+      "sha256": "6dbcbec670a161d6ef219128495971037db3a353f2efba557e497aec0e4bb053",
+      "size": 2564,
+      "url": "patches/Helpers/VersionInfo.cs"
+    },
+    "Models/ToolInfo.cs": {
+      "sha256": "7d597dafa0230f8e3003339c2d786452a1760ee9bfe3563551dbb41bb384b76b",
+      "size": 192,
+      "url": "patches/Models/ToolInfo.cs"
+    }
+  }
+}
