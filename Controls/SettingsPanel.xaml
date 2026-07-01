@@ -72,7 +72,7 @@
                                            FontSize="16"
                                            Foreground="#ffffff" />
                                 <TextBlock x:Name="TxtVersion"
-                                           Text="v1.0.0"
+                                           Text="v1.1.0"
                                            FontFamily="Microsoft YaHei"
                                            FontSize="12"
                                            Foreground="#aaaaaa"

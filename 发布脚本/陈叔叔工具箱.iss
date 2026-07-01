@@ -3,7 +3,7 @@
 ; ============================================
 
 #define MyAppName "陈叔叔工具箱"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.1.0"
 #define MyAppPublisher "陈叔叔"
 #define MyAppExeName "陈叔叔工具箱.exe"
 #define MyOutputName "陈叔叔工具箱-安装版-Lite"

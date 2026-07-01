@@ -22,7 +22,7 @@ public partial class SettingsPanel : UserControl
 
         // 显示当前版本
         var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-        TxtVersion.Text = $"v{version?.ToString(3) ?? "1.0.0"}";
+        TxtVersion.Text = $"v{version?.ToString(3) ?? "1.1.0"}";
 
         // 加载设置
         LoadSettings();
