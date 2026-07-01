@@ -20,8 +20,8 @@ AllowNoIcons=yes
 OutputDir={#SourcePath}\..\发布
 OutputBaseFilename={#MyOutputName}
 SetupIconFile={#SourcePath}\..\logo.ico
-Compression=lzma2/ultra64
-SolidCompression=yes
+Compression=lzma2/fast
+SolidCompression=no
 WizardStyle=modern
 PrivilegesRequired=lowest
 ArchitecturesAllowed=x64compatible
@@ -31,17 +31,12 @@ UninstallDisplayIcon={app}\{#MyAppExeName}
 WizardImageAlphaFormat=defined
 BackColor=$1F1F1F
 BackColor2=$2D2D2D
+; 中文界面
+LanguageDetectionMethod=uilanguage
+ShowLanguageDialog=no
 
 [Languages]
-Name: "zhcn"; MessagesFile: "compiler:Default.isl"
-
-[Messages]
-zhcn.SetupAppTitle={#MyAppName} 安装程序
-zhcn.SetupWindowTitle={#MyAppName} 安装程序
-zhcn.ClickNext=点击"安装"开始安装，或点击"上一步"修改设置。
-zhcn.BeveledLabel={#MyAppName} v{#MyAppVersion}
-zhcn.StatusRunProgram=正在启动 {#MyAppName}...
-zhcn.ClickInstall=点击"安装"继续
+Name: "zhcn"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "创建桌面快捷方式"; GroupDescription: "附加选项:"; Flags: checkedonce

@@ -20,12 +20,31 @@ public static class IconHelper
         return _cache.GetOrAdd(fullPath, ExtractIcon);
     }
 
+    // 需要使用 Edge 图标的 bat 文件路径关键词
+    private static readonly string[] _edgeIconKeywords = [
+        "游戏平台", "AMD显卡驱动下载", "Nvidia显卡驱动下载",
+        "MSIAfterburnerSetup", "UFO测试", "在线屏幕测试",
+        "在线外设测试中心", "next_itellyou"
+    ];
+
     private static ImageSource ExtractIcon(string path)
     {
         try
         {
+            // 对于打开网页的 .bat 文件，使用 Edge 浏览器图标
+            var iconPath = path;
+            if (System.IO.Path.GetExtension(path).Equals(".bat", StringComparison.OrdinalIgnoreCase))
+            {
+                if (_edgeIconKeywords.Any(k => path.Contains(k)))
+                {
+                    var edgePath = @"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe";
+                    if (System.IO.File.Exists(edgePath))
+                        iconPath = edgePath;
+                }
+            }
+
             var info = new SHFILEINFO();
-            SHGetFileInfo(path, 0, ref info, (uint)Marshal.SizeOf<SHFILEINFO>(),
+            SHGetFileInfo(iconPath, 0, ref info, (uint)Marshal.SizeOf<SHFILEINFO>(),
                 SHGFI_ICON | SHGFI_LARGEICON);
 
             if (info.hIcon != IntPtr.Zero)

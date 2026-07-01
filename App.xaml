@@ -138,6 +138,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Name="Bg" Background="Transparent"
+                                CornerRadius="6"
                                 Width="32" Height="32">
                             <ContentPresenter HorizontalAlignment="Center"
                                               VerticalAlignment="Center" />
@@ -249,15 +250,17 @@
 
         <!-- 链接按钮样式 -->
         <Style x:Key="LinkButton" TargetType="Button">
-            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Background" Value="#252525" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Padding" Value="0,8" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Name="Bg" Background="Transparent"
-                                CornerRadius="4"
+                        <Border Name="Bg" Background="{TemplateBinding Background}"
+                                CornerRadius="8"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
                                 Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalAlignment="Center" />
@@ -268,7 +271,7 @@
                                     <Storyboard>
                                         <ColorAnimation Storyboard.TargetName="Bg"
                                             Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                            To="#18ffffff" Duration="0:0:0.15" />
+                                            To="#303030" Duration="0:0:0.15" />
                                     </Storyboard>
                                 </BeginStoryboard>
                             </EventTrigger>
@@ -277,7 +280,7 @@
                                     <Storyboard>
                                         <ColorAnimation Storyboard.TargetName="Bg"
                                             Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                            To="Transparent" Duration="0:0:0.15" />
+                                            To="#252525" Duration="0:0:0.15" />
                                     </Storyboard>
                                 </BeginStoryboard>
                             </EventTrigger>

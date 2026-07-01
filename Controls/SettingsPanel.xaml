@@ -209,39 +209,35 @@
                            FontSize="13"
                            Foreground="#777777"
                            Margin="0,16,0,8" />
-                <Border Background="#252525"
-                        CornerRadius="8"
+                <Button x:Name="BtnGitHub"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Left"
+                        Click="OnGitHubClick"
+                        Style="{StaticResource LinkButton}"
+                        Background="#252525"
                         BorderBrush="#1effffff"
                         BorderThickness="1"
                         Padding="16,12">
-                    <StackPanel>
-                        <Button x:Name="BtnGitHub"
-                                HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="Left"
-                                Click="OnGitHubClick"
-                                Style="{StaticResource LinkButton}">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE71B;"
-                                           FontFamily="Segoe MDL2 Assets"
-                                           FontSize="16"
-                                           Foreground="#aaaaaa"
-                                           VerticalAlignment="Center"
-                                           Margin="0,0,10,0" />
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="GitHub 仓库"
-                                               FontFamily="Microsoft YaHei"
-                                               FontSize="14"
-                                               Foreground="#ffffff" />
-                                    <TextBlock Text="查看源码和更新日志"
-                                               FontFamily="Microsoft YaHei"
-                                               FontSize="11"
-                                               Foreground="#777777"
-                                               Margin="0,2,0,0" />
-                                </StackPanel>
-                            </StackPanel>
-                        </Button>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE71B;"
+                                   FontFamily="Segoe MDL2 Assets"
+                                   FontSize="16"
+                                   Foreground="#aaaaaa"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,10,0" />
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="GitHub 仓库"
+                                       FontFamily="Microsoft YaHei"
+                                       FontSize="14"
+                                       Foreground="#ffffff" />
+                            <TextBlock Text="查看源码和更新日志"
+                                       FontFamily="Microsoft YaHei"
+                                       FontSize="11"
+                                       Foreground="#777777"
+                                       Margin="0,2,0,0" />
+                        </StackPanel>
                     </StackPanel>
-                </Border>
+                </Button>
             </StackPanel>
         </ScrollViewer>
     </Grid>

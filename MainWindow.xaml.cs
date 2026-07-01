@@ -48,6 +48,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     [
         new("酷我音乐",      "娱乐工具", " ", "酷我音乐PC版，支持在线听歌、歌词显示、音效调节、本地音乐管理，支持无损音质下载。",     @"扩展工具\KwMusic\KwMusic.exe"),
         new("PiliPlus",     "娱乐工具", " ", "第三方哔哩哔哩客户端，支持弹幕播放、视频下载、多清晰度切换，基于Flutter开发。",         @"扩展工具\PiliPlus-Win\piliplus.exe"),
+        new("洛雪音乐",     "娱乐工具", " ", "洛雪音乐桌面版，开源免费音乐播放器，支持多平台音源、无损音质、歌词显示、歌单导入。", @"C:\Users\theti\Downloads\lx-music-desktop-v2.12.2-win_x64-green\lx-music-desktop.exe"),
         new("Edge 浏览器",   "实用工具", " ", "微软Edge浏览器在线安装程序，基于Chromium内核，支持扩展插件、集锦、沉浸式阅读器等功能。",     @"扩展工具\edge\MicrosoftEdgeSetup.exe"),
         new("Office Tool Plus","实用工具"," ","微软Office部署工具，支持Office 2016-2024及Microsoft 365的在线/离线安装、激活、更新管理。",    @"扩展工具\Office Tool x64\Office Tool Plus.exe"),
         new("Office Tool (32位)","实用工具"," ","Office Tool Plus 32位版本，适用于32位Windows系统，功能与64位版本相同。", @"扩展工具\Office Tool x32\Office Tool Plus.exe"),
@@ -141,20 +142,17 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         new("BatteryInfo",    "系统工具", " ", "BatteryInfoView笔记本电池信息查看工具，显示电池容量、健康度、充放电次数、制造商信息。",       @"扩展工具\BatteryInfoView\BatteryInfoView.exe"),
 
         // 游戏平台
-        new("Steam",          "游戏平台", " ", "Steam游戏平台下载页面，全球最大的PC游戏平台，支持游戏购买、下载、社区功能。",     @"扩展工具\游戏平台\Steam\下载Steam.bat"),
-        new("Epic Games",     "游戏平台", " ", "Epic Games游戏平台，每周免费游戏领取，支持虚幻引擎游戏库和社交功能。",      @"扩展工具\游戏平台\epic\Start.bat"),
-        new("EA App",         "游戏平台", " ", "EA App(EA桌面应用)，EA旗下游戏平台，管理EA游戏库、订阅EA Play服务。",        @"扩展工具\游戏平台\eaapp\Start.bat"),
-        new("Battle.net",     "游戏平台", " ", "暴雪战网客户端，下载和管理暴雪旗下游戏，包括魔兽世界、守望先锋、暗黑破坏神等。",         @"扩展工具\游戏平台\battle\Start.bat"),
-        new("游戏加加",  "游戏平台", " ", "游戏加加游戏优化工具，支持游戏加速、FPS显示、硬件监控、游戏录制等功能。",       @"扩展工具\游戏平台\游戏加加\start.bat"),
+        new("Steam 下载",     "游戏平台", " ", "Steam游戏平台下载页面，全球最大的PC游戏平台，支持游戏购买、下载、社区功能。",     @"扩展工具\游戏平台\Steam\下载Steam.bat"),
+        new("Epic Games下载", "游戏平台", " ", "Epic Games游戏平台，每周免费游戏领取，支持虚幻引擎游戏库和社交功能。",      @"扩展工具\游戏平台\epic\Start.bat"),
+        new("EA App下载",     "游戏平台", " ", "EA App(EA桌面应用)，EA旗下游戏平台，管理EA游戏库、订阅EA Play服务。",        @"扩展工具\游戏平台\eaapp\Start.bat"),
+        new("战网下载",       "游戏平台", " ", "暴雪战网客户端，下载和管理暴雪旗下游戏，包括魔兽世界、守望先锋、暗黑破坏神等。",         @"扩展工具\游戏平台\battle\Start.bat"),
         new("AMD驱动下载",   "显卡工具", " ", "AMD显卡驱动官方下载页面，提供Radeon系列显卡最新驱动程序下载。", @"扩展工具\AMD显卡驱动下载\Start.bat"),
         new("Nvidia驱动下载","显卡工具", " ", "NVIDIA显卡驱动官方下载页面，提供GeForce系列显卡最新Game Ready驱动下载。", @"扩展工具\Nvidia显卡驱动下载\Start.bat"),
         new("MSI Afterburner","显卡工具", " ", "MSI Afterburner显卡超频工具下载页面，支持NVIDIA/AMD显卡频率调节、监控、录像。", @"扩展工具\MSIAfterburnerSetup\start.bat"),
         new("UFO显示器测试", "显示器工具"," ", "UFO Test在线显示器刷新率测试工具，通过浏览器测试显示器实际刷新率和帧率表现。", @"扩展工具\UFO测试\Start.bat"),
         new("在线屏幕测试", "显示器工具"," ", "在线屏幕检测工具，通过浏览器检测显示器坏点、亮点、色彩均匀性、响应速度。",   @"扩展工具\在线屏幕测试\在线屏幕测试.bat"),
         new("在线外设测试", "外设工具", " ", "在线外设测试中心，通过浏览器测试键盘按键、鼠标点击、鼠标回报率等外设性能。", @"扩展工具\在线外设测试中心\在线外设测试中心.bat"),
-        new("SSD utils",  "硬盘工具", " ", "SSD固态硬盘工具集合，包含SSD健康检测、固件更新、性能优化等多种工具。", @"扩展工具\SSD utils\Start.bat"),
         new("next.itellyou","系统工具", " ", "next.itellyou Windows原版镜像下载站，提供Windows 7~11各版本官方ISO镜像下载。", @"扩展工具\next_itellyou\Start.bat"),
-        new("皮肤编辑器", "系统工具", " ", "图吧工具箱皮肤编辑工具，支持自定义工具箱界面主题、背景、配色方案。",    @"扩展工具\皮肤编辑器\Start.bat"),
     ];
 
     // ── 属性 ──────────────────────────────────────
