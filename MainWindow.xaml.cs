@@ -48,7 +48,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     [
         new("酷我音乐",      "娱乐工具", " ", "酷我音乐PC版，支持在线听歌、歌词显示、音效调节、本地音乐管理，支持无损音质下载。",     @"扩展工具\KwMusic\KwMusic.exe"),
         new("PiliPlus",     "娱乐工具", " ", "第三方哔哩哔哩客户端，支持弹幕播放、视频下载、多清晰度切换，基于Flutter开发。",         @"扩展工具\PiliPlus-Win\piliplus.exe"),
-        new("洛雪音乐",     "娱乐工具", " ", "洛雪音乐桌面版，开源免费音乐播放器，支持多平台音源、无损音质、歌词显示、歌单导入。", @"C:\Users\theti\Downloads\lx-music-desktop-v2.12.2-win_x64-green\lx-music-desktop.exe"),
+        new("洛雪音乐",     "娱乐工具", " ", "洛雪音乐桌面版，开源免费音乐播放器，支持多平台音源、无损音质、歌词显示、歌单导入。", @"扩展工具\洛雪音乐\lx-music-desktop.exe"),
         new("Edge 浏览器",   "实用工具", " ", "微软Edge浏览器在线安装程序，基于Chromium内核，支持扩展插件、集锦、沉浸式阅读器等功能。",     @"扩展工具\edge\MicrosoftEdgeSetup.exe"),
         new("Office Tool Plus","实用工具"," ","微软Office部署工具，支持Office 2016-2024及Microsoft 365的在线/离线安装、激活、更新管理。",    @"扩展工具\Office Tool x64\Office Tool Plus.exe"),
         new("Office Tool (32位)","实用工具"," ","Office Tool Plus 32位版本，适用于32位Windows系统，功能与64位版本相同。", @"扩展工具\Office Tool x32\Office Tool Plus.exe"),

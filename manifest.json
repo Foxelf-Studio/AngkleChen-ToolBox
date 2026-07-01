@@ -5,7 +5,7 @@
   "minUpgradeVersion": "1.0.0",
   "files": {
     "陈叔叔工具箱.exe": {
-      "sha256": "7d31148bcd9aaff01dca200ae3ee1a028260307b00bc9b91ae13b0b90c7820db",
+      "sha256": "1b70c6ea30b346944b718de1d7002600af9b446118309cd6b596b38bdb102557",
       "size": 142726024,
       "url": "patches/陈叔叔工具箱.exe"
     },
@@ -25,8 +25,8 @@
       "url": "patches/MainWindow.xaml"
     },
     "MainWindow.xaml.cs": {
-      "sha256": "1bc3e72b0dea1f2283c575b35929dcc17c8f3715060f4ce088b91c0182d7f362",
-      "size": 45724,
+      "sha256": "21991c880f2d57060ec361fa944eabaa30cf808fc42ff1692ca98c5a07773db8",
+      "size": 45686,
       "url": "patches/MainWindow.xaml.cs"
     },
     "AssemblyInfo.cs": {
