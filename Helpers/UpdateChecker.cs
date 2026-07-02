@@ -68,24 +68,27 @@ public class UpdateChecker
         catch (Exception ex)
         {
             Debug.WriteLine($"检查更新失败: {ex.Message}");
+            result.HasUpdate = false;
         }
 
         return result;
     }
 
     /// <summary>
-    /// 获取最新 Release 信息
+    /// 获取最新 Release 信息（包含 pre-release）
     /// </summary>
     private async Task<ReleaseInfo?> GetLatestReleaseAsync()
     {
-        var url = $"https://api.github.com/repos/{_owner}/{_repo}/releases/latest";
+        // 使用 /releases 而不是 /releases/latest，因为后者不返回 pre-release
+        var url = $"https://api.github.com/repos/{_owner}/{_repo}/releases?per_page=1";
         var response = await _httpClient.GetAsync(url);
 
         if (!response.IsSuccessStatusCode)
             return null;
 
         var json = await response.Content.ReadAsStringAsync();
-        return JsonSerializer.Deserialize<ReleaseInfo>(json, JsonOptions);
+        var releases = JsonSerializer.Deserialize<List<ReleaseInfo>>(json, JsonOptions);
+        return releases?.FirstOrDefault();
     }
 
     /// <summary>
