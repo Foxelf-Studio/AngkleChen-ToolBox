@@ -257,8 +257,20 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         Dispatcher.BeginInvoke(new Action(() => MoveIndicator(0, false)),
             System.Windows.Threading.DispatcherPriority.Loaded);
 
-        // 启动时检查更新
-        Loaded += async (_, _) => await CheckForUpdatesOnStartup();
+        // 延迟2秒检查更新，避免阻塞启动
+        Loaded += (_, _) =>
+        {
+            var timer = new System.Windows.Threading.DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(2)
+            };
+            timer.Tick += async (s, e) =>
+            {
+                timer.Stop();
+                await CheckForUpdatesOnStartup();
+            };
+            timer.Start();
+        };
     }
 
     // ── 导航按钮线性高亮动画 ──────────────────────
@@ -619,21 +631,21 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 var settings = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, bool>>(json);
                 if (settings != null && settings.TryGetValue("autoCheckUpdate", out var autoCheck) && !autoCheck)
                 {
-                    return; // 用户禁用了自动检查
+                    return;
                 }
             }
 
-            // TODO: 替换为实际的 GitHub 用户名
             var checker = new UpdateChecker("Foxelf-Studio", "AngkleChen-ToolBox");
-            var result = await checker.CheckForUpdatesAsync();
+            var result = await Task.Run(() => checker.CheckForUpdatesAsync());
 
             if (result.HasUpdate)
             {
-                var dialog = new UpdateDialog(result)
+                // 确保 UI 线程显示对话框
+                await Dispatcher.InvokeAsync(() =>
                 {
-                    Owner = this
-                };
-                dialog.ShowDialog();
+                    var dialog = new UpdateDialog(result) { Owner = this };
+                    dialog.ShowDialog();
+                });
             }
         }
         catch
@@ -674,7 +686,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
         var list = filtered.ToList();
         CardItems.ItemsSource = list;
-        StatusText = $"共 {list.Count} 款工具  ·  v1.0";
+        StatusText = $"共 {list.Count} 款工具  ·  v1.1";
     }
 
     // ── 工具选中（单击） ─────────────────────────

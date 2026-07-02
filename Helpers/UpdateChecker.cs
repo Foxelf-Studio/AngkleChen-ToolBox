@@ -23,7 +23,10 @@ public class UpdateChecker
     {
         _owner = owner;
         _repo = repo;
-        _httpClient = new HttpClient();
+        _httpClient = new HttpClient
+        {
+            Timeout = TimeSpan.FromSeconds(10)  // 10秒超时，避免卡死
+        };
         _httpClient.DefaultRequestHeaders.Add("User-Agent", "ChenUncle-Toolbox");
     }
 
