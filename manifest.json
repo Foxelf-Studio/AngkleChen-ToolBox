@@ -1,11 +1,11 @@
 {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "releaseDate": "2026-07-02",
   "changelog": "",
   "minUpgradeVersion": "1.0.0",
   "files": {
     "陈叔叔工具箱.exe": {
-      "sha256": "1b70c6ea30b346944b718de1d7002600af9b446118309cd6b596b38bdb102557",
+      "sha256": "73476e4ea715eed7c6b947dfc8dfac350fac8d45ca6ad08f354c7584f82a323d",
       "size": 142726024,
       "url": "patches/陈叔叔工具箱.exe"
     },
@@ -25,8 +25,8 @@
       "url": "patches/MainWindow.xaml"
     },
     "MainWindow.xaml.cs": {
-      "sha256": "21991c880f2d57060ec361fa944eabaa30cf808fc42ff1692ca98c5a07773db8",
-      "size": 45686,
+      "sha256": "005cc65655d921519647531823b5783bc836d68884639e95004caa42873c5394",
+      "size": 45847,
       "url": "patches/MainWindow.xaml.cs"
     },
     "AssemblyInfo.cs": {
@@ -35,7 +35,7 @@
       "url": "patches/AssemblyInfo.cs"
     },
     "旧电脑拯救工具箱.csproj": {
-      "sha256": "d0e5103f72957ab707066d74a573468dfa1e4c2b5ee6bf3c8de43745e22dd7ac",
+      "sha256": "31cc00f2980bca404b7497de6ffaf62daba4f903024d37b04b700edeff589065",
       "size": 853,
       "url": "patches/旧电脑拯救工具箱.csproj"
     },
@@ -50,8 +50,8 @@
       "url": "patches/logo.png"
     },
     "Controls/SettingsPanel.xaml": {
-      "sha256": "f2957f30d41651dd615464605897896f8ef106cc283f131a6fc6f71a6cadd8a1",
-      "size": 12402,
+      "sha256": "94e5f18a4a637c96f3399f820cf3ab50c725b88b42fd597a2f06c5a63569598e",
+      "size": 14274,
       "url": "patches/Controls/SettingsPanel.xaml"
     },
     "Controls/ToolCard.xaml": {
@@ -65,8 +65,8 @@
       "url": "patches/Controls/UpdateDialog.xaml"
     },
     "Controls/SettingsPanel.xaml.cs": {
-      "sha256": "8d18b7bdfdbc9f0d45c808535aebf438d9bb3a6889a0d900a809b6f522d9304a",
-      "size": 4133,
+      "sha256": "3ed3a1ca937e6a614bf586a7ab5adfe9323b7795030517b298d9f9459859b36c",
+      "size": 4410,
       "url": "patches/Controls/SettingsPanel.xaml.cs"
     },
     "Controls/ToolCard.xaml.cs": {
@@ -90,8 +90,8 @@
       "url": "patches/Helpers/SmoothScrollBehavior.cs"
     },
     "Helpers/UpdateChecker.cs": {
-      "sha256": "a0128f6541ca427d02532fb9d2037fa7fb03b3429b60d571674c9e9740e50e48",
-      "size": 7599,
+      "sha256": "6d1c04628820bdb24b25dde8d4eb4fe18579d32239e25c68ff5de1356332b3b8",
+      "size": 7940,
       "url": "patches/Helpers/UpdateChecker.cs"
     },
     "Helpers/VersionInfo.cs": {
@@ -104,390 +104,10 @@
       "size": 192,
       "url": "patches/Models/ToolInfo.cs"
     },
-    "chrome_100_percent.pak": {
-      "sha256": "cbe052e9bd36032cde9d0ad7496d611c6a3c98a130b960e1298d490254be1159",
-      "size": 114781,
-      "url": "patches/chrome_100_percent.pak"
-    },
-    "chrome_200_percent.pak": {
-      "sha256": "6593ba8ece63001a3fb77bd1d872566edeb26213a1be8e852dd956f6d0e2c93e",
-      "size": 186658,
-      "url": "patches/chrome_200_percent.pak"
-    },
-    "d3dcompiler_47.dll": {
-      "sha256": "c8e25abd3d45dfb55966a74613258c39b4a83ea2ac77f2f80903499f4d5c03f0",
-      "size": 4741480,
-      "url": "patches/d3dcompiler_47.dll"
-    },
-    "dxcompiler.dll": {
-      "sha256": "b30c6f098830462af28097c6ec68280b442ad544ca8125f5c4e3401a1c2d67c8",
-      "size": 25619968,
-      "url": "patches/dxcompiler.dll"
-    },
-    "dxil.dll": {
-      "sha256": "436f128f22050ae27323da61321a469de0678def7a4e6d86f9ccad4858724f0a",
-      "size": 1503600,
-      "url": "patches/dxil.dll"
-    },
-    "ffmpeg.dll": {
-      "sha256": "4a6b92b7e8a87530ebe0744772273b177d629590e24c57f8d9e542d20dde0633",
-      "size": 3086848,
-      "url": "patches/ffmpeg.dll"
-    },
-    "icudtl.dat": {
-      "sha256": "1cf67874b5a87a8363a86fb3f81e3cbbed54d389062dab8fb52308d5cf8c8612",
-      "size": 10822192,
-      "url": "patches/icudtl.dat"
-    },
-    "libEGL.dll": {
-      "sha256": "f4726d870965f720e7719b42e9ddfe157f35a7bf9ae40417524f0ea2821f637c",
-      "size": 512512,
-      "url": "patches/libEGL.dll"
-    },
-    "libGLESv2.dll": {
-      "sha256": "3084ea999313782411a107f58b128d2d1701663a54e186f3b4dd043b6d9762cb",
-      "size": 8010752,
-      "url": "patches/libGLESv2.dll"
-    },
-    "LICENSE.electron.txt": {
-      "sha256": "5154e165bd6c2cc0cfbcd8916498c7abab0497923bafcd5cb07673fe8480087d",
-      "size": 1096,
-      "url": "patches/LICENSE.electron.txt"
-    },
-    "LICENSES.chromium.html": {
-      "sha256": "1145a9faaadf10f97ab6a1d0c5b7f74c6a2eae46b532f168a233b9a5cd7d52cf",
-      "size": 15997529,
-      "url": "patches/LICENSES.chromium.html"
-    },
-    "lx-music-desktop.exe": {
-      "sha256": "fc82f9ba9a81efd61144505ba1642f1d80197d50216ea1e0f180c04c0538250d",
-      "size": 213905408,
-      "url": "patches/lx-music-desktop.exe"
-    },
-    "resources.pak": {
-      "sha256": "5e2fd4d456e6a5b999c3c0a099340035b0fcbbe40a8f072d0464a400bd04800b",
-      "size": 6432249,
-      "url": "patches/resources.pak"
-    },
-    "snapshot_blob.bin": {
-      "sha256": "81ce6161502faa15e5eb290e54dad17a48230387e946222ba176ed64742bacb2",
-      "size": 339863,
-      "url": "patches/snapshot_blob.bin"
-    },
-    "v8_context_snapshot.bin": {
-      "sha256": "6c890447d4edd953a1ec1c53293c74b2136c3241ad29b9661a4c137de6eaf6ba",
-      "size": 713034,
-      "url": "patches/v8_context_snapshot.bin"
-    },
-    "vk_swiftshader.dll": {
-      "sha256": "576e90c91e24ac9727f3643a731d2683ce71c27b0443dcfa2dd1b601069cfa4a",
-      "size": 5628928,
-      "url": "patches/vk_swiftshader.dll"
-    },
-    "vk_swiftshader_icd.json": {
-      "sha256": "32d83ff113fef532a9f97e0d2831f8656628ab1c99e9060f0332b1532839afd9",
-      "size": 106,
-      "url": "patches/vk_swiftshader_icd.json"
-    },
-    "vulkan-1.dll": {
-      "sha256": "756bf4d3f8d15bea4a69e548069ce286e1229a02280dea030d982079dce083e5",
-      "size": 957440,
-      "url": "patches/vulkan-1.dll"
-    },
-    "locales/af.pak": {
-      "sha256": "f500ba115f773738d84feb12a909f8e9509f94b1d45bc86ff6eefdca6c7f1fa7",
-      "size": 596607,
-      "url": "patches/locales/af.pak"
-    },
-    "locales/am.pak": {
-      "sha256": "4b2dcc369fb50860cc87929488aa9b6e35d973a5234b77ec907e2fe2a8790931",
-      "size": 969188,
-      "url": "patches/locales/am.pak"
-    },
-    "locales/ar.pak": {
-      "sha256": "71d8f4f3a910647572ccfaa9b75d1cc158073c7aac9fa4372578160380f71475",
-      "size": 1072288,
-      "url": "patches/locales/ar.pak"
-    },
-    "locales/bg.pak": {
-      "sha256": "7ab64589cb8b221ddccd0bba60cd27b57445dcfa1d1bf282a908afcbe24f8205",
-      "size": 1105607,
-      "url": "patches/locales/bg.pak"
-    },
-    "locales/bn.pak": {
-      "sha256": "fca72236cef1f37e81a0002b18473237e1fd9c170bd809f2d82dee5617abf082",
-      "size": 1426968,
-      "url": "patches/locales/bn.pak"
-    },
-    "locales/ca.pak": {
-      "sha256": "8076fe9de4102465252ec963dbd26149918bcd4c8c71bc16ddb5b691f78da14b",
-      "size": 672666,
-      "url": "patches/locales/ca.pak"
-    },
-    "locales/cs.pak": {
-      "sha256": "d3043f0ea0a91d7089b9bd46ebd2192cfa77a1ad9d07d6dd0e72db2f03307db4",
-      "size": 698933,
-      "url": "patches/locales/cs.pak"
-    },
-    "locales/da.pak": {
-      "sha256": "4a80237c4e8761925583a5f404f1eb9fc4b0591724cbef057b50c935e67f9893",
-      "size": 628622,
-      "url": "patches/locales/da.pak"
-    },
-    "locales/de.pak": {
-      "sha256": "b0fcc971930feebd20752910406a251ab515dd8377c926efbf0730ecdadac00f",
-      "size": 673617,
-      "url": "patches/locales/de.pak"
-    },
-    "locales/el.pak": {
-      "sha256": "1079cd78b3cbaa80bc5a1068dde1201eae8211f935a4faa8fd1b2e881ddcfde1",
-      "size": 1216543,
-      "url": "patches/locales/el.pak"
-    },
-    "locales/en-GB.pak": {
-      "sha256": "d7ff81e2cb2956bc159b6ff806d39177b1f886f6c0de88e5e3a42655b3b0b2c3",
-      "size": 543897,
-      "url": "patches/locales/en-GB.pak"
-    },
-    "locales/en-US.pak": {
-      "sha256": "ef30389492cc2d31bc5c162056fe68c27a5d57b0a69f5f878562325f795c5185",
-      "size": 550193,
-      "url": "patches/locales/en-US.pak"
-    },
-    "locales/es-419.pak": {
-      "sha256": "0f5af329aae315473ef60e4e9e4cf2168af9a5a53c24c5d6367dd87b7e3f146a",
-      "size": 663018,
-      "url": "patches/locales/es-419.pak"
-    },
-    "locales/es.pak": {
-      "sha256": "cc3d7c3f694333f8b83127131b665130705598ab1ad7e1e16a0359ad52a73aa6",
-      "size": 660240,
-      "url": "patches/locales/es.pak"
-    },
-    "locales/et.pak": {
-      "sha256": "2d9edaebd948a518ca0074ee9b3e0840bdfafe4391ec8435a1f0f7072d88ac7d",
-      "size": 602773,
-      "url": "patches/locales/et.pak"
-    },
-    "locales/fa.pak": {
-      "sha256": "d26e6e0cf1786b01e3f7257469fe048871218113db5c51b9f72a5fa0d242e8cf",
-      "size": 998678,
-      "url": "patches/locales/fa.pak"
-    },
-    "locales/fi.pak": {
-      "sha256": "b87cbc298d42619699a207cec6bbc34567528cc0b37ea2059f48cd2c63b857a0",
-      "size": 613544,
-      "url": "patches/locales/fi.pak"
-    },
-    "locales/fil.pak": {
-      "sha256": "be9a51a3e3bbb334ef1dcec3f85f5d884e04d5580b4e7a24e9d5bbf84fa56e1f",
-      "size": 697137,
-      "url": "patches/locales/fil.pak"
-    },
-    "locales/fr.pak": {
-      "sha256": "2a7e6756253d85edb24a27e4e3f8e43ba1b124160cc1adae9792195abbbf7a5f",
-      "size": 717683,
-      "url": "patches/locales/fr.pak"
-    },
-    "locales/gu.pak": {
-      "sha256": "2623480ab810561ca86eacaa6b09ec67d4716e74484917a9931caafe57f183d7",
-      "size": 1408655,
-      "url": "patches/locales/gu.pak"
-    },
-    "locales/he.pak": {
-      "sha256": "c6712be63d5d0337c345cf03af8a492200e1cdbfa124801620b58f7212c20c90",
-      "size": 874753,
-      "url": "patches/locales/he.pak"
-    },
-    "locales/hi.pak": {
-      "sha256": "04007246aa9acde32d4ab3e0edb6c898e995d6b716579911d76a8e169538074a",
-      "size": 1491338,
-      "url": "patches/locales/hi.pak"
-    },
-    "locales/hr.pak": {
-      "sha256": "a6c1d62d5ebf72aba06b83da68c2a7e4ed77817cfa6e5f6f531df9ddd2d67f12",
-      "size": 672878,
-      "url": "patches/locales/hr.pak"
-    },
-    "locales/hu.pak": {
-      "sha256": "bd054c1c8c9f4a53106accc3c61310322a160d9c66c6317a63c91d17eacee23a",
-      "size": 719634,
-      "url": "patches/locales/hu.pak"
-    },
-    "locales/id.pak": {
-      "sha256": "81574aa518c3cf7dab5e08510db9180a7a4d1e115a97fee8ae471b423301e793",
-      "size": 594046,
-      "url": "patches/locales/id.pak"
-    },
-    "locales/it.pak": {
-      "sha256": "516392ee5c30cce472c5e2f6ea72c9607fde7d543791840b2147ba126277fae8",
-      "size": 651223,
-      "url": "patches/locales/it.pak"
-    },
-    "locales/ja.pak": {
-      "sha256": "f83467016fe545c2d7ffb29818b63141936ddbeb347eecb94dbcc4dd7aebc160",
-      "size": 792857,
-      "url": "patches/locales/ja.pak"
-    },
-    "locales/kn.pak": {
-      "sha256": "6e4307cb71b0086f9173fe76675f12d017f2318f31930c9b7551552d10608876",
-      "size": 1615330,
-      "url": "patches/locales/kn.pak"
-    },
-    "locales/ko.pak": {
-      "sha256": "ddee44a6cb30a5f19fb7e2f475ef38ca866ccd9454807f04b028f211d6e0638d",
-      "size": 672986,
-      "url": "patches/locales/ko.pak"
-    },
-    "locales/lt.pak": {
-      "sha256": "38a85c44924159a7096ac757e11a6e3ec94058e40d661b45e796c29b1ffc2fe6",
-      "size": 731816,
-      "url": "patches/locales/lt.pak"
-    },
-    "locales/lv.pak": {
-      "sha256": "b1789efbe97746e1ceb8eca5fec1bacf84e2f157cb24ba10487141f80a8d0fe6",
-      "size": 728832,
-      "url": "patches/locales/lv.pak"
-    },
-    "locales/ml.pak": {
-      "sha256": "35e3ecbc30a2ba8eeeafa884b63b502876086e4f58694aface215280620b6ff4",
-      "size": 1666333,
-      "url": "patches/locales/ml.pak"
-    },
-    "locales/mr.pak": {
-      "sha256": "20121228e7790b61c69d3e8a825098002bae61884b2c6cd84189c31415a594f6",
-      "size": 1378315,
-      "url": "patches/locales/mr.pak"
-    },
-    "locales/ms.pak": {
-      "sha256": "3d504ad265b71b6de6e1d65a5a92c0a5f3d9ac188cb073d6391a0884217d6580",
-      "size": 625550,
-      "url": "patches/locales/ms.pak"
-    },
-    "locales/nb.pak": {
-      "sha256": "bf454559af0c66c2beb108b45664bbce95c8fc6ca6e9e176d77161c2ac3c2c09",
-      "size": 600650,
-      "url": "patches/locales/nb.pak"
-    },
-    "locales/nl.pak": {
-      "sha256": "6562756131ac1966805981bddd08c4330ab4cbcfed836482203bd6a819e6d99d",
-      "size": 625155,
-      "url": "patches/locales/nl.pak"
-    },
-    "locales/pl.pak": {
-      "sha256": "a7266a664cfb74895e2b9099f67f179043df848e8bdf97264756e8383367c66f",
-      "size": 698421,
-      "url": "patches/locales/pl.pak"
-    },
-    "locales/pt-BR.pak": {
-      "sha256": "1ab6dee0fb09dfe1c53cf196efe404041835602bce797877f7fa89b2011becf6",
-      "size": 654009,
-      "url": "patches/locales/pt-BR.pak"
-    },
-    "locales/pt-PT.pak": {
-      "sha256": "1001af3f01e2e52b535b8c9f9e37f356998b597ffe6bfa90d23a2500d0efc3a4",
-      "size": 657293,
-      "url": "patches/locales/pt-PT.pak"
-    },
-    "locales/ro.pak": {
-      "sha256": "2feca2991c73a665d1503b9c1320b518658ea940a62f35b75f7780d4ef0b054a",
-      "size": 681998,
-      "url": "patches/locales/ro.pak"
-    },
-    "locales/ru.pak": {
-      "sha256": "8487e04fab7b7350e17f3441455c4995d12ac870ff8f2b97dd44aeed1a3f0169",
-      "size": 1132729,
-      "url": "patches/locales/ru.pak"
-    },
-    "locales/sk.pak": {
-      "sha256": "abe4f0f69555a929f3f9e992208cf178b86c300803fb1e01c7c78e5fa96ce1a2",
-      "size": 710307,
-      "url": "patches/locales/sk.pak"
-    },
-    "locales/sl.pak": {
-      "sha256": "105f19bd95178afdd37507b09187b7e57f660fc8cbaf61840e770a0dbd624989",
-      "size": 680528,
-      "url": "patches/locales/sl.pak"
-    },
-    "locales/sr.pak": {
-      "sha256": "c85a6a25a18cbf773861255bdf09dbbbf6e7da0b56196d02ed9ed48b7c1bfa7e",
-      "size": 1046626,
-      "url": "patches/locales/sr.pak"
-    },
-    "locales/sv.pak": {
-      "sha256": "50ee47f0ecab084a1e47fd1055f14204a904e02e76cc11f056880027bb30f0b4",
-      "size": 606558,
-      "url": "patches/locales/sv.pak"
-    },
-    "locales/sw.pak": {
-      "sha256": "039c517ef328c62d1fed7e8b6d229f6d30f09df5aabd79503d6798e37ed89315",
-      "size": 641434,
-      "url": "patches/locales/sw.pak"
-    },
-    "locales/ta.pak": {
-      "sha256": "b629034f195f1b354f959186f9c9de6a8e5fcb8ed98f2b120cbe574681a96f6d",
-      "size": 1657455,
-      "url": "patches/locales/ta.pak"
-    },
-    "locales/te.pak": {
-      "sha256": "b226521143030f9c0253e26e45603db8817a106253f085e731ded1269be74127",
-      "size": 1532014,
-      "url": "patches/locales/te.pak"
-    },
-    "locales/th.pak": {
-      "sha256": "adec2c1293d2bfc4c4e49d78b4d1a27f1d68b79398935aa45219736ab90903e7",
-      "size": 1286246,
-      "url": "patches/locales/th.pak"
-    },
-    "locales/tr.pak": {
-      "sha256": "b38c37fbc4de0d502fa8fdb0e628d40e84dd4c3ae9a5d3191405635f8c815343",
-      "size": 653333,
-      "url": "patches/locales/tr.pak"
-    },
-    "locales/uk.pak": {
-      "sha256": "3d19684ee617aa6465e25db6927e257f290ded63ead9402c440a34d5983b7585",
-      "size": 1139851,
-      "url": "patches/locales/uk.pak"
-    },
-    "locales/ur.pak": {
-      "sha256": "4047d247f7827a03a5c64f252a9e5a5ac9fabc75bdd03b87a3d248eefca03648",
-      "size": 983529,
-      "url": "patches/locales/ur.pak"
-    },
-    "locales/vi.pak": {
-      "sha256": "263dbe4ea8b3ab7f189b91d6707fdfba604d02894bc50483a8b562334d303a4c",
-      "size": 775605,
-      "url": "patches/locales/vi.pak"
-    },
-    "locales/zh-CN.pak": {
-      "sha256": "cba14b4e279269daf8e7e7925039df8eb37a9b7459a27a41e57c933fccb745fc",
-      "size": 555984,
-      "url": "patches/locales/zh-CN.pak"
-    },
-    "locales/zh-TW.pak": {
-      "sha256": "c425d71d1d06ba214857efda2a33b098d8d8469705840e13aa6e663963871db3",
-      "size": 549409,
-      "url": "patches/locales/zh-TW.pak"
-    },
-    "resources/app.asar": {
-      "sha256": "6a35ea974bdf8cf723660e9e1bdc2b1c45daf0bbc31f365170829a392aeb9aa6",
-      "size": 32454628,
-      "url": "patches/resources/app.asar"
-    },
-    "resources/licenses/license.rtf": {
-      "sha256": "e03e0cdd7af1920e6cc890bf2c4017437a5b87c5168a534ddf07760013d4abe0",
-      "size": 63062,
-      "url": "patches/resources/licenses/license.rtf"
-    },
-    "resources/licenses/license_en.txt": {
-      "sha256": "8d0063ec66aab0c6e42d21302ea1bfc1129dd71c89adddf429e59401ddd84277",
-      "size": 4542,
-      "url": "patches/resources/licenses/license_en.txt"
-    },
-    "resources/licenses/license_zh.txt": {
-      "sha256": "2acbe11b4e0266f7917b953b77fddb7e87245aed6aa874f63eefed61302f468b",
-      "size": 3625,
-      "url": "patches/resources/licenses/license_zh.txt"
+    "工具/test/test.txt": {
+      "sha256": "df7d2185d938872a7438cf9d0e09724b14b020410eb62dde019ffca52f31196f",
+      "size": 28,
+      "url": "patches/工具/test/test.txt"
     }
   }
 }

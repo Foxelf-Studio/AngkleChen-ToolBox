@@ -107,6 +107,12 @@ public partial class SettingsPanel : UserControl
         SaveSettings();
     }
 
+    private void OnTestClick(object sender, RoutedEventArgs e)
+    {
+        var result = MessageBox.Show("这是一个测试按钮！\n\n用于验证 v1.2.0 更新功能是否正常。",
+            "测试 - v1.2.0", MessageBoxButton.OK, MessageBoxImage.Information);
+    }
+
     private void OnGitHubClick(object sender, RoutedEventArgs e)
     {
         try
