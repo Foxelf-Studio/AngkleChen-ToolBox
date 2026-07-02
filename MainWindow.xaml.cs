@@ -10,6 +10,12 @@ using 陈叔叔工具箱.Controls;
 using 陈叔叔工具箱.Helpers;
 using 陈叔叔工具箱.Models;
 
+using DoubleAnimation = System.Windows.Media.Animation.DoubleAnimation;
+using PowerEase = System.Windows.Media.Animation.PowerEase;
+using EasingMode = System.Windows.Media.Animation.EasingMode;
+using Storyboard = System.Windows.Media.Animation.Storyboard;
+using TranslateTransform = System.Windows.Media.TranslateTransform;
+
 namespace 陈叔叔工具箱;
 
 public partial class MainWindow : Window, INotifyPropertyChanged
@@ -49,7 +55,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         new("酷我音乐",      "娱乐工具", " ", "酷我音乐PC版，支持在线听歌、歌词显示、音效调节、本地音乐管理，支持无损音质下载。",     @"扩展工具\KwMusic\KwMusic.exe"),
         new("PiliPlus",     "娱乐工具", " ", "第三方哔哩哔哩客户端，支持弹幕播放、视频下载、多清晰度切换，基于Flutter开发。",         @"扩展工具\PiliPlus-Win\piliplus.exe"),
         new("洛雪音乐",     "娱乐工具", " ", "洛雪音乐桌面版，开源免费音乐播放器，支持多平台音源、无损音质、歌词显示、歌单导入。", @"扩展工具\洛雪音乐\lx-music-desktop.exe"),
-        new("更新测试工具", "搞机工具", " ", "这是一个用于测试自动更新功能的空壳工具，v1.2.0新增。", @"工具\test\test.txt"),
         new("Edge 浏览器",   "实用工具", " ", "微软Edge浏览器在线安装程序，基于Chromium内核，支持扩展插件、集锦、沉浸式阅读器等功能。",     @"扩展工具\edge\MicrosoftEdgeSetup.exe"),
         new("Office Tool Plus","实用工具"," ","微软Office部署工具，支持Office 2016-2024及Microsoft 365的在线/离线安装、激活、更新管理。",    @"扩展工具\Office Tool x64\Office Tool Plus.exe"),
         new("Office Tool (32位)","实用工具"," ","Office Tool Plus 32位版本，适用于32位Windows系统，功能与64位版本相同。", @"扩展工具\Office Tool x32\Office Tool Plus.exe"),
@@ -379,82 +384,68 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             _prevCatIndex = newIndex;
 
             _activeCategory = cat.Id;
-            HeaderTitle = cat.Name;
-            HeaderSubtitle = cat.Subtitle;
-            Breadcrumb = $"陈叔叔工具箱  ›  {cat.Name}";
 
             if (!_suppressAnim && oldIndex != newIndex)
             {
                 var dir = newIndex > oldIndex ? 1 : -1;
-                AnimatePageTransition(dir);
-                MoveIndicator(newIndex, true); // 带动画移动指示器
+                // 传入分类信息，在动画回调中设置文字
+                AnimatePageTransition(dir, cat.Name, cat.Subtitle);
+                MoveIndicator(newIndex, true);
             }
             else
             {
                 _suppressAnim = false;
+                HeaderTitle = cat.Name;
+                HeaderSubtitle = cat.Subtitle;
+                Breadcrumb = $"陈叔叔工具箱  ›  {cat.Name}";
                 ApplyFilter();
-                MoveIndicator(newIndex, false); // 无动画直接定位
+                MoveIndicator(newIndex, false);
             }
-            // 点击后清除残留动画，恢复选中/非选中正确背景色
             Dispatcher.BeginInvoke(new Action(ResetNavItemBackgrounds),
                 System.Windows.Threading.DispatcherPriority.Background);
         }
     }
 
-    private void AnimatePageTransition(int direction)
+    private void AnimatePageTransition(int direction, string catName, string catSubtitle)
     {
         // Phase 1: 淡出
-        var fadeOut = new System.Windows.Media.Animation.DoubleAnimation(
-            1, 0, TimeSpan.FromMilliseconds(280))
+        var fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(280))
         {
-            EasingFunction = new System.Windows.Media.Animation.PowerEase
-            {
-                EasingMode = System.Windows.Media.Animation.EasingMode.EaseIn,
-                Power = 1.5
-            }
+            EasingFunction = new PowerEase { EasingMode = EasingMode.EaseIn, Power = 1.5 }
         };
         fadeOut.Completed += (_, _) =>
         {
-            // 切换内容（此时不可见）
+            // 切换文字和内容（此时不可见）
+            HeaderTitle = catName;
+            HeaderSubtitle = catSubtitle;
+            Breadcrumb = $"陈叔叔工具箱  ›  {catName}";
             ApplyFilter();
             ContentGrid.UpdateLayout();
 
             // Phase 2: 滑入 + 淡入 同时播放
-            var tt = new System.Windows.Media.TranslateTransform();
+            var tt = new TranslateTransform();
             ContentGrid.RenderTransform = tt;
             tt.Y = direction * 50;
             ContentGrid.Opacity = 0;
             ContentGrid.UpdateLayout();
 
-            var sb = new System.Windows.Media.Animation.Storyboard();
+            var sb = new Storyboard();
 
-            var slide = new System.Windows.Media.Animation.DoubleAnimation(
-                tt.Y, 0, TimeSpan.FromMilliseconds(380))
+            var slide = new DoubleAnimation(tt.Y, 0, TimeSpan.FromMilliseconds(380))
             {
-                EasingFunction = new System.Windows.Media.Animation.PowerEase
-                {
-                    EasingMode = System.Windows.Media.Animation.EasingMode.EaseOut,
-                    Power = 2.5
-                }
+                EasingFunction = new PowerEase { EasingMode = EasingMode.EaseOut, Power = 2.5 }
             };
-            System.Windows.Media.Animation.Storyboard.SetTarget(slide, ContentGrid);
-            System.Windows.Media.Animation.Storyboard.SetTargetProperty(slide,
-                new System.Windows.PropertyPath(
-                    "(UIElement.RenderTransform).(TranslateTransform.Y)"));
+            Storyboard.SetTarget(slide, ContentGrid);
+            Storyboard.SetTargetProperty(slide,
+                new PropertyPath("(UIElement.RenderTransform).(TranslateTransform.Y)"));
             sb.Children.Add(slide);
 
-            var fadeIn = new System.Windows.Media.Animation.DoubleAnimation(
-                0, 1, TimeSpan.FromMilliseconds(280))
+            var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(280))
             {
-                EasingFunction = new System.Windows.Media.Animation.PowerEase
-                {
-                    EasingMode = System.Windows.Media.Animation.EasingMode.EaseOut,
-                    Power = 1.5
-                }
+                EasingFunction = new PowerEase { EasingMode = EasingMode.EaseOut, Power = 1.5 }
             };
-            System.Windows.Media.Animation.Storyboard.SetTarget(fadeIn, ContentGrid);
-            System.Windows.Media.Animation.Storyboard.SetTargetProperty(fadeIn,
-                new System.Windows.PropertyPath(UIElement.OpacityProperty));
+            Storyboard.SetTarget(fadeIn, ContentGrid);
+            Storyboard.SetTargetProperty(fadeIn, new PropertyPath(UIElement.OpacityProperty));
             sb.Children.Add(fadeIn);
 
             sb.Begin();

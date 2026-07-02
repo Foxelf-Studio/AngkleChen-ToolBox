@@ -2,6 +2,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 using 陈叔叔工具箱.Helpers;
 
 namespace 陈叔叔工具箱.Controls;
@@ -9,163 +11,72 @@ namespace 陈叔叔工具箱.Controls;
 public partial class UpdateDialog : Window
 {
     private readonly UpdateCheckResult _result;
-    private readonly UpdateChecker _checker;
-    private bool _isUpdating;
 
     public UpdateDialog(UpdateCheckResult result)
     {
         InitializeComponent();
         _result = result;
 
-        // TODO: 替换为实际的 GitHub 用户名
-        _checker = new UpdateChecker("Foxelf-Studio", "AngkleChen-ToolBox");
-
-        // 填充信息
-        TxtCurrentVersion.Text = result.CurrentVersion;
+        TxtCurrentVersion.Text = $"v{result.CurrentVersion}";
         TxtLatestVersion.Text = $"v{result.LatestVersion}";
         TxtChangelog.Text = string.IsNullOrEmpty(result.Changelog) ? "暂无更新说明" : result.Changelog;
 
-        // 如果没有增量更新清单，禁用增量更新选项
-        if (result.Manifest == null || result.ChangedFiles.Count == 0)
-        {
-            RadioIncremental.IsEnabled = false;
-            RadioIncremental.Content = "增量更新（不可用，将下载完整安装包）";
-            RadioFull.IsChecked = true;
-        }
+        // 播放弹入动画
+        Loaded += (_, _) => PlayEnterAnimation();
     }
 
-    private async void OnUpdateClick(object sender, RoutedEventArgs e)
+    private void PlayEnterAnimation()
     {
-        if (_isUpdating) return;
-        _isUpdating = true;
+        var sb = new Storyboard();
 
-        BtnUpdate.IsEnabled = false;
-        RadioIncremental.IsEnabled = false;
-        RadioFull.IsEnabled = false;
-
-        ProgressPanel.Visibility = Visibility.Visible;
-        ButtonPanel.HorizontalAlignment = HorizontalAlignment.Stretch;
-
-        try
+        var scaleX = new DoubleAnimation(0.9, 1, TimeSpan.FromMilliseconds(300))
         {
-            if (RadioIncremental.IsChecked == true && _result.Manifest != null)
-            {
-                await PerformIncrementalUpdate();
-            }
-            else
-            {
-                await PerformFullUpdate();
-            }
-        }
-        catch (Exception ex)
+            EasingFunction = new PowerEase { EasingMode = EasingMode.EaseOut, Power = 3 }
+        };
+        Storyboard.SetTarget(scaleX, this);
+        Storyboard.SetTargetProperty(scaleX,
+            new PropertyPath("(UIElement.RenderTransform).(ScaleTransform.ScaleX)"));
+
+        var scaleY = new DoubleAnimation(0.9, 1, TimeSpan.FromMilliseconds(300))
         {
-            MessageBox.Show($"更新失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-            ResetUI();
-        }
+            EasingFunction = new PowerEase { EasingMode = EasingMode.EaseOut, Power = 3 }
+        };
+        Storyboard.SetTarget(scaleY, this);
+        Storyboard.SetTargetProperty(scaleY,
+            new PropertyPath("(UIElement.RenderTransform).(ScaleTransform.ScaleY)"));
+
+        var fade = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(250))
+        {
+            EasingFunction = new PowerEase { EasingMode = EasingMode.EaseOut, Power = 2 }
+        };
+        Storyboard.SetTarget(fade, this);
+        Storyboard.SetTargetProperty(fade, new PropertyPath(UIElement.OpacityProperty));
+
+        sb.Children.Add(scaleX);
+        sb.Children.Add(scaleY);
+        sb.Children.Add(fade);
+
+        // 设置初始状态
+        var transform = new ScaleTransform(0.9, 0.9);
+        RenderTransform = transform;
+        RenderTransformOrigin = new Point(0.5, 0.5);
+        Opacity = 0;
+
+        sb.Begin();
     }
 
-    private async Task PerformIncrementalUpdate()
+    private void OnUpdateClick(object sender, RoutedEventArgs e)
     {
-        var baseDir = AppDomain.CurrentDomain.BaseDirectory;
-        var totalFiles = _result.ChangedFiles.Count;
-        var completedFiles = 0;
-
-        foreach (var file in _result.ChangedFiles)
+        // 打开 GitHub Release 页面
+        if (!string.IsNullOrEmpty(_result.ReleaseUrl))
         {
-            var destPath = Path.Combine(baseDir, file.RelativePath);
-            var downloadUrl = file.DownloadUrl;
-
-            // 如果是相对路径，构造完整的 GitHub URL
-            if (!downloadUrl.StartsWith("http"))
-            {
-                // TODO: 替换为实际的 GitHub 仓库地址
-                downloadUrl = $"https://github.com/Foxelf-Studio/AngkleChen-ToolBox/releases/download/v{_result.LatestVersion}/{downloadUrl}";
-            }
-
-            TxtProgress.Text = $"正在更新 ({completedFiles + 1}/{totalFiles}): {file.RelativePath}";
-            UpdateProgress(completedFiles, totalFiles);
-
-            var progress = new Progress<double>(p =>
-            {
-                // 单文件进度（可选显示）
-            });
-
-            var success = await _checker.DownloadFileAsync(downloadUrl, destPath, progress);
-            if (!success)
-            {
-                throw new Exception($"下载文件失败: {file.RelativePath}");
-            }
-
-            completedFiles++;
-        }
-
-        UpdateProgress(totalFiles, totalFiles);
-        TxtProgress.Text = "更新完成！";
-
-        MessageBox.Show("更新完成！程序将重新启动。", "更新成功", MessageBoxButton.OK, MessageBoxImage.Information);
-
-        // 重启程序
-        RestartApplication();
-    }
-
-    private async Task PerformFullUpdate()
-    {
-        // 下载完整安装包
-        var releaseUrl = _result.ReleaseUrl;
-        if (!string.IsNullOrEmpty(releaseUrl))
-        {
-            TxtProgress.Text = "正在打开下载页面...";
-
-            // 打开 GitHub Release 页面下载完整安装包
-            Process.Start(new ProcessStartInfo(releaseUrl)
+            Process.Start(new ProcessStartInfo(_result.ReleaseUrl)
             {
                 UseShellExecute = true
             });
-
-            TxtProgress.Text = "请在浏览器中下载完整安装包";
-            MessageBox.Show("已在浏览器中打开下载页面，请下载完整安装包后手动安装。", "提示",
-                MessageBoxButton.OK, MessageBoxImage.Information);
         }
-    }
-
-    private void UpdateProgress(int current, int total)
-    {
-        if (total > 0)
-        {
-            var percentage = (double)current / total;
-            ProgressBar.Width = ProgressPanel.ActualWidth * percentage;
-        }
-    }
-
-    private void RestartApplication()
-    {
-        // 单文件应用使用 BaseDirectory
-        var baseDir = AppDomain.CurrentDomain.BaseDirectory;
-        var exePath = Path.Combine(baseDir, "陈叔叔工具箱.exe");
-
-        if (!File.Exists(exePath))
-        {
-            // 尝试查找当前目录下的 exe 文件
-            var files = Directory.GetFiles(baseDir, "*.exe");
-            exePath = files.FirstOrDefault() ?? exePath;
-        }
-
-        Process.Start(new ProcessStartInfo
-        {
-            FileName = exePath,
-            UseShellExecute = true
-        });
-
-        Application.Current.Shutdown();
-    }
-
-    private void ResetUI()
-    {
-        _isUpdating = false;
-        BtnUpdate.IsEnabled = true;
-        RadioIncremental.IsEnabled = _result.Manifest != null && _result.ChangedFiles.Count > 0;
-        RadioFull.IsEnabled = true;
-        ProgressPanel.Visibility = Visibility.Collapsed;
+        DialogResult = true;
+        Close();
     }
 
     private void OnRemindLaterClick(object sender, RoutedEventArgs e)
@@ -183,7 +94,7 @@ public partial class UpdateDialog : Window
     protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
     {
         base.OnMouseLeftButtonDown(e);
-        if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+        if (e.LeftButton == MouseButtonState.Pressed)
             DragMove();
     }
 }
