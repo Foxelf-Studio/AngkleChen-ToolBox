@@ -6,7 +6,7 @@
 #define MyAppVersion "1.1.0"
 #define MyAppPublisher "陈叔叔"
 #define MyAppExeName "陈叔叔工具箱.exe"
-#define MyOutputName "陈叔叔工具箱-安装版-Lite"
+#define MyOutputName "AngkleChenToolBox-1.1.0-Lite-Win-x86_64-Setup"
 
 [Setup]
 AppId={{A1B2C3D4-5678-9ABC-DEF0-1234567890AB}
