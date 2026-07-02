@@ -116,9 +116,16 @@ public class UpdateChecker
         var changedFiles = new List<ChangedFile>();
         var baseDir = AppDomain.CurrentDomain.BaseDirectory;
 
+        // Lite 版用户没有扩展工具目录，跳过扩展工具文件
+        var hasExtDir = Directory.Exists(Path.Combine(baseDir, "扩展工具"));
+
         foreach (var (relativePath, entry) in manifest.Files)
         {
             var localPath = Path.Combine(baseDir, relativePath);
+
+            // Lite 版跳过扩展工具文件
+            if (!hasExtDir && relativePath.StartsWith("扩展工具", StringComparison.OrdinalIgnoreCase))
+                continue;
 
             // 文件不存在或 SHA256 不匹配
             if (!File.Exists(localPath) || CalculateFileSha256(localPath) != entry.Sha256)
