@@ -57,8 +57,9 @@ public class UpdateChecker
 
             result.HasUpdate = true;
 
-            // 不下载 manifest，只标记有更新即可（避免卡顿）
+            // 不下载 manifest，只标记有更新即可
             // manifest 会在用户点击"立即更新"时再下载
+            result.Manifest = null; // 保持为空，避免卡顿
         }
         catch (Exception ex)
         {

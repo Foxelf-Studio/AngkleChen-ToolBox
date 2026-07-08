@@ -71,6 +71,9 @@ public partial class SettingsPanel : UserControl
         {
             var result = await _checker.CheckForUpdatesAsync();
 
+            // 调试信息
+            Debug.WriteLine($"检查更新结果: HasUpdate={result.HasUpdate}, Current={result.CurrentVersion}, Latest={result.LatestVersion}");
+
             if (result.HasUpdate)
             {
                 TxtUpdateStatus.Text = $"发现新版本 v{result.LatestVersion}";
@@ -84,13 +87,14 @@ public partial class SettingsPanel : UserControl
             }
             else
             {
-                TxtUpdateStatus.Text = "当前已是最新版本";
+                TxtUpdateStatus.Text = $"当前已是最新版本 (v{result.CurrentVersion})";
                 TxtUpdateStatus.Foreground = new System.Windows.Media.SolidColorBrush(
                     System.Windows.Media.Color.FromRgb(170, 170, 170)); // #aaaaaa
             }
         }
         catch (Exception ex)
         {
+            Debug.WriteLine($"检查更新异常: {ex}");
             TxtUpdateStatus.Text = $"检查失败: {ex.Message}";
             TxtUpdateStatus.Foreground = new System.Windows.Media.SolidColorBrush(
                 System.Windows.Media.Color.FromRgb(255, 100, 100));

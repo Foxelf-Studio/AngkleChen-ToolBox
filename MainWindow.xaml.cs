@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -373,6 +374,82 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         {
             WindowState = WindowState.Maximized;
             BtnMax.Content = "";
+        }
+    }
+
+    // ── 添加工具 ──────────────────────────────────
+    private void OnAddTool(object sender, RoutedEventArgs e)
+    {
+        // 获取已有分类列表
+        var existingCategories = Categories
+            .Where(c => c.Id != "all")
+            .Select(c => c.Name)
+            .ToArray();
+
+        var dialog = new AddToolDialog(ToolboxRoot, existingCategories)
+        {
+            Owner = this
+        };
+
+        if (dialog.ShowDialog() == true)
+        {
+            try
+            {
+                var targetDir = Path.Combine(ToolboxRoot, "工具", dialog.CategoryName!);
+
+                // 创建分类目录（如果不存在）
+                if (!Directory.Exists(targetDir))
+                    Directory.CreateDirectory(targetDir);
+
+                var sourcePath = dialog.SourcePath!;
+                var isFolder = Directory.Exists(sourcePath);
+
+                string destPath;
+                if (isFolder)
+                {
+                    // 复制整个文件夹
+                    var folderName = Path.GetFileName(sourcePath);
+                    destPath = Path.Combine(targetDir, folderName);
+                    CopyDirectory(sourcePath, destPath);
+                }
+                else
+                {
+                    // 复制单个文件
+                    var fileName = Path.GetFileName(sourcePath);
+                    destPath = Path.Combine(targetDir, fileName);
+                    File.Copy(sourcePath, destPath, true);
+                }
+
+                // 刷新工具列表
+                ApplyFilter();
+                StatusTip = $"已添加工具: {dialog.ToolName}";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"添加工具失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 递归复制目录
+    /// </summary>
+    private static void CopyDirectory(string sourceDir, string destDir)
+    {
+        Directory.CreateDirectory(destDir);
+
+        foreach (var file in Directory.GetFiles(sourceDir))
+        {
+            var fileName = Path.GetFileName(file);
+            var destFile = Path.Combine(destDir, fileName);
+            File.Copy(file, destFile, true);
+        }
+
+        foreach (var dir in Directory.GetDirectories(sourceDir))
+        {
+            var dirName = Path.GetFileName(dir);
+            var destSubDir = Path.Combine(destDir, dirName);
+            CopyDirectory(dir, destSubDir);
         }
     }
 
