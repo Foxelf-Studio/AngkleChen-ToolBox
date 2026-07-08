@@ -57,16 +57,8 @@ public class UpdateChecker
 
             result.HasUpdate = true;
 
-            // 尝试获取 manifest.json（用于增量更新）
-            var manifestAsset = release.Assets.FirstOrDefault(a => a.Name == "manifest.json");
-            if (manifestAsset != null)
-            {
-                result.Manifest = await GetManifestAsync(manifestAsset.BrowserDownloadUrl);
-                if (result.Manifest != null)
-                {
-                    result.ChangedFiles = GetChangedFiles(result.Manifest);
-                }
-            }
+            // 不下载 manifest，只标记有更新即可（避免卡顿）
+            // manifest 会在用户点击"立即更新"时再下载
         }
         catch (Exception ex)
         {

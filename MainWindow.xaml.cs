@@ -264,10 +264,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             {
                 Interval = TimeSpan.FromSeconds(2)
             };
-            timer.Tick += async (s, e) =>
+            timer.Tick += (s, e) =>
             {
                 timer.Stop();
-                await CheckForUpdatesOnStartup();
+                CheckForUpdatesOnStartup();
             };
             timer.Start();
         };
@@ -619,7 +619,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     }
 
     // ── 启动时检查更新 ────────────────────────────
-    private async Task CheckForUpdatesOnStartup()
+    private void CheckForUpdatesOnStartup()
     {
         try
         {
@@ -636,21 +636,28 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             }
 
             var checker = new UpdateChecker("Foxelf-Studio", "AngkleChen-ToolBox");
-            var result = await Task.Run(() => checker.CheckForUpdatesAsync());
-
-            if (result.HasUpdate)
+            // 完全异步：在后台线程执行网络请求，完成后回到 UI 线程显示对话框
+            checker.CheckForUpdatesAsync().ContinueWith(task =>
             {
-                // 确保 UI 线程显示对话框
-                await Dispatcher.InvokeAsync(() =>
+                if (task.IsFaulted || task.IsCanceled) return;
+                var result = task.Result;
+                if (!result.HasUpdate) return;
+
+                // 回到 UI 线程显示对话框
+                Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    var dialog = new UpdateDialog(result) { Owner = this };
-                    dialog.ShowDialog();
-                });
-            }
+                    try
+                    {
+                        var dialog = new UpdateDialog(result) { Owner = this };
+                        dialog.ShowDialog();
+                    }
+                    catch { }
+                }));
+            }, TaskScheduler.Default);
         }
         catch
         {
-            // 静默失败，不影响启动
+            // 静默失败
         }
     }
 
