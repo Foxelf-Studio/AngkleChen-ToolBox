@@ -6,156 +6,112 @@
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
         Background="#2d2d2d"
-        WindowStyle="None"
-        AllowsTransparency="True"
+        WindowStyle="SingleBorderWindow"
         ShowInTaskbar="False">
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="-1"
-                      CornerRadius="8"
-                      ResizeBorderThickness="0"
-                      UseAeroCaptionButtons="False"
-                      CaptionHeight="0" />
+                      CornerRadius="0"
+                      CaptionHeight="32"
+                      UseAeroCaptionButtons="True" />
     </WindowChrome.WindowChrome>
 
-    <Border Background="#2d2d2d"
-            CornerRadius="8"
-            BorderBrush="#33ffffff"
-            BorderThickness="1">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="42" />
-                <RowDefinition Height="1" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+    <Grid Margin="0,32,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-            <!-- 自定义标题栏 -->
-            <Border Grid.Row="0" Background="#181818"
-                    CornerRadius="8,8,0,0"
-                    MouseLeftButtonDown="OnTitleBarMouseDown">
-                <Grid>
-                    <StackPanel Orientation="Horizontal"
-                                VerticalAlignment="Center"
-                                Margin="14,0,0,0">
-                        <TextBlock Text="&#xE895;"
-                                   FontFamily="Segoe MDL2 Assets"
-                                   FontSize="14"
-                                   Foreground="#60cdff"
-                                   VerticalAlignment="Center" />
-                        <TextBlock Text="发现新版本"
-                                   FontFamily="Microsoft YaHei"
-                                   FontSize="12"
-                                   Foreground="#cccccc"
-                                   VerticalAlignment="Center"
-                                   Margin="8,0,0,0" />
-                    </StackPanel>
-                    <Button Content="&#xE8BB;"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Top"
-                            FontFamily="Segoe MDL2 Assets"
-                            FontSize="10" Foreground="#cccccc"
-                            Width="46" Height="32"
-                            Click="OnCloseClick"
-                            Style="{StaticResource CaptionClose}" />
-                </Grid>
-            </Border>
-
-            <!-- 分隔线 -->
-            <Border Grid.Row="1" Height="1" Background="#1effffff" />
-
-            <!-- 内容区域 -->
-            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto"
-                          Margin="16">
-                <StackPanel>
-                    <!-- 版本对比 -->
-                    <Border Background="#252525" CornerRadius="8"
-                            BorderBrush="#1effffff" BorderThickness="1"
-                            Padding="16,14">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" HorizontalAlignment="Center">
-                                <TextBlock Text="当前版本"
-                                           FontFamily="Microsoft YaHei"
-                                           FontSize="11" Foreground="#777777"
-                                           HorizontalAlignment="Center" />
-                                <TextBlock x:Name="TxtCurrentVersion"
-                                           FontFamily="Microsoft YaHei"
-                                           FontSize="20" FontWeight="Bold"
-                                           Foreground="#aaaaaa"
-                                           HorizontalAlignment="Center"
-                                           Margin="0,4,0,0" />
-                            </StackPanel>
-                            <TextBlock Grid.Column="1" Text="→"
+        <!-- 内容区域 -->
+        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto"
+                      Margin="16,16,16,0">
+            <StackPanel>
+                <!-- 版本对比 -->
+                <Border Background="#252525" CornerRadius="8"
+                        BorderBrush="#1effffff" BorderThickness="1"
+                        Padding="16,14">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                            <TextBlock Text="当前版本"
                                        FontFamily="Microsoft YaHei"
-                                       FontSize="24" Foreground="#60cdff"
-                                       VerticalAlignment="Center"
-                                       Margin="24,0" />
-                            <StackPanel Grid.Column="2" HorizontalAlignment="Center">
-                                <TextBlock Text="最新版本"
-                                           FontFamily="Microsoft YaHei"
-                                           FontSize="11" Foreground="#777777"
-                                           HorizontalAlignment="Center" />
-                                <TextBlock x:Name="TxtLatestVersion"
-                                           FontFamily="Microsoft YaHei"
-                                           FontSize="20" FontWeight="Bold"
-                                           Foreground="#60cdff"
-                                           HorizontalAlignment="Center"
-                                           Margin="0,4,0,0" />
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-
-                    <!-- 更新内容 -->
-                    <Border Background="#252525" CornerRadius="8"
-                            BorderBrush="#1effffff" BorderThickness="1"
-                            Padding="12,10" Margin="0,10,0,0">
-                        <StackPanel>
-                            <TextBlock Text="更新内容"
+                                       FontSize="11" Foreground="#777777"
+                                       HorizontalAlignment="Center" />
+                            <TextBlock x:Name="TxtCurrentVersion"
                                        FontFamily="Microsoft YaHei"
-                                       FontWeight="SemiBold"
-                                       FontSize="12" Foreground="#ffffff"
-                                       Margin="0,0,0,6" />
-                            <TextBlock x:Name="TxtChangelog"
-                                       FontFamily="Microsoft YaHei"
-                                       FontSize="12" Foreground="#cccccc"
-                                       TextWrapping="Wrap"
-                                       MaxHeight="100" />
+                                       FontSize="20" FontWeight="Bold"
+                                       Foreground="#aaaaaa"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,4,0,0" />
                         </StackPanel>
-                    </Border>
-                </StackPanel>
-            </ScrollViewer>
+                        <TextBlock Grid.Column="1" Text="→"
+                                   FontFamily="Microsoft YaHei"
+                                   FontSize="24" Foreground="#60cdff"
+                                   VerticalAlignment="Center"
+                                   Margin="24,0" />
+                        <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+                            <TextBlock Text="最新版本"
+                                       FontFamily="Microsoft YaHei"
+                                       FontSize="11" Foreground="#777777"
+                                       HorizontalAlignment="Center" />
+                            <TextBlock x:Name="TxtLatestVersion"
+                                       FontFamily="Microsoft YaHei"
+                                       FontSize="20" FontWeight="Bold"
+                                       Foreground="#60cdff"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,4,0,0" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
 
-            <!-- 底部按钮 -->
-            <Border Grid.Row="3" Background="#252525"
-                    CornerRadius="0,0,8,8"
-                    Padding="16,12">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="稍后提醒"
-                            FontFamily="Microsoft YaHei"
-                            FontSize="13" Foreground="#cccccc"
-                            Background="#333333"
-                            BorderBrush="#44ffffff" BorderThickness="1"
-                            Padding="20,8"
-                            Cursor="Hand"
-                            Click="OnRemindLaterClick"
-                            Margin="0,0,10,0" />
-                    <Button x:Name="BtnUpdate"
-                            Content="立即更新"
-                            FontFamily="Microsoft YaHei"
-                            FontSize="13" FontWeight="SemiBold"
-                            Foreground="#ffffff"
-                            Background="#4aa8d8"
-                            BorderBrush="#5cb8e8" BorderThickness="1"
-                            Padding="20,8"
-                            Cursor="Hand"
-                            Click="OnUpdateClick"
-                            Style="{StaticResource AccentButton}" />
-                </StackPanel>
-            </Border>
-        </Grid>
-    </Border>
+                <!-- 更新内容 -->
+                <Border Background="#252525" CornerRadius="8"
+                        BorderBrush="#1effffff" BorderThickness="1"
+                        Padding="12,10" Margin="0,10,0,0">
+                    <StackPanel>
+                        <TextBlock Text="更新内容"
+                                   FontFamily="Microsoft YaHei"
+                                   FontWeight="SemiBold"
+                                   FontSize="12" Foreground="#ffffff"
+                                   Margin="0,0,0,6" />
+                        <TextBlock x:Name="TxtChangelog"
+                                   FontFamily="Microsoft YaHei"
+                                   FontSize="12" Foreground="#cccccc"
+                                   TextWrapping="Wrap"
+                                   MaxHeight="100" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- 底部按钮 -->
+        <Border Grid.Row="1" Background="#252525"
+                CornerRadius="0" Padding="16,12">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="稍后提醒"
+                        FontFamily="Microsoft YaHei"
+                        FontSize="13" Foreground="#cccccc"
+                        Background="#333333"
+                        BorderBrush="#44ffffff" BorderThickness="1"
+                        Padding="20,8"
+                        Cursor="Hand"
+                        Click="OnRemindLaterClick"
+                        Margin="0,0,10,0" />
+                <Button x:Name="BtnUpdate"
+                        Content="立即更新"
+                        FontFamily="Microsoft YaHei"
+                        FontSize="13" FontWeight="SemiBold"
+                        Foreground="#ffffff"
+                        Background="#4aa8d8"
+                        BorderBrush="#5cb8e8" BorderThickness="1"
+                        Padding="20,8"
+                        Cursor="Hand"
+                        Click="OnUpdateClick"
+                        Style="{StaticResource AccentButton}" />
+            </StackPanel>
+        </Border>
+    </Grid>
 </Window>

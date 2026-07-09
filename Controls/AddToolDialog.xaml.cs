@@ -44,12 +44,6 @@ public partial class AddToolDialog : Window
         };
     }
 
-    private void OnTitleBarMouseDown(object sender, MouseButtonEventArgs e)
-    {
-        if (e.LeftButton == MouseButtonState.Pressed)
-            DragMove();
-    }
-
     private void OnComboClick(object sender, MouseButtonEventArgs e)
     {
         _isDropDownOpen = !_isDropDownOpen;
