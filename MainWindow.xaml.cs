@@ -28,7 +28,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private record CatInfo(string Id, string Name, string IconGlyph, string Subtitle);
 
     // Segoe MDL2 Assets — Windows 内置官方图标字体
-    private static readonly CatInfo[] Categories =
+    private CatInfo[] Categories =
     [
         new("all",   "全部工具",   "", "浏览所有便携工具"),
         new("娱乐工具",   "娱乐工具",   "", "音乐与视频播放"),
@@ -295,6 +295,61 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 var target = item.IsSelected ? "#18ffffff" : "Transparent";
                 AnimateBg(bd, target, 0.12);
             }
+        }
+    }
+
+    // ── 右键菜单：删除分类 ──────────────────────────
+    private void NavItem_RightClick(object sender, MouseButtonEventArgs e)
+    {
+        if (sender is not ListBoxItem item) return;
+        if (item.DataContext is not CatInfo cat) return;
+        if (cat.Id == "all") return; // 不允许删除"全部工具"
+
+        e.Handled = true;
+
+        var categoryDir = Path.Combine(ToolboxRoot, "工具", cat.Name);
+        bool hasTools = Directory.Exists(categoryDir) && Directory.GetFiles(categoryDir, "*", SearchOption.AllDirectories).Length > 0;
+
+        string message;
+        if (hasTools)
+        {
+            message = $"分类 \"{cat.Name}\" 包含工具文件。\n\n删除此分类将永久删除该分类下的所有工具文件，且无法撤销。\n\n确定要继续吗？";
+        }
+        else
+        {
+            message = $"确定要删除空分类 \"{cat.Name}\" 吗？";
+        }
+
+        var result = MessageBox.Show(message, "确认删除", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+        if (result != MessageBoxResult.Yes) return;
+
+        try
+        {
+            // 删除目录（如果存在）
+            if (Directory.Exists(categoryDir))
+            {
+                Directory.Delete(categoryDir, true);
+            }
+
+            // 从分类列表中移除
+            var list = Categories.ToList();
+            list.Remove(cat);
+            Categories = list.ToArray();
+            CategoryList.ItemsSource = Categories;
+
+            // 如果删除的是当前选中的分类，切换到"全部工具"
+            if (_activeCategory == cat.Id)
+            {
+                CategoryList.SelectedIndex = 0;
+            }
+
+            ApplyFilter();
+            Logger.Log($"删除分类: {cat.Name}");
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"删除失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            Logger.Log($"删除分类失败: {ex.Message}");
         }
     }
 
