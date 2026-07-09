@@ -696,46 +696,56 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     }
 
     // ── 启动时检查更新 ────────────────────────────
-    private void CheckForUpdatesOnStartup()
+    private async void CheckForUpdatesOnStartup()
     {
+        Logger.Log(">>> 启动时检查更新开始");
+
         try
         {
             // 检查是否启用自动更新
-            var configPath = System.IO.Path.Combine(ToolboxRoot, "settings.json");
-            if (System.IO.File.Exists(configPath))
+            var configPath = Path.Combine(ToolboxRoot, "settings.json");
+            Logger.Log($"配置文件路径: {configPath}");
+
+            if (File.Exists(configPath))
             {
-                var json = System.IO.File.ReadAllText(configPath);
+                var json = File.ReadAllText(configPath);
+                Logger.Log($"读取配置: {json}");
                 var settings = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, bool>>(json);
                 if (settings != null && settings.TryGetValue("autoCheckUpdate", out var autoCheck) && !autoCheck)
                 {
+                    Logger.Log("用户禁用了自动更新");
                     return;
                 }
             }
 
+            Logger.Log("创建 UpdateChecker...");
             var checker = new UpdateChecker("Foxelf-Studio", "AngkleChen-ToolBox");
-            // 完全异步：在后台线程执行网络请求，完成后回到 UI 线程显示对话框
-            checker.CheckForUpdatesAsync().ContinueWith(task =>
-            {
-                if (task.IsFaulted || task.IsCanceled) return;
-                var result = task.Result;
-                if (!result.HasUpdate) return;
 
-                // 回到 UI 线程显示对话框
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    try
-                    {
-                        var dialog = new UpdateDialog(result) { Owner = this };
-                        dialog.ShowDialog();
-                    }
-                    catch { }
-                }));
-            }, TaskScheduler.Default);
+            Logger.Log("调用 CheckForUpdatesAsync...");
+            var result = await checker.CheckForUpdatesAsync();
+
+            Logger.Log($"检查结果: HasUpdate={result.HasUpdate}, LatestVersion={result.LatestVersion}");
+
+            if (result.HasUpdate)
+            {
+                Logger.Log("显示更新对话框...");
+                var dialog = new UpdateDialog(result) { Owner = this };
+                Logger.Log("调用 ShowDialog...");
+                dialog.ShowDialog();
+                Logger.Log("对话框已关闭");
+            }
+            else
+            {
+                Logger.Log("无更新");
+            }
         }
-        catch
+        catch (Exception ex)
         {
-            // 静默失败
+            Logger.Log($"检查更新异常: {ex.Message}");
+            Logger.Log($"异常堆栈: {ex.StackTrace}");
         }
+
+        Logger.Log(">>> 启动时检查更新结束");
     }
 
     // ── 搜索 ──────────────────────────────────────
@@ -838,6 +848,45 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 MessageBox.Show($"启动失败:\n{ex.Message}", "提示",
                                 MessageBoxButton.OK, MessageBoxImage.Warning);
             }
+        }
+    });
+
+    // ── 删除工具 ──────────────────────────────────
+    public ICommand DeleteCommand => new RelayCommand(tool =>
+    {
+        if (tool is not ToolInfo t) return;
+
+        var path = Path.Combine(ToolboxRoot, t.RelativePath);
+
+        try
+        {
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+            else if (Directory.Exists(path))
+            {
+                Directory.Delete(path, true);
+            }
+            else
+            {
+                MessageBox.Show("文件不存在，可能已被删除。", "提示",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+
+            // 从工具列表中移除
+            var list = (CardItems.ItemsSource as List<ToolInfo>)?.ToList() ?? new List<ToolInfo>();
+            list.Remove(t);
+            CardItems.ItemsSource = list;
+
+            StatusTip = $"已删除 {t.Name}";
+            Logger.Log($"删除工具: {t.Name}, 路径: {path}");
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"删除失败: {ex.Message}", "错误",
+                MessageBoxButton.OK, MessageBoxImage.Error);
+            Logger.Log($"删除工具失败: {ex.Message}");
         }
     });
 

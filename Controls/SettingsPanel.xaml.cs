@@ -71,9 +71,6 @@ public partial class SettingsPanel : UserControl
         {
             var result = await _checker.CheckForUpdatesAsync();
 
-            // 调试信息
-            Debug.WriteLine($"检查更新结果: HasUpdate={result.HasUpdate}, Current={result.CurrentVersion}, Latest={result.LatestVersion}");
-
             if (result.HasUpdate)
             {
                 TxtUpdateStatus.Text = $"发现新版本 v{result.LatestVersion}";
@@ -81,8 +78,7 @@ public partial class SettingsPanel : UserControl
                     System.Windows.Media.Color.FromRgb(96, 205, 255)); // #60cdff
 
                 // 显示更新确认对话框
-                var dialog = new UpdateDialog(result);
-                dialog.Owner = Window.GetWindow(this);
+                var dialog = new UpdateDialog(result) { Owner = Window.GetWindow(this) };
                 dialog.ShowDialog();
             }
             else
@@ -94,8 +90,8 @@ public partial class SettingsPanel : UserControl
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"检查更新异常: {ex}");
-            TxtUpdateStatus.Text = $"检查失败: {ex.Message}";
+            Logger.Log($"检查更新异常: {ex.Message}");
+            TxtUpdateStatus.Text = "检查失败，请检查网络连接";
             TxtUpdateStatus.Foreground = new System.Windows.Media.SolidColorBrush(
                 System.Windows.Media.Color.FromRgb(255, 100, 100));
         }

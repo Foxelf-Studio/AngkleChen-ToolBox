@@ -379,6 +379,7 @@
                                                    DataContext="{Binding}"
                                                    ClickCommand="{Binding DataContext.LaunchCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                    SelectCommand="{Binding DataContext.SelectCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                   DeleteCommand="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                    Margin="5" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

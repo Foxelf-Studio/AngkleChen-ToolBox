@@ -15,6 +15,9 @@ public partial class ToolCard : UserControl
     public static readonly DependencyProperty SelectCommandProperty =
         DependencyProperty.Register(nameof(SelectCommand), typeof(ICommand), typeof(ToolCard));
 
+    public static readonly DependencyProperty DeleteCommandProperty =
+        DependencyProperty.Register(nameof(DeleteCommand), typeof(ICommand), typeof(ToolCard));
+
     public static readonly DependencyProperty IsCardSelectedProperty =
         DependencyProperty.Register(nameof(IsCardSelected), typeof(bool), typeof(ToolCard),
             new PropertyMetadata(false, OnIsCardSelectedChanged));
@@ -29,6 +32,12 @@ public partial class ToolCard : UserControl
     {
         get => (ICommand?)GetValue(SelectCommandProperty);
         set => SetValue(SelectCommandProperty, value);
+    }
+
+    public ICommand? DeleteCommand
+    {
+        get => (ICommand?)GetValue(DeleteCommandProperty);
+        set => SetValue(DeleteCommandProperty, value);
     }
 
     public bool IsCardSelected
@@ -185,6 +194,29 @@ public partial class ToolCard : UserControl
             CloseMenuWithAnimation(() => Clipboard.SetText(fullPath));
         }));
 
+        stack.Children.Add(CreateMenuSeparator());
+
+        // 删除图标（垃圾桶）
+        stack.Children.Add(CreateMenuItem(
+            "M 3 3 L 5 3 L 5 1 L 11 1 L 11 3 L 13 3 L 13 5 L 3 5 Z M 4 5 L 12 5 L 11 15 L 5 15 Z",
+            "删除工具", () =>
+        {
+            CloseMenuWithAnimation(() =>
+            {
+                var result = MessageBox.Show(
+                    $"确定要删除工具 \"{tool.Name}\" 吗？\n\n此操作将删除文件，且无法撤销。",
+                    "确认删除",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    // 触发删除命令
+                    DeleteCommand?.Execute(tool);
+                }
+            });
+        }, isDestructive: true));
+
         border.Child = stack;
         menu.Content = border;
         menu.Opacity = 0; // 初始透明
@@ -218,7 +250,7 @@ public partial class ToolCard : UserControl
         menu.BeginAnimation(Window.OpacityProperty, fadeIn);
     }
 
-    private static Border CreateMenuItem(string pathData, string text, Action onClick)
+    private static Border CreateMenuItem(string pathData, string text, Action onClick, bool isDestructive = false)
     {
         // 初始背景色 = 卡片色 #2d2d2d
         var bgBrush = new SolidColorBrush(Color.FromRgb(0x2d, 0x2d, 0x2d));
@@ -238,7 +270,7 @@ public partial class ToolCard : UserControl
         var iconPath = new System.Windows.Shapes.Path
         {
             Data = Geometry.Parse(pathData),
-            Fill = new SolidColorBrush(Color.FromRgb(0xaa, 0xaa, 0xaa)),
+            Fill = new SolidColorBrush(isDestructive ? Color.FromRgb(0xff, 0x6b, 0x6b) : Color.FromRgb(0xaa, 0xaa, 0xaa)),
             Width = 14,
             Height = 14,
             Stretch = Stretch.Uniform,
@@ -252,7 +284,7 @@ public partial class ToolCard : UserControl
             Text = text,
             FontFamily = new FontFamily("Microsoft YaHei"),
             FontSize = 12,
-            Foreground = Brushes.White,
+            Foreground = isDestructive ? new SolidColorBrush(Color.FromRgb(0xff, 0x6b, 0x6b)) : Brushes.White,
             VerticalAlignment = VerticalAlignment.Center,
             Margin = new Thickness(8, 0, 0, 0),
         };

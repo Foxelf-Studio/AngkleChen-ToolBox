@@ -35,38 +35,55 @@ public class UpdateChecker
     /// </summary>
     public async Task<UpdateCheckResult> CheckForUpdatesAsync()
     {
+        Logger.Log("=== 开始检查更新 ===");
+
         var result = new UpdateCheckResult
         {
             CurrentVersion = GetCurrentVersion()
         };
+        Logger.Log($"当前版本: {result.CurrentVersion}");
 
         try
         {
             // 获取最新 Release
+            Logger.Log("正在获取最新 Release...");
             var release = await GetLatestReleaseAsync();
+
             if (release == null)
+            {
+                Logger.Log("获取 Release 失败，返回 null");
                 return result;
+            }
+
+            Logger.Log($"获取到 Release: tag={release.TagName}, name={release.Name}");
 
             result.LatestVersion = NormalizeVersion(release.TagName);
             result.Changelog = release.Body;
             result.ReleaseUrl = release.HtmlUrl;
 
+            Logger.Log($"最新版本: {result.LatestVersion}");
+
             // 比较版本
-            if (CompareVersions(result.CurrentVersion, result.LatestVersion) >= 0)
+            var compareResult = CompareVersions(result.CurrentVersion, result.LatestVersion);
+            Logger.Log($"版本比较结果: {compareResult} (当前={result.CurrentVersion}, 最新={result.LatestVersion})");
+
+            if (compareResult >= 0)
+            {
+                Logger.Log("当前已是最新版本");
                 return result;
+            }
 
             result.HasUpdate = true;
-
-            // 不下载 manifest，只标记有更新即可
-            // manifest 会在用户点击"立即更新"时再下载
-            result.Manifest = null; // 保持为空，避免卡顿
+            Logger.Log("发现新版本！");
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"检查更新失败: {ex.Message}");
+            Logger.Log($"检查更新异常: {ex.Message}");
+            Logger.Log($"异常堆栈: {ex.StackTrace}");
             result.HasUpdate = false;
         }
 
+        Logger.Log($"=== 检查更新完成: HasUpdate={result.HasUpdate} ===");
         return result;
     }
 
@@ -77,14 +94,51 @@ public class UpdateChecker
     {
         // 使用 /releases 而不是 /releases/latest，因为后者不返回 pre-release
         var url = $"https://api.github.com/repos/{_owner}/{_repo}/releases?per_page=1";
-        var response = await _httpClient.GetAsync(url);
+        Logger.Log($"请求 URL: {url}");
 
-        if (!response.IsSuccessStatusCode)
+        try
+        {
+            Logger.Log("发送 HTTP 请求...");
+            var response = await _httpClient.GetAsync(url);
+            Logger.Log($"HTTP 响应状态: {response.StatusCode}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Logger.Log($"请求失败: {response.StatusCode}");
+                return null;
+            }
+
+            Logger.Log("读取响应内容...");
+            var json = await response.Content.ReadAsStringAsync();
+            Logger.Log($"响应内容长度: {json.Length} 字节");
+
+            Logger.Log("解析 JSON...");
+            var releases = JsonSerializer.Deserialize<List<ReleaseInfo>>(json, JsonOptions);
+
+            if (releases == null || releases.Count == 0)
+            {
+                Logger.Log("解析结果为空");
+                return null;
+            }
+
+            Logger.Log($"解析成功，共 {releases.Count} 个 Release");
+            return releases.FirstOrDefault();
+        }
+        catch (TaskCanceledException)
+        {
+            Logger.Log("请求超时");
             return null;
-
-        var json = await response.Content.ReadAsStringAsync();
-        var releases = JsonSerializer.Deserialize<List<ReleaseInfo>>(json, JsonOptions);
-        return releases?.FirstOrDefault();
+        }
+        catch (HttpRequestException ex)
+        {
+            Logger.Log($"网络请求异常: {ex.Message}");
+            return null;
+        }
+        catch (Exception ex)
+        {
+            Logger.Log($"未知异常: {ex.Message}");
+            return null;
+        }
     }
 
     /// <summary>
