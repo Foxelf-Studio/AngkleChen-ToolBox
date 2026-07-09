@@ -8,178 +8,298 @@
         Background="#2d2d2d"
         WindowStyle="SingleBorderWindow"
         ShowInTaskbar="False">
-    <Grid Margin="16">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="-1"
+                      CornerRadius="0"
+                      CaptionHeight="32"
+                      UseAeroCaptionButtons="False" />
+    </WindowChrome.WindowChrome>
 
-        <!-- 标题 -->
-        <TextBlock Grid.Row="0" Text="添加工具"
-                   FontFamily="Microsoft YaHei"
-                   FontWeight="Bold"
-                   FontSize="18"
-                   Foreground="#ffffff"
-                   Margin="0,0,0,16" />
+    <DockPanel LastChildFill="True" WindowChrome.IsHitTestVisibleInChrome="True">
+        <!-- 标题栏 -->
+        <Border DockPanel.Dock="Top" Background="#181818" Height="32">
+            <Grid>
+                <TextBlock Text="添加工具"
+                           FontFamily="Microsoft YaHei" FontSize="12"
+                           Foreground="#cccccc"
+                           VerticalAlignment="Center"
+                           Margin="12,0,0,0" />
+                <Button Content="&#xE8BB;"
+                        HorizontalAlignment="Right"
+                        FontFamily="Segoe MDL2 Assets" FontSize="10"
+                        Foreground="#cccccc"
+                        Width="46" Height="32"
+                        Click="OnCloseClick"
+                        Style="{StaticResource CaptionClose}" />
+            </Grid>
+        </Border>
 
         <!-- 内容 -->
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <StackPanel>
-                <!-- 步骤 1 -->
-                <TextBlock Text="步骤 1：选择添加方式"
-                           FontFamily="Microsoft YaHei"
-                           FontWeight="SemiBold"
-                           FontSize="13"
-                           Foreground="#777777"
-                           Margin="0,0,0,8" />
-                <Border Background="#252525" CornerRadius="8"
-                        BorderBrush="#1effffff" BorderThickness="1"
-                        Padding="12,10">
-                    <StackPanel>
-                        <RadioButton x:Name="RadioFolder"
-                                     Content="选择文件夹"
-                                     FontFamily="Microsoft YaHei"
-                                     FontSize="13"
-                                     Foreground="#cccccc"
-                                     IsChecked="True"
-                                     Margin="0,4" />
-                        <RadioButton x:Name="RadioFile"
-                                     Content="选择文件"
-                                     FontFamily="Microsoft YaHei"
-                                     FontSize="13"
-                                     Foreground="#cccccc"
-                                     Margin="0,4" />
-                        <Button x:Name="BtnBrowse"
-                                Content="浏览..."
-                                HorizontalAlignment="Left"
-                                FontFamily="Microsoft YaHei"
-                                FontSize="12"
-                                Foreground="#ffffff"
-                                Background="#60cdff"
-                                BorderThickness="0"
-                                Padding="16,6"
-                                Margin="0,8,0,0"
-                                Click="OnBrowseClick"
-                                Style="{StaticResource AccentButton}" />
-                        <TextBlock x:Name="TxtSelectedPath"
-                                   FontFamily="Microsoft YaHei"
-                                   FontSize="11"
-                                   Foreground="#777777"
-                                   TextWrapping="Wrap"
-                                   Margin="0,6,0,0" />
-                    </StackPanel>
-                </Border>
+        <Grid Margin="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-                <!-- 步骤 2 -->
-                <TextBlock Text="步骤 2：填写工具信息"
-                           FontFamily="Microsoft YaHei"
-                           FontWeight="SemiBold"
-                           FontSize="13"
-                           Foreground="#777777"
-                           Margin="0,16,0,8" />
-                <Border Background="#252525" CornerRadius="8"
-                        BorderBrush="#1effffff" BorderThickness="1"
-                        Padding="12,10">
-                    <StackPanel>
-                        <TextBlock Text="工具名称 *"
-                                   FontFamily="Microsoft YaHei"
-                                   FontSize="12"
-                                   Foreground="#aaaaaa"
-                                   Margin="0,0,0,4" />
-                        <TextBox x:Name="TxtToolName"
-                                 FontFamily="Microsoft YaHei"
-                                 FontSize="13"
-                                 Foreground="#ffffff"
-                                 Background="#1effffff"
-                                 BorderThickness="1"
-                                 Padding="8,6"
-                                 Margin="0,0,0,10" />
-                        <TextBlock Text="工具描述（选填）"
-                                   FontFamily="Microsoft YaHei"
-                                   FontSize="12"
-                                   Foreground="#aaaaaa"
-                                   Margin="0,0,0,4" />
-                        <TextBox x:Name="TxtToolDesc"
-                                 FontFamily="Microsoft YaHei"
-                                 FontSize="13"
-                                 Foreground="#ffffff"
-                                 Background="#1effffff"
-                                 BorderThickness="1"
-                                 Padding="8,6"
-                                 Height="60"
-                                 TextWrapping="Wrap"
-                                 AcceptsReturn="True" />
-                    </StackPanel>
-                </Border>
+            <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <!-- 步骤 1 -->
+                    <TextBlock Text="步骤 1：选择添加方式"
+                               FontFamily="Microsoft YaHei"
+                               FontWeight="SemiBold"
+                               FontSize="13"
+                               Foreground="#777777"
+                               Margin="0,0,0,8" />
+                    <Border Background="#252525" CornerRadius="8"
+                            BorderBrush="#1effffff" BorderThickness="1"
+                            Padding="12,10">
+                        <StackPanel>
+                            <RadioButton x:Name="RadioFolder"
+                                         Content="选择文件夹"
+                                         FontFamily="Microsoft YaHei"
+                                         FontSize="13"
+                                         Foreground="#cccccc"
+                                         IsChecked="True"
+                                         Margin="0,4" />
+                            <RadioButton x:Name="RadioFile"
+                                         Content="选择文件"
+                                         FontFamily="Microsoft YaHei"
+                                         FontSize="13"
+                                         Foreground="#cccccc"
+                                         Margin="0,4" />
+                            <Button x:Name="BtnBrowse"
+                                    Content="浏览..."
+                                    HorizontalAlignment="Left"
+                                    FontFamily="Microsoft YaHei"
+                                    FontSize="12"
+                                    Foreground="#ffffff"
+                                    Background="#4aa8d8"
+                                    BorderThickness="0"
+                                    Padding="16,6"
+                                    Margin="0,8,0,0"
+                                    Click="OnBrowseClick"
+                                    Style="{StaticResource AccentButton}" />
+                            <TextBlock x:Name="TxtSelectedPath"
+                                       FontFamily="Microsoft YaHei"
+                                       FontSize="11"
+                                       Foreground="#777777"
+                                       TextWrapping="Wrap"
+                                       Margin="0,6,0,0" />
+                        </StackPanel>
+                    </Border>
 
-                <!-- 步骤 3 -->
-                <TextBlock Text="步骤 3：选择分类"
-                           FontFamily="Microsoft YaHei"
-                           FontWeight="SemiBold"
-                           FontSize="13"
-                           Foreground="#777777"
-                           Margin="0,16,0,8" />
-                <Border Background="#252525" CornerRadius="8"
-                        BorderBrush="#1effffff" BorderThickness="1"
-                        Padding="12,10">
-                    <StackPanel>
-                        <RadioButton x:Name="RadioExistingCategory"
-                                     Content="选择已有分类"
+                    <!-- 步骤 2 -->
+                    <TextBlock Text="步骤 2：填写工具信息"
+                               FontFamily="Microsoft YaHei"
+                               FontWeight="SemiBold"
+                               FontSize="13"
+                               Foreground="#777777"
+                               Margin="0,16,0,8" />
+                    <Border Background="#252525" CornerRadius="8"
+                            BorderBrush="#1effffff" BorderThickness="1"
+                            Padding="12,10">
+                        <StackPanel>
+                            <TextBlock Text="工具名称 *"
+                                       FontFamily="Microsoft YaHei"
+                                       FontSize="12"
+                                       Foreground="#aaaaaa"
+                                       Margin="0,0,0,4" />
+                            <TextBox x:Name="TxtToolName"
                                      FontFamily="Microsoft YaHei"
                                      FontSize="13"
-                                     Foreground="#cccccc"
-                                     IsChecked="True"
-                                     Margin="0,4" />
-                        <ComboBox x:Name="ComboCategories"
-                                  FontFamily="Microsoft YaHei"
-                                  FontSize="13"
-                                  Foreground="#ffffff"
-                                  Background="#1effffff"
-                                  Padding="8,6"
-                                  Margin="0,6,0,10" />
-                        <RadioButton x:Name="RadioNewCategory"
-                                     Content="创建新分类"
+                                     Foreground="#ffffff"
+                                     Background="#1effffff"
+                                     BorderBrush="#3effffff"
+                                     BorderThickness="1"
+                                     Padding="8,6"
+                                     Margin="0,0,0,10">
+                                <TextBox.Template>
+                                    <ControlTemplate TargetType="TextBox">
+                                        <Border Background="#1effffff"
+                                                BorderBrush="#3effffff"
+                                                BorderThickness="1"
+                                                CornerRadius="4"
+                                                Padding="8,6">
+                                            <ScrollViewer x:Name="PART_ContentHost" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </TextBox.Template>
+                            </TextBox>
+                            <TextBlock Text="工具描述（选填）"
+                                       FontFamily="Microsoft YaHei"
+                                       FontSize="12"
+                                       Foreground="#aaaaaa"
+                                       Margin="0,0,0,4" />
+                            <TextBox x:Name="TxtToolDesc"
                                      FontFamily="Microsoft YaHei"
                                      FontSize="13"
-                                     Foreground="#cccccc"
-                                     Margin="0,4" />
-                        <TextBox x:Name="TxtNewCategory"
-                                 FontFamily="Microsoft YaHei"
-                                 FontSize="13"
-                                 Foreground="#ffffff"
-                                 Background="#1effffff"
-                                 BorderThickness="1"
-                                 Padding="8,6"
-                                 Margin="0,6,0,0"
-                                 IsEnabled="False" />
-                    </StackPanel>
-                </Border>
+                                     Foreground="#ffffff"
+                                     Background="#1effffff"
+                                     BorderBrush="#3effffff"
+                                     BorderThickness="1"
+                                     Height="60"
+                                     TextWrapping="Wrap"
+                                     AcceptsReturn="True">
+                                <TextBox.Template>
+                                    <ControlTemplate TargetType="TextBox">
+                                        <Border Background="#1effffff"
+                                                BorderBrush="#3effffff"
+                                                BorderThickness="1"
+                                                CornerRadius="4"
+                                                Padding="8,6">
+                                            <ScrollViewer x:Name="PART_ContentHost" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </TextBox.Template>
+                            </TextBox>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- 步骤 3 -->
+                    <TextBlock Text="步骤 3：选择分类"
+                               FontFamily="Microsoft YaHei"
+                               FontWeight="SemiBold"
+                               FontSize="13"
+                               Foreground="#777777"
+                               Margin="0,16,0,8" />
+                    <Border Background="#252525" CornerRadius="8"
+                            BorderBrush="#1effffff" BorderThickness="1"
+                            Padding="12,10">
+                        <StackPanel>
+                            <RadioButton x:Name="RadioExistingCategory"
+                                         Content="选择已有分类"
+                                         FontFamily="Microsoft YaHei"
+                                         FontSize="13"
+                                         Foreground="#cccccc"
+                                         IsChecked="True"
+                                         Margin="0,4" />
+                            <ComboBox x:Name="ComboCategories"
+                                      FontFamily="Microsoft YaHei"
+                                      FontSize="13"
+                                      Foreground="#ffffff"
+                                      Background="#2b2b2b"
+                                      BorderBrush="#3effffff"
+                                      Padding="8,6"
+                                      Margin="0,6,0,10">
+                                <ComboBox.Template>
+                                    <ControlTemplate TargetType="ComboBox">
+                                        <Grid>
+                                            <ToggleButton x:Name="ToggleButton"
+                                                          IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
+                                                          ClickMode="Press">
+                                                <ToggleButton.Template>
+                                                    <ControlTemplate TargetType="ToggleButton">
+                                                        <Border Background="#2b2b2b"
+                                                                BorderBrush="#3effffff"
+                                                                BorderThickness="1"
+                                                                CornerRadius="4">
+                                                            <Grid>
+                                                                <ContentPresenter x:Name="ContentSite"
+                                                                                  Content="{TemplateBinding Content}"
+                                                                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                                                  Margin="8,6,30,6"
+                                                                                  VerticalAlignment="Center" />
+                                                                <Path x:Name="Arrow"
+                                                                      Data="M 0 0 L 4 4 L 8 0 Z"
+                                                                      Fill="#ffffff"
+                                                                      Width="8" Height="4"
+                                                                      HorizontalAlignment="Right"
+                                                                      VerticalAlignment="Center"
+                                                                      Margin="0,0,10,0" />
+                                                            </Grid>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </ToggleButton.Template>
+                                            </ToggleButton>
+                                            <Popup x:Name="Popup"
+                                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                                   Placement="Bottom"
+                                                   AllowsTransparency="True"
+                                                   PopupAnimation="Slide">
+                                                <Border Background="#2b2b2b"
+                                                        BorderBrush="#3effffff"
+                                                        BorderThickness="1"
+                                                        CornerRadius="4">
+                                                    <ScrollViewer MaxHeight="200">
+                                                        <ItemsPresenter />
+                                                    </ScrollViewer>
+                                                </Border>
+                                            </Popup>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </ComboBox.Template>
+                                <ComboBox.ItemContainerStyle>
+                                    <Style TargetType="ComboBoxItem">
+                                        <Setter Property="Background" Value="#2b2b2b" />
+                                        <Setter Property="Foreground" Value="#ffffff" />
+                                        <Setter Property="Padding" Value="8,6" />
+                                        <Style.Triggers>
+                                            <Trigger Property="IsHighlighted" Value="True">
+                                                <Setter Property="Background" Value="#3a3a3a" />
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Background" Value="#4aa8d8" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ComboBox.ItemContainerStyle>
+                            </ComboBox>
+                            <RadioButton x:Name="RadioNewCategory"
+                                         Content="创建新分类"
+                                         FontFamily="Microsoft YaHei"
+                                         FontSize="13"
+                                         Foreground="#cccccc"
+                                         Margin="0,4" />
+                            <TextBox x:Name="TxtNewCategory"
+                                     FontFamily="Microsoft YaHei"
+                                     FontSize="13"
+                                     Foreground="#ffffff"
+                                     Background="#1effffff"
+                                     BorderBrush="#3effffff"
+                                     BorderThickness="1"
+                                     Padding="8,6"
+                                     Margin="0,6,0,0"
+                                     IsEnabled="False">
+                                <TextBox.Template>
+                                    <ControlTemplate TargetType="TextBox">
+                                        <Border Background="#1effffff"
+                                                BorderBrush="#3effffff"
+                                                BorderThickness="1"
+                                                CornerRadius="4"
+                                                Padding="8,6">
+                                            <ScrollViewer x:Name="PART_ContentHost" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </TextBox.Template>
+                            </TextBox>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- 底部按钮 -->
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+                <Button Content="取消"
+                        FontFamily="Microsoft YaHei"
+                        FontSize="13" Foreground="#cccccc"
+                        Background="#333333"
+                        BorderBrush="#44ffffff" BorderThickness="1"
+                        Padding="20,8"
+                        Cursor="Hand"
+                        Click="OnCancelClick"
+                        Margin="0,0,10,0" />
+                <Button x:Name="BtnFinish"
+                        Content="完成"
+                        FontFamily="Microsoft YaHei"
+                        FontSize="13" FontWeight="SemiBold"
+                        Foreground="#ffffff"
+                        Background="#4aa8d8"
+                        BorderThickness="0"
+                        Padding="20,8"
+                        Cursor="Hand"
+                        Click="OnFinishClick"
+                        Style="{StaticResource AccentButton}" />
             </StackPanel>
-        </ScrollViewer>
-
-        <!-- 底部按钮 -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
-            <Button Content="取消"
-                    FontFamily="Microsoft YaHei"
-                    FontSize="13" Foreground="#cccccc"
-                    Background="Transparent"
-                    BorderBrush="#33ffffff" BorderThickness="1"
-                    Padding="20,8"
-                    Cursor="Hand"
-                    Click="OnCancelClick"
-                    Margin="0,0,10,0" />
-            <Button x:Name="BtnFinish"
-                    Content="完成"
-                    FontFamily="Microsoft YaHei"
-                    FontSize="13" FontWeight="SemiBold"
-                    Foreground="#ffffff"
-                    Background="#60cdff"
-                    BorderThickness="0"
-                    Padding="20,8"
-                    Cursor="Hand"
-                    Click="OnFinishClick"
-                    Style="{StaticResource AccentButton}" />
-        </StackPanel>
-    </Grid>
+        </Grid>
+    </DockPanel>
 </Window>
