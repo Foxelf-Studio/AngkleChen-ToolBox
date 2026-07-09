@@ -51,7 +51,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     ];
 
     // ── 工具数据 ──────────────────────────────────
-    private static readonly ToolInfo[] AllTools =
+    private ToolInfo[] AllTools =
     [
         new("酷我音乐",      "娱乐工具", " ", "酷我音乐PC版，支持在线听歌、歌词显示、音效调节、本地音乐管理，支持无损音质下载。",     @"扩展工具\KwMusic\KwMusic.exe"),
         new("PiliPlus",     "娱乐工具", " ", "第三方哔哩哔哩客户端，支持弹幕播放、视频下载、多清晰度切换，基于Flutter开发。",         @"扩展工具\PiliPlus-Win\piliplus.exe"),
@@ -915,13 +915,16 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
         try
         {
+            // 确定要删除的目标（如果是文件，删除其父文件夹）
+            string? targetDir = null;
+
             if (File.Exists(path))
             {
-                File.Delete(path);
+                targetDir = Path.GetDirectoryName(path);
             }
             else if (Directory.Exists(path))
             {
-                Directory.Delete(path, true);
+                targetDir = path;
             }
             else
             {
@@ -929,10 +932,20 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                     MessageBoxButton.OK, MessageBoxImage.Information);
             }
 
-            // 从工具列表中移除
-            var list = (CardItems.ItemsSource as List<ToolInfo>)?.ToList() ?? new List<ToolInfo>();
-            list.Remove(t);
-            CardItems.ItemsSource = list;
+            // 删除整个文件夹
+            if (targetDir != null && Directory.Exists(targetDir))
+            {
+                Directory.Delete(targetDir, true);
+                Logger.Log($"删除文件夹: {targetDir}");
+            }
+
+            // 从 AllTools 中移除该工具（避免重复显示）
+            var toolsList = AllTools.ToList();
+            toolsList.RemoveAll(x => x.RelativePath == t.RelativePath);
+            AllTools = toolsList.ToArray();
+
+            // 刷新工具列表
+            ApplyFilter();
 
             StatusTip = $"已删除 {t.Name}";
             Logger.Log($"删除工具: {t.Name}, 路径: {path}");
