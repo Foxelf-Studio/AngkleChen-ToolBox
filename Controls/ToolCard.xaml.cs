@@ -203,11 +203,10 @@ public partial class ToolCard : UserControl
         {
             CloseMenuWithAnimation(() =>
             {
-                var result = MessageBox.Show(
+                var result = CustomMessageBox.Show(
                     $"确定要删除工具 \"{tool.Name}\" 吗？\n\n此操作将删除文件，且无法撤销。",
                     "确认删除",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning);
+                    MessageBoxButton.YesNo);
 
                 if (result == MessageBoxResult.Yes)
                 {

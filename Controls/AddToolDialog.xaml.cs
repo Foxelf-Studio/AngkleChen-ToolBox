@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
+using 陈叔叔工具箱.Controls;
 
 namespace 陈叔叔工具箱.Controls;
 
@@ -74,13 +75,13 @@ public partial class AddToolDialog : Window
         // 验证输入
         if (string.IsNullOrWhiteSpace(_selectedPath))
         {
-            MessageBox.Show("请先选择要添加的文件或文件夹。", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+            CustomMessageBox.Show("请先选择要添加的文件或文件夹。", "提示");
             return;
         }
 
         if (string.IsNullOrWhiteSpace(TxtToolName.Text))
         {
-            MessageBox.Show("请输入工具名称。", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+            CustomMessageBox.Show("请输入工具名称。", "提示");
             return;
         }
 
@@ -90,7 +91,7 @@ public partial class AddToolDialog : Window
         {
             if (string.IsNullOrWhiteSpace(TxtNewCategory.Text))
             {
-                MessageBox.Show("请输入新分类名称。", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.Show("请输入新分类名称。", "提示");
                 return;
             }
             category = TxtNewCategory.Text.Trim();
@@ -99,7 +100,7 @@ public partial class AddToolDialog : Window
         {
             if (ComboCategories.SelectedItem == null)
             {
-                MessageBox.Show("请选择一个分类。", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.Show("请选择一个分类。", "提示");
                 return;
             }
             category = ComboCategories.SelectedItem.ToString()!;

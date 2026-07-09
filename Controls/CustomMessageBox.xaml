@@ -1,0 +1,88 @@
+<Window x:Class="陈叔叔工具箱.Controls.CustomMessageBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="提示"
+        Width="400" Height="200"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="#2d2d2d"
+        WindowStyle="SingleBorderWindow"
+        ShowInTaskbar="False">
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="-1"
+                      CornerRadius="0"
+                      CaptionHeight="32"
+                      UseAeroCaptionButtons="False" />
+    </WindowChrome.WindowChrome>
+
+    <DockPanel LastChildFill="True" WindowChrome.IsHitTestVisibleInChrome="True">
+        <!-- 标题栏 -->
+        <Border DockPanel.Dock="Top" Background="#181818" Height="32">
+            <Grid>
+                <TextBlock x:Name="TxtTitle"
+                           Text="提示"
+                           FontFamily="Microsoft YaHei" FontSize="12"
+                           Foreground="#cccccc"
+                           VerticalAlignment="Center"
+                           Margin="12,0,0,0" />
+                <Button Content="&#xE8BB;"
+                        HorizontalAlignment="Right"
+                        FontFamily="Segoe MDL2 Assets" FontSize="10"
+                        Foreground="#cccccc"
+                        Width="46" Height="32"
+                        Click="OnCloseClick"
+                        Style="{StaticResource CaptionClose}" />
+            </Grid>
+        </Border>
+
+        <!-- 内容 -->
+        <Grid Margin="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock x:Name="TxtMessage"
+                       Grid.Row="0"
+                       FontFamily="Microsoft YaHei"
+                       FontSize="13"
+                       Foreground="#cccccc"
+                       TextWrapping="Wrap"
+                       VerticalAlignment="Center" />
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+                <Button x:Name="BtnYes"
+                        Content="是"
+                        FontFamily="Microsoft YaHei"
+                        FontSize="13" Foreground="#ffffff"
+                        Background="#4aa8d8"
+                        BorderThickness="0"
+                        Padding="20,8"
+                        Cursor="Hand"
+                        Click="OnYesClick"
+                        Margin="0,0,10,0"
+                        Visibility="Collapsed" />
+                <Button x:Name="BtnNo"
+                        Content="否"
+                        FontFamily="Microsoft YaHei"
+                        FontSize="13" Foreground="#cccccc"
+                        Background="#333333"
+                        BorderBrush="#44ffffff" BorderThickness="1"
+                        Padding="20,8"
+                        Cursor="Hand"
+                        Click="OnNoClick"
+                        Visibility="Collapsed" />
+                <Button x:Name="BtnOk"
+                        Content="确定"
+                        FontFamily="Microsoft YaHei"
+                        FontSize="13" Foreground="#ffffff"
+                        Background="#4aa8d8"
+                        BorderThickness="0"
+                        Padding="20,8"
+                        Cursor="Hand"
+                        Click="OnOkClick"
+                        Visibility="Collapsed" />
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</Window>

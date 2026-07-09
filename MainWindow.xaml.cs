@@ -320,7 +320,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             message = $"确定要删除空分类 \"{cat.Name}\" 吗？";
         }
 
-        var result = MessageBox.Show(message, "确认删除", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+        var result = CustomMessageBox.Show(message, "确认删除", MessageBoxButton.YesNo);
         if (result != MessageBoxResult.Yes) return;
 
         try
@@ -348,7 +348,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"删除失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            CustomMessageBox.Show($"删除失败: {ex.Message}", "错误");
             Logger.Log($"删除分类失败: {ex.Message}");
         }
     }
@@ -481,7 +481,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"添加工具失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageBox.Show($"添加工具失败: {ex.Message}", "错误");
             }
         }
     }
@@ -861,8 +861,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             var path = System.IO.Path.Combine(ToolboxRoot, t.RelativePath);
             if (!System.IO.Path.Exists(path))
             {
-                MessageBox.Show($"文件不存在:\n{path}", "提示",
-                                MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.Show($"文件不存在:\n{path}", "提示");
                 return;
             }
             try
@@ -900,8 +899,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"启动失败:\n{ex.Message}", "提示",
-                                MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.Show($"启动失败:\n{ex.Message}", "提示");
             }
         }
     });
@@ -928,8 +926,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             }
             else
             {
-                MessageBox.Show("文件不存在，可能已被删除。", "提示",
-                    MessageBoxButton.OK, MessageBoxImage.Information);
+                CustomMessageBox.Show("文件不存在，可能已被删除。", "提示");
             }
 
             // 删除整个文件夹
@@ -952,8 +949,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"删除失败: {ex.Message}", "错误",
-                MessageBoxButton.OK, MessageBoxImage.Error);
+            CustomMessageBox.Show($"删除失败: {ex.Message}", "错误");
             Logger.Log($"删除工具失败: {ex.Message}");
         }
     });
