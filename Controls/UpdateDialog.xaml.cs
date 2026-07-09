@@ -19,9 +19,14 @@ public partial class UpdateDialog : Window
         TxtChangelog.Text = string.IsNullOrEmpty(result.Changelog) ? "暂无更新说明" : result.Changelog;
     }
 
+    private void OnTitleBarMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.LeftButton == MouseButtonState.Pressed)
+            DragMove();
+    }
+
     private void OnUpdateClick(object sender, RoutedEventArgs e)
     {
-        // 打开 GitHub Release 页面
         if (!string.IsNullOrEmpty(_result.ReleaseUrl))
         {
             Process.Start(new ProcessStartInfo(_result.ReleaseUrl)
@@ -43,12 +48,5 @@ public partial class UpdateDialog : Window
     {
         DialogResult = false;
         Close();
-    }
-
-    protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
-    {
-        base.OnMouseLeftButtonDown(e);
-        if (e.LeftButton == MouseButtonState.Pressed)
-            DragMove();
     }
 }

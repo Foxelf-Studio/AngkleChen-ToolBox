@@ -2,8 +2,8 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Microsoft.Win32;
-using 陈叔叔工具箱.Controls;
 
 namespace 陈叔叔工具箱.Controls;
 
@@ -12,6 +12,7 @@ public partial class AddToolDialog : Window
     private readonly string _toolboxRoot;
     private string? _selectedPath;
     private bool _isFolder;
+    private bool _isDropDownOpen;
 
     public string? ToolName { get; private set; }
     public string? ToolDescription { get; private set; }
@@ -23,16 +24,46 @@ public partial class AddToolDialog : Window
         InitializeComponent();
         _toolboxRoot = toolboxRoot;
 
-        // 填充分类下拉框
-        ComboCategories.ItemsSource = existingCategories;
+        // 填充分类列表
+        CategoryListBox.ItemsSource = existingCategories;
         if (existingCategories.Length > 0)
-            ComboCategories.SelectedIndex = 0;
+            CategoryListBox.SelectedIndex = 0;
 
         // 绑定事件
         RadioFolder.Checked += (_, _) => { _isFolder = true; BtnBrowse.Content = "选择文件夹..."; };
         RadioFile.Checked += (_, _) => { _isFolder = false; BtnBrowse.Content = "选择文件..."; };
-        RadioExistingCategory.Checked += (_, _) => { ComboCategories.IsEnabled = true; TxtNewCategory.IsEnabled = false; };
-        RadioNewCategory.Checked += (_, _) => { ComboCategories.IsEnabled = false; TxtNewCategory.IsEnabled = true; };
+        RadioExistingCategory.Checked += (_, _) =>
+        {
+            ComboBorder.IsEnabled = true;
+            TxtNewCategory.IsEnabled = false;
+        };
+        RadioNewCategory.Checked += (_, _) =>
+        {
+            ComboBorder.IsEnabled = false;
+            TxtNewCategory.IsEnabled = true;
+        };
+    }
+
+    private void OnTitleBarMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.LeftButton == MouseButtonState.Pressed)
+            DragMove();
+    }
+
+    private void OnComboClick(object sender, MouseButtonEventArgs e)
+    {
+        _isDropDownOpen = !_isDropDownOpen;
+        DropDownPanel.Visibility = _isDropDownOpen ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    private void OnCategorySelected(object sender, SelectionChangedEventArgs e)
+    {
+        if (CategoryListBox.SelectedItem is string category)
+        {
+            TxtSelectedCategory.Text = category;
+            _isDropDownOpen = false;
+            DropDownPanel.Visibility = Visibility.Collapsed;
+        }
     }
 
     private void OnBrowseClick(object sender, RoutedEventArgs e)
@@ -98,12 +129,12 @@ public partial class AddToolDialog : Window
         }
         else
         {
-            if (ComboCategories.SelectedItem == null)
+            if (CategoryListBox.SelectedItem == null)
             {
                 CustomMessageBox.Show("请选择一个分类。", "提示");
                 return;
             }
-            category = ComboCategories.SelectedItem.ToString()!;
+            category = CategoryListBox.SelectedItem.ToString()!;
         }
 
         ToolName = TxtToolName.Text.Trim();
