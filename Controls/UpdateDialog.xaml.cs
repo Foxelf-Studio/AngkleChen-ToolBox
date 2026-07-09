@@ -19,6 +19,13 @@ public partial class UpdateDialog : Window
         TxtChangelog.Text = string.IsNullOrEmpty(result.Changelog) ? "暂无更新说明" : result.Changelog;
     }
 
+    private void TitleBar_Drag(object sender, MouseButtonEventArgs e)
+    {
+        if (e.ClickCount == 2) return;
+        if (e.LeftButton == MouseButtonState.Pressed)
+            DragMove();
+    }
+
     private void OnUpdateClick(object sender, RoutedEventArgs e)
     {
         if (!string.IsNullOrEmpty(_result.ReleaseUrl))
@@ -33,6 +40,12 @@ public partial class UpdateDialog : Window
     }
 
     private void OnRemindLaterClick(object sender, RoutedEventArgs e)
+    {
+        DialogResult = false;
+        Close();
+    }
+
+    private void OnCloseClick(object sender, RoutedEventArgs e)
     {
         DialogResult = false;
         Close();
