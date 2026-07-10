@@ -2,6 +2,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 using Microsoft.Win32;
 
 namespace 陈叔叔工具箱.Controls;
@@ -41,6 +42,37 @@ public partial class AddToolDialog : Window
             ComboBorder.Visibility = Visibility.Collapsed;
             NewCategoryBorder.Visibility = Visibility.Visible;
         };
+
+        // 加载完成后设置圆角区域
+        Loaded += (_, _) => SetRoundedRegion(8);
+    }
+
+    private void SetRoundedRegion(int radius)
+    {
+        var helper = new WindowInteropHelper(this);
+        var rect = new RECT(0, 0, (int)ActualWidth, (int)ActualHeight);
+        var hRgn = CreateRoundRectRgn(rect.Left, rect.Top, rect.Right + 1, rect.Bottom + 1, radius * 2, radius * 2);
+        SetWindowRgn(helper.Handle, hRgn, true);
+        DeleteObject(hRgn);
+    }
+
+    [DllImport("gdi32.dll")]
+    private static extern IntPtr CreateRoundRectRgn(int x1, int y1, int x2, int y2, int cx, int cy);
+
+    [DllImport("user32.dll")]
+    private static extern int SetWindowRgn(IntPtr hWnd, IntPtr hRgn, bool bRedraw);
+
+    [DllImport("gdi32.dll")]
+    private static extern bool DeleteObject(IntPtr hObject);
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct RECT
+    {
+        public int Left, Top, Right, Bottom;
+        public RECT(int left, int top, int right, int bottom)
+        {
+            Left = left; Top = top; Right = right; Bottom = bottom;
+        }
     }
 
     private void TitleBar_Drag(object sender, MouseButtonEventArgs e)
