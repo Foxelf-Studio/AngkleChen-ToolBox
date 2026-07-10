@@ -57,6 +57,13 @@ public static class ToolScanner
         });
     }
 
+    // 需要过滤的文件名关键词（非工具文件）
+    private static readonly string[] _excludeKeywords = [
+        "uninstall", "unins", "卸载", "update", "更新", "setup", "安装",
+        "crash", "dump", "log", "tmp", "temp", "backup", "备份",
+        "readme", "license", "说明", "help", "帮助"
+    ];
+
     /// <summary>
     /// 递归扫描目录
     /// </summary>
@@ -68,23 +75,36 @@ public static class ToolScanner
             foreach (var file in Directory.GetFiles(dir))
             {
                 var ext = Path.GetExtension(file).ToLower();
-                if (ext is ".exe" or ".bat" or ".cmd")
-                {
-                    var relativePath = Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, file);
-                    var category = GetCategoryFromPath(dir);
-                    var name = Path.GetFileNameWithoutExtension(file);
 
-                    // 检查是否已存在（避免重复）
-                    if (!tools.Any(t => t.RelativePath.Equals(relativePath, StringComparison.OrdinalIgnoreCase)))
-                    {
-                        tools.Add(new ToolInfo(
-                            Name: name,
-                            Category: category,
-                            Icon: " ",
-                            Description: GetDescription(file),
-                            RelativePath: relativePath
-                        ));
-                    }
+                // 只扫描 exe 和 bat 文件
+                if (ext is not (".exe" or ".bat" or ".cmd"))
+                    continue;
+
+                var fileName = Path.GetFileNameWithoutExtension(file).ToLower();
+
+                // 过滤非工具文件
+                if (_excludeKeywords.Any(k => fileName.Contains(k)))
+                    continue;
+
+                // 过滤小文件（可能是依赖库）
+                var fileInfo = new FileInfo(file);
+                if (fileInfo.Length < 10240) // 小于10KB
+                    continue;
+
+                var relativePath = Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, file);
+                var category = GetCategoryFromPath(dir);
+                var name = Path.GetFileNameWithoutExtension(file);
+
+                // 检查是否已存在（避免重复）
+                if (!tools.Any(t => t.RelativePath.Equals(relativePath, StringComparison.OrdinalIgnoreCase)))
+                {
+                    tools.Add(new ToolInfo(
+                        Name: name,
+                        Category: category,
+                        Icon: " ",
+                        Description: GetDescription(file),
+                        RelativePath: relativePath
+                    ));
                 }
             }
 
