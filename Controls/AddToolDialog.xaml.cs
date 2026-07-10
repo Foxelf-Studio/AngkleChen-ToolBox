@@ -66,6 +66,12 @@ public partial class AddToolDialog : Window
     {
         _isDropDownOpen = !_isDropDownOpen;
         DropDownPanel.Visibility = _isDropDownOpen ? Visibility.Visible : Visibility.Collapsed;
+
+        // 展开时自动滚动到最底部
+        if (_isDropDownOpen && CategoryListBox.Items.Count > 0)
+        {
+            CategoryListBox.ScrollIntoView(CategoryListBox.Items[CategoryListBox.Items.Count - 1]);
+        }
     }
 
     private void OnCategorySelected(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -155,11 +161,6 @@ public partial class AddToolDialog : Window
 
         DialogResult = true;
         Close();
-    }
-
-    private void OnCancelClick(object sender, RoutedEventArgs e)
-    {
-        CloseWithAnimation();
     }
 
     private void OnCloseClick(object sender, RoutedEventArgs e)

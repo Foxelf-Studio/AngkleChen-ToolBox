@@ -10,6 +10,62 @@
         ShowInTaskbar="True"
         SnapsToDevicePixels="True"
         UseLayoutRounding="True">
+    <Window.Resources>
+        <!-- 自定义 RadioButton 样式 -->
+        <Style x:Key="CustomRadioButton" TargetType="RadioButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="Bd"
+                                Background="#2b2b2b"
+                                BorderBrush="#3effffff"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Padding="8,4">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <!-- 方框 -->
+                                <Border x:Name="CheckMark"
+                                        Grid.Column="0"
+                                        Width="16" Height="16"
+                                        Background="Transparent"
+                                        BorderBrush="#777777"
+                                        BorderThickness="1"
+                                        CornerRadius="3"
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,8,0">
+                                    <!-- 勾号 -->
+                                    <TextBlock x:Name="CheckIcon"
+                                               Text="&#xE73E;"
+                                               FontFamily="Segoe MDL2 Assets"
+                                               FontSize="10"
+                                               Foreground="Transparent"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center" />
+                                </Border>
+                                <!-- 文字 -->
+                                <ContentPresenter Grid.Column="1"
+                                                  VerticalAlignment="Center" />
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="CheckMark" Property="Background" Value="#4aa8d8" />
+                                <Setter TargetName="CheckMark" Property="BorderBrush" Value="#4aa8d8" />
+                                <Setter TargetName="CheckIcon" Property="Foreground" Value="#ffffff" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#3a3a3a" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="-1"
                       CornerRadius="0"
@@ -89,13 +145,15 @@
                                          FontSize="13"
                                          Foreground="#cccccc"
                                          IsChecked="True"
-                                         Margin="0,0,16,0" />
+                                         Style="{StaticResource CustomRadioButton}"
+                                         Margin="0,0,8,0" />
                             <RadioButton x:Name="RadioFile"
                                          Grid.Column="1"
                                          Content="文件"
                                          FontFamily="Microsoft YaHei"
                                          FontSize="13"
-                                         Foreground="#cccccc" />
+                                         Foreground="#cccccc"
+                                         Style="{StaticResource CustomRadioButton}" />
                         </Grid>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -198,13 +256,15 @@
                                          FontSize="13"
                                          Foreground="#cccccc"
                                          IsChecked="True"
-                                         Margin="0,0,16,0" />
+                                         Style="{StaticResource CustomRadioButton}"
+                                         Margin="0,0,8,0" />
                             <RadioButton x:Name="RadioNewCategory"
                                          Grid.Column="1"
                                          Content="新建分类"
                                          FontFamily="Microsoft YaHei"
                                          FontSize="13"
-                                         Foreground="#cccccc" />
+                                         Foreground="#cccccc"
+                                         Style="{StaticResource CustomRadioButton}" />
                         </Grid>
                         <!-- 已有分类下拉框 -->
                         <Border x:Name="ComboBorder"
@@ -288,15 +348,6 @@
         <Border Grid.Row="4" Background="#252525"
                 Padding="16,12">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="取消"
-                        FontFamily="Microsoft YaHei"
-                        FontSize="13" Foreground="#cccccc"
-                        Background="#333333"
-                        BorderBrush="#44ffffff" BorderThickness="1"
-                        Padding="20,8"
-                        Cursor="Hand"
-                        Click="OnCancelClick"
-                        Margin="0,0,10,0" />
                 <Button x:Name="BtnFinish"
                         Content="完成"
                         FontFamily="Microsoft YaHei"
