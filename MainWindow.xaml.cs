@@ -209,34 +209,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     // ── 设置页面 ──────────────────────────────────
     private bool _isSettingsOpen;
 
-    // ── 扩展工具检测 ──────────────────────────────
-    private void CheckExtendedTools()
-    {
-        var extDir = System.IO.Path.Combine(ToolboxRoot, "扩展工具");
-        bool hasExtDir = System.IO.Directory.Exists(extDir);
-
-        if (!hasExtDir)
-        {
-            ExtToolHint.Visibility = Visibility.Visible;
-            ExtToolHint.Text = "\U0001F4E5 可下载扩展工具包获取更多工具";
-            return;
-        }
-
-        // 检查扩展工具文件夹是否有内容
-        bool hasExtTools = System.IO.Directory.GetDirectories(extDir).Length > 0
-                        || System.IO.Directory.GetFiles(extDir).Length > 0;
-
-        if (!hasExtTools)
-        {
-            ExtToolHint.Visibility = Visibility.Visible;
-            ExtToolHint.Text = "\U0001F4E5 扩展工具包为空，请放入工具";
-        }
-        else
-        {
-            ExtToolHint.Visibility = Visibility.Collapsed;
-        }
-    }
-
     // ── 构造函数 ──────────────────────────────────
     public MainWindow()
     {
@@ -249,18 +221,18 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _suppressAnim = true; // 必须在 SelectedIndex 之前，抑制初始加载动画
         CategoryList.ItemsSource = Categories;
         CategoryList.SelectedIndex = 0;
-        ApplyFilter();
-
-        // 检测扩展工具
-        CheckExtendedTools();
 
         // 初始化指示条
         Dispatcher.BeginInvoke(new Action(() => MoveIndicator(0, false)),
             System.Windows.Threading.DispatcherPriority.Loaded);
 
-        // 延迟2秒检查更新，避免阻塞启动
-        Loaded += (_, _) =>
+        // 异步加载工具（不阻塞UI）
+        Loaded += async (_, _) =>
         {
+            await LoadToolsAsync();
+            ApplyFilter();
+
+            // 延迟2秒检查更新
             var timer = new System.Windows.Threading.DispatcherTimer
             {
                 Interval = TimeSpan.FromSeconds(2)
@@ -272,6 +244,64 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             };
             timer.Start();
         };
+    }
+
+    // ── 异步加载工具 ──────────────────────────────
+    private async Task LoadToolsAsync()
+    {
+        try
+        {
+            // 异步扫描工具
+            var scannedTools = await ToolScanner.ScanToolsAsync();
+
+            // 合并硬编码工具和扫描到的工具
+            var allTools = new List<ToolInfo>(AllTools);
+
+            foreach (var tool in scannedTools)
+            {
+                // 避免重复
+                if (!allTools.Any(t => t.RelativePath.Equals(tool.RelativePath, StringComparison.OrdinalIgnoreCase)))
+                {
+                    allTools.Add(tool);
+                }
+            }
+
+            AllTools = allTools.ToArray();
+
+            // 更新分类列表
+            var categories = new List<CatInfo>
+            {
+                new("all", "全部工具", " ", "浏览所有工具")
+            };
+
+            // 从工具列表中提取分类
+            var toolCategories = AllTools
+                .Select(t => t.Category)
+                .Distinct()
+                .OrderBy(c => c);
+
+            foreach (var cat in toolCategories)
+            {
+                // 查找分类图标
+                var existingCat = Categories.FirstOrDefault(c => c.Id == cat);
+                if (existingCat != null)
+                {
+                    categories.Add(existingCat);
+                }
+                else
+                {
+                    categories.Add(new CatInfo(cat, cat, " ", cat));
+                }
+            }
+
+            Categories = categories.ToArray();
+            CategoryList.ItemsSource = Categories;
+            CategoryList.SelectedIndex = 0;
+        }
+        catch (Exception ex)
+        {
+            Logger.Log($"加载工具失败: {ex.Message}");
+        }
     }
 
     // ── 导航按钮线性高亮动画 ──────────────────────

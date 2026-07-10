@@ -239,15 +239,6 @@
                                    VerticalAlignment="Bottom"
                                    Margin="10,0,0,4" />
                     </StackPanel>
-                    <!-- 扩展工具提示 -->
-                    <TextBlock x:Name="ExtToolHint"
-                               Grid.Column="1"
-                               FontFamily="Microsoft YaHei" FontSize="13"
-                               Foreground="#60cdff"
-                               VerticalAlignment="Bottom"
-                               HorizontalAlignment="Right"
-                               Margin="0,0,0,2"
-                               Visibility="Collapsed" />
                 </Grid>
 
                 <!-- 描述面板：单击工具卡片后显示 -->
