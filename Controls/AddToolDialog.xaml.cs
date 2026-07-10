@@ -25,6 +25,7 @@ public partial class AddToolDialog : Window
     {
         InitializeComponent();
         _toolboxRoot = toolboxRoot;
+        _isFolder = true; // 默认选择文件夹
 
         // 填充分类列表
         CategoryListBox.ItemsSource = existingCategories;
