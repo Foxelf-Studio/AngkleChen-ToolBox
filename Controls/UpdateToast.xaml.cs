@@ -8,15 +8,18 @@ public partial class UpdateToast : Window
 {
     private readonly string _releaseUrl;
 
-    public UpdateToast(string releaseUrl)
+    public UpdateToast(string releaseUrl, Window owner)
     {
         InitializeComponent();
         _releaseUrl = releaseUrl;
+        Owner = owner;
 
-        // 定位到右上角
-        var workArea = SystemParameters.WorkArea;
-        Left = workArea.Right - Width - 16;
-        Top = workArea.Top + 16;
+        // 定位到主窗口右上角（标题栏下方）
+        UpdatePosition();
+
+        // 监听主窗口移动
+        owner.LocationChanged += (_, _) => UpdatePosition();
+        owner.SizeChanged += (_, _) => UpdatePosition();
 
         // 淡入动画
         Opacity = 0;
@@ -28,6 +31,15 @@ public partial class UpdateToast : Window
             };
             BeginAnimation(OpacityProperty, fadeIn);
         };
+    }
+
+    private void UpdatePosition()
+    {
+        if (Owner == null) return;
+
+        // 主窗口右上角，向内偏移
+        Left = Owner.Left + Owner.Width - Width - 16;
+        Top = Owner.Top + 58; // 标题栏高度42 + 16边距
     }
 
     private void OnViewUpdateClick(object sender, RoutedEventArgs e)

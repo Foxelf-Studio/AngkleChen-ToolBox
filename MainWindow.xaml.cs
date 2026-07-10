@@ -773,8 +773,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             if (result.HasUpdate)
             {
                 _lastUpdateResult = result;
-                // 显示悬浮气泡
-                var toast = new UpdateToast(result.ReleaseUrl);
+                // 显示悬浮气泡（相对于主窗口）
+                var toast = new UpdateToast(result.ReleaseUrl, this);
                 toast.Show();
             }
         }
