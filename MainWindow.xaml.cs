@@ -751,56 +751,37 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     }
 
     // ── 启动时检查更新 ────────────────────────────
+    private UpdateCheckResult? _lastUpdateResult;
+
     private async void CheckForUpdatesOnStartup()
     {
-        Logger.Log(">>> 启动时检查更新开始");
-
         try
         {
             // 检查是否启用自动更新
             var configPath = Path.Combine(ToolboxRoot, "settings.json");
-            Logger.Log($"配置文件路径: {configPath}");
-
             if (File.Exists(configPath))
             {
                 var json = File.ReadAllText(configPath);
-                Logger.Log($"读取配置: {json}");
                 var settings = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, bool>>(json);
                 if (settings != null && settings.TryGetValue("autoCheckUpdate", out var autoCheck) && !autoCheck)
-                {
-                    Logger.Log("用户禁用了自动更新");
                     return;
-                }
             }
 
-            Logger.Log("创建 UpdateChecker...");
             var checker = new UpdateChecker("Foxelf-Studio", "AngkleChen-ToolBox");
-
-            Logger.Log("调用 CheckForUpdatesAsync...");
             var result = await checker.CheckForUpdatesAsync();
-
-            Logger.Log($"检查结果: HasUpdate={result.HasUpdate}, LatestVersion={result.LatestVersion}");
 
             if (result.HasUpdate)
             {
-                Logger.Log("显示更新对话框...");
-                var dialog = new UpdateDialog(result) { Owner = this };
-                Logger.Log("调用 ShowDialog...");
-                dialog.ShowDialog();
-                Logger.Log("对话框已关闭");
-            }
-            else
-            {
-                Logger.Log("无更新");
+                _lastUpdateResult = result;
+                // 显示悬浮气泡
+                var toast = new UpdateToast(result.ReleaseUrl);
+                toast.Show();
             }
         }
-        catch (Exception ex)
+        catch
         {
-            Logger.Log($"检查更新异常: {ex.Message}");
-            Logger.Log($"异常堆栈: {ex.StackTrace}");
+            // 静默失败
         }
-
-        Logger.Log(">>> 启动时检查更新结束");
     }
 
     // ── 搜索 ──────────────────────────────────────

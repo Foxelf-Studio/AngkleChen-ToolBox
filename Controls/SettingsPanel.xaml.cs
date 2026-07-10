@@ -58,8 +58,20 @@ public partial class SettingsPanel : UserControl
         File.WriteAllText(configPath, json);
     }
 
+    private string? _releaseUrl;
+
     private async void OnCheckUpdateClick(object sender, RoutedEventArgs e)
     {
+        // 如果已经有更新，直接打开浏览器
+        if (_releaseUrl != null)
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(_releaseUrl)
+            {
+                UseShellExecute = true
+            });
+            return;
+        }
+
         if (_isChecking) return;
         _isChecking = true;
 
@@ -73,13 +85,12 @@ public partial class SettingsPanel : UserControl
 
             if (result.HasUpdate)
             {
+                _releaseUrl = result.ReleaseUrl;
                 TxtUpdateStatus.Text = $"发现新版本 v{result.LatestVersion}";
                 TxtUpdateStatus.Foreground = new System.Windows.Media.SolidColorBrush(
                     System.Windows.Media.Color.FromRgb(96, 205, 255)); // #60cdff
-
-                // 显示更新确认对话框
-                var dialog = new UpdateDialog(result) { Owner = Window.GetWindow(this) };
-                dialog.ShowDialog();
+                BtnCheckUpdate.Content = "查看更新";
+                BtnCheckUpdate.IsEnabled = true;
             }
             else
             {
@@ -97,7 +108,8 @@ public partial class SettingsPanel : UserControl
         }
         finally
         {
-            BtnCheckUpdate.IsEnabled = true;
+            if (_releaseUrl == null)
+                BtnCheckUpdate.IsEnabled = true;
             _isChecking = false;
         }
     }
