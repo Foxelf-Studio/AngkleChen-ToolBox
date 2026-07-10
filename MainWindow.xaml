@@ -397,7 +397,7 @@
 
                 <!-- 更新提示气泡 -->
                 <Border x:Name="UpdateToastPanel"
-                        Grid.Row="4"
+                        Grid.Row="0" Grid.RowSpan="5"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         Width="220" Height="75"
@@ -405,7 +405,7 @@
                         CornerRadius="8"
                         BorderBrush="#3effffff"
                         BorderThickness="1"
-                        Margin="0,8,8,0"
+                        Margin="0,-20,8,0"
                         Visibility="Collapsed">
                     <Grid Margin="10,8">
                         <Grid.RowDefinitions>

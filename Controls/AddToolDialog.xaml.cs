@@ -1,7 +1,6 @@
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Win32;
 
@@ -30,18 +29,30 @@ public partial class AddToolDialog : Window
             CategoryListBox.SelectedIndex = 0;
 
         // 绑定事件
-        RadioFolder.Checked += (_, _) => { _isFolder = true; BtnBrowse.Content = "选择文件夹..."; };
-        RadioFile.Checked += (_, _) => { _isFolder = false; BtnBrowse.Content = "选择文件..."; };
+        RadioFolder.Checked += (_, _) => { _isFolder = true; };
+        RadioFile.Checked += (_, _) => { _isFolder = false; };
         RadioExistingCategory.Checked += (_, _) =>
         {
-            ComboBorder.IsEnabled = true;
-            TxtNewCategory.IsEnabled = false;
+            ComboBorder.Visibility = Visibility.Visible;
+            NewCategoryBorder.Visibility = Visibility.Collapsed;
         };
         RadioNewCategory.Checked += (_, _) =>
         {
-            ComboBorder.IsEnabled = false;
-            TxtNewCategory.IsEnabled = true;
+            ComboBorder.Visibility = Visibility.Collapsed;
+            NewCategoryBorder.Visibility = Visibility.Visible;
         };
+    }
+
+    private void TitleBar_Drag(object sender, MouseButtonEventArgs e)
+    {
+        if (e.ClickCount == 2) return;
+        if (e.LeftButton == MouseButtonState.Pressed)
+            DragMove();
+    }
+
+    private void OnMinimizeClick(object sender, RoutedEventArgs e)
+    {
+        WindowState = WindowState.Minimized;
     }
 
     private void OnComboClick(object sender, MouseButtonEventArgs e)
@@ -50,7 +61,7 @@ public partial class AddToolDialog : Window
         DropDownPanel.Visibility = _isDropDownOpen ? Visibility.Visible : Visibility.Collapsed;
     }
 
-    private void OnCategorySelected(object sender, SelectionChangedEventArgs e)
+    private void OnCategorySelected(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
     {
         if (CategoryListBox.SelectedItem is string category)
         {
@@ -70,12 +81,13 @@ public partial class AddToolDialog : Window
             dialog.SetOptions(options | FOS.FOS_PICKFOLDERS | FOS.FOS_FORCEFILESYSTEM | FOS.FOS_PATHMUSTEXIST);
 
             var hr = dialog.Show(IntPtr.Zero);
-            if (hr == 0) // S_OK
+            if (hr == 0)
             {
                 dialog.GetResult(out var result);
                 result.GetDisplayName(SIGDN.SIGDN_FILESYSPATH, out var path);
                 _selectedPath = path;
-                TxtSelectedPath.Text = $"已选择: {_selectedPath}";
+                TxtSelectedPath.Text = _selectedPath;
+                TxtSelectedPath.Foreground = System.Windows.Media.Brushes.White;
                 TxtToolName.Text = Path.GetFileName(_selectedPath);
             }
         }
@@ -89,7 +101,8 @@ public partial class AddToolDialog : Window
             if (dialog.ShowDialog() == true)
             {
                 _selectedPath = dialog.FileName;
-                TxtSelectedPath.Text = $"已选择: {_selectedPath}";
+                TxtSelectedPath.Text = _selectedPath;
+                TxtSelectedPath.Foreground = System.Windows.Media.Brushes.White;
                 TxtToolName.Text = Path.GetFileNameWithoutExtension(_selectedPath);
             }
         }
@@ -97,7 +110,6 @@ public partial class AddToolDialog : Window
 
     private void OnFinishClick(object sender, RoutedEventArgs e)
     {
-        // 验证输入
         if (string.IsNullOrWhiteSpace(_selectedPath))
         {
             CustomMessageBox.Show("请先选择要添加的文件或文件夹。", "提示");
@@ -110,7 +122,6 @@ public partial class AddToolDialog : Window
             return;
         }
 
-        // 确定分类
         string category;
         if (RadioNewCategory.IsChecked == true)
         {
