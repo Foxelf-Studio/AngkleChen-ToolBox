@@ -751,7 +751,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     }
 
     // ── 启动时检查更新 ────────────────────────────
-    private UpdateCheckResult? _lastUpdateResult;
+    private string? _releaseUrl;
 
     private async void CheckForUpdatesOnStartup()
     {
@@ -772,16 +772,42 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
             if (result.HasUpdate)
             {
-                _lastUpdateResult = result;
-                // 显示悬浮气泡（相对于主窗口）
-                var toast = new UpdateToast(result.ReleaseUrl, this);
-                toast.Show();
+                _releaseUrl = result.ReleaseUrl;
+                ShowUpdateToast();
             }
         }
         catch
         {
             // 静默失败
         }
+    }
+
+    private void ShowUpdateToast()
+    {
+        UpdateToastPanel.Visibility = Visibility.Visible;
+        UpdateToastPanel.Opacity = 0;
+
+        var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(300))
+        {
+            EasingFunction = new PowerEase { EasingMode = EasingMode.EaseOut, Power = 2 }
+        };
+        UpdateToastPanel.BeginAnimation(OpacityProperty, fadeIn);
+    }
+
+    private void OnToastCloseClick(object sender, RoutedEventArgs e)
+    {
+        var fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(200));
+        fadeOut.Completed += (_, _) => UpdateToastPanel.Visibility = Visibility.Collapsed;
+        UpdateToastPanel.BeginAnimation(OpacityProperty, fadeOut);
+    }
+
+    private void OnToastViewClick(object sender, RoutedEventArgs e)
+    {
+        if (_releaseUrl != null)
+        {
+            Process.Start(new ProcessStartInfo(_releaseUrl) { UseShellExecute = true });
+        }
+        UpdateToastPanel.Visibility = Visibility.Collapsed;
     }
 
     // ── 搜索 ──────────────────────────────────────
