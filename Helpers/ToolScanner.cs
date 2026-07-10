@@ -59,9 +59,15 @@ public static class ToolScanner
 
     // 需要过滤的文件名关键词（非工具文件）
     private static readonly string[] _excludeKeywords = [
-        "uninstall", "unins", "卸载", "update", "更新", "setup", "安装",
-        "crash", "dump", "log", "tmp", "temp", "backup", "备份",
-        "readme", "license", "说明", "help", "帮助"
+        "uninstall", "unins", "卸载",
+        "update", "升级", "更新",
+        "setup", "安装", "installer",
+        "crash", "dump", "log", "tmp", "temp",
+        "backup", "备份", "bak",
+        "readme", "license", "说明", "help", "帮助",
+        "config", "配置", "settings",
+        "plugin", "插件", "addon",
+        "lib", "dll", "runtime", "依赖"
     ];
 
     /// <summary>
@@ -81,10 +87,31 @@ public static class ToolScanner
                     continue;
 
                 var fileName = Path.GetFileNameWithoutExtension(file).ToLower();
+                var parentDirName = Path.GetFileName(dir).ToLower();
 
                 // 过滤非工具文件
                 if (_excludeKeywords.Any(k => fileName.Contains(k)))
                     continue;
+
+                // 如果文件名与父目录名不同，可能是辅助程序（除非是单文件工具）
+                // 只有当目录下有多个exe时才过滤
+                var exeFiles = Directory.GetFiles(dir, "*.exe");
+                if (exeFiles.Length > 1)
+                {
+                    // 多个exe时，只保留与目录名相同或最相似的
+                    if (!fileName.Contains(parentDirName) && !parentDirName.Contains(fileName))
+                    {
+                        // 检查是否有更匹配的exe
+                        var bestMatch = exeFiles.FirstOrDefault(f =>
+                        {
+                            var fName = Path.GetFileNameWithoutExtension(f).ToLower();
+                            return fName.Contains(parentDirName) || parentDirName.Contains(fName);
+                        });
+
+                        if (bestMatch != null && bestMatch != file)
+                            continue; // 跳过这个不匹配的文件
+                    }
+                }
 
                 // 过滤小文件（可能是依赖库）
                 var fileInfo = new FileInfo(file);
