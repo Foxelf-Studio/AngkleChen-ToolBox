@@ -83,6 +83,8 @@ public class FileEntry
 public class UpdateCheckResult
 {
     public bool HasUpdate { get; set; }
+    public bool IsError { get; set; }
+    public string ErrorMessage { get; set; } = "";
     public string CurrentVersion { get; set; } = "";
     public string LatestVersion { get; set; } = "";
     public string Changelog { get; set; } = "";

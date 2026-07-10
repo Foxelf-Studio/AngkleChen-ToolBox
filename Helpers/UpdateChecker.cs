@@ -52,6 +52,8 @@ public class UpdateChecker
             if (release == null)
             {
                 Logger.Log("获取 Release 失败，返回 null");
+                result.IsError = true;
+                result.ErrorMessage = "无法获取更新信息，请检查网络连接";
                 return result;
             }
 

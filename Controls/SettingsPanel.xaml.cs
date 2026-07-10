@@ -83,7 +83,13 @@ public partial class SettingsPanel : UserControl
         {
             var result = await _checker.CheckForUpdatesAsync();
 
-            if (result.HasUpdate)
+            if (result.IsError)
+            {
+                TxtUpdateStatus.Text = "检查失败，请重启软件或更换网络再试";
+                TxtUpdateStatus.Foreground = new System.Windows.Media.SolidColorBrush(
+                    System.Windows.Media.Color.FromRgb(255, 100, 100));
+            }
+            else if (result.HasUpdate)
             {
                 _releaseUrl = result.ReleaseUrl;
                 TxtUpdateStatus.Text = $"发现新版本 v{result.LatestVersion}";
@@ -102,7 +108,7 @@ public partial class SettingsPanel : UserControl
         catch (Exception ex)
         {
             Logger.Log($"检查更新异常: {ex.Message}");
-            TxtUpdateStatus.Text = "检查失败，请检查网络连接";
+            TxtUpdateStatus.Text = "检查失败，请重启软件或更换网络再试";
             TxtUpdateStatus.Foreground = new System.Windows.Media.SolidColorBrush(
                 System.Windows.Media.Color.FromRgb(255, 100, 100));
         }
