@@ -14,6 +14,7 @@ public partial class AddToolDialog : Window
     private string? _selectedPath;
     private bool _isFolder;
     private bool _isDropDownOpen;
+    private string? _selectedExePath;
 
     public string? ToolName { get; private set; }
     public string? ToolDescription { get; private set; }
@@ -79,20 +80,7 @@ public partial class AddToolDialog : Window
         }
     }
 
-    private static T? FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
-    {
-        var count = System.Windows.Media.VisualTreeHelper.GetChildrenCount(parent);
-        for (int i = 0; i < count; i++)
-        {
-            var child = System.Windows.Media.VisualTreeHelper.GetChild(parent, i);
-            if (child is T result) return result;
-            var found = FindVisualChild<T>(child);
-            if (found != null) return found;
-        }
-        return null;
-    }
-
-    private void OnCategorySelected(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    private void OnCategorySelected(object sender, SelectionChangedEventArgs e)
     {
         if (CategoryListBox.SelectedItem is string category)
         {
@@ -106,6 +94,7 @@ public partial class AddToolDialog : Window
     {
         if (_isFolder)
         {
+            // 使用 COM 互操作打开文件夹选择对话框
             var dialog = (IFileDialog)new FileOpenDialogRCW();
             dialog.GetOptions(out var options);
             dialog.SetOptions(options | FOS.FOS_PICKFOLDERS | FOS.FOS_FORCEFILESYSTEM | FOS.FOS_PATHMUSTEXIST);
@@ -116,9 +105,40 @@ public partial class AddToolDialog : Window
                 dialog.GetResult(out var result);
                 result.GetDisplayName(SIGDN.SIGDN_FILESYSPATH, out var path);
                 _selectedPath = path;
-                TxtSelectedPath.Text = _selectedPath;
-                TxtSelectedPath.Foreground = System.Windows.Media.Brushes.White;
-                TxtToolName.Text = Path.GetFileName(_selectedPath);
+
+                // 让用户选择exe文件
+                var exeFiles = Directory.GetFiles(path, "*.exe", SearchOption.TopDirectoryOnly);
+                if (exeFiles.Length == 0)
+                {
+                    TxtSelectedPath.Text = path;
+                    TxtSelectedPath.Foreground = System.Windows.Media.Brushes.White;
+                    TxtToolName.Text = Path.GetFileName(path);
+                }
+                else if (exeFiles.Length == 1)
+                {
+                    _selectedExePath = exeFiles[0];
+                    TxtSelectedPath.Text = $"{path} ({Path.GetFileName(_selectedExePath)})";
+                    TxtSelectedPath.Foreground = System.Windows.Media.Brushes.White;
+                    TxtToolName.Text = Path.GetFileNameWithoutExtension(_selectedExePath);
+                }
+                else
+                {
+                    // 多个exe，让用户选择
+                    var selectDialog = new SelectExeDialog(exeFiles);
+                    if (selectDialog.ShowDialog() == true)
+                    {
+                        _selectedExePath = selectDialog.SelectedExePath;
+                        TxtSelectedPath.Text = $"{path} ({Path.GetFileName(_selectedExePath)})";
+                        TxtSelectedPath.Foreground = System.Windows.Media.Brushes.White;
+                        TxtToolName.Text = Path.GetFileNameWithoutExtension(_selectedExePath);
+                    }
+                    else
+                    {
+                        _selectedPath = null;
+                        TxtSelectedPath.Text = "请选择工具路径...";
+                        TxtSelectedPath.Foreground = System.Windows.Media.Brushes.Gray;
+                    }
+                }
             }
         }
         else
@@ -138,7 +158,7 @@ public partial class AddToolDialog : Window
         }
     }
 
-    private void OnFinishClick(object sender, RoutedEventArgs e)
+    private async void OnFinishClick(object sender, RoutedEventArgs e)
     {
         if (string.IsNullOrWhiteSpace(_selectedPath))
         {
@@ -177,8 +197,40 @@ public partial class AddToolDialog : Window
         CategoryName = category;
         SourcePath = _selectedPath;
 
-        DialogResult = true;
-        Close();
+        // 计算目标路径
+        var destDir = Path.Combine(_toolboxRoot, "工具", category, Path.GetFileName(_selectedPath));
+
+        // 禁用按钮
+        BtnFinish.IsEnabled = false;
+
+        // 显示进度条对话框
+        var progressDialog = new ProgressDialog(_selectedPath, destDir, _isFolder)
+        {
+            Owner = Owner
+        };
+
+        if (progressDialog.ShowDialog() == true)
+        {
+            // 复制成功，设置工具路径
+            if (_isFolder && _selectedExePath != null)
+            {
+                // 使用用户选择的exe路径
+                var relativeExePath = Path.GetRelativePath(_selectedPath, _selectedExePath);
+                SourcePath = Path.Combine(destDir, relativeExePath);
+            }
+            else
+            {
+                SourcePath = destDir;
+            }
+
+            DialogResult = true;
+            Close();
+        }
+        else
+        {
+            // 复制失败或取消
+            BtnFinish.IsEnabled = true;
+        }
     }
 
     private void OnCloseClick(object sender, RoutedEventArgs e)
@@ -195,6 +247,19 @@ public partial class AddToolDialog : Window
             Close();
         };
         BeginAnimation(OpacityProperty, fadeOut);
+    }
+
+    private static T? FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
+    {
+        var count = System.Windows.Media.VisualTreeHelper.GetChildrenCount(parent);
+        for (int i = 0; i < count; i++)
+        {
+            var child = System.Windows.Media.VisualTreeHelper.GetChild(parent, i);
+            if (child is T result) return result;
+            var found = FindVisualChild<T>(child);
+            if (found != null) return found;
+        }
+        return null;
     }
 }
 

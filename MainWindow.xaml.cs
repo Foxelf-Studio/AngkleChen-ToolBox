@@ -251,13 +251,13 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         try
         {
-            // 异步扫描工具
-            var scannedTools = await ToolScanner.ScanToolsAsync();
+            // 加载用户手动添加的工具
+            var userTools = await ToolScanner.LoadUserToolsAsync();
 
-            // 合并硬编码工具和扫描到的工具
+            // 合并硬编码工具和用户工具
             var allTools = new List<ToolInfo>(AllTools);
 
-            foreach (var tool in scannedTools)
+            foreach (var tool in userTools)
             {
                 // 避免重复
                 if (!allTools.Any(t => t.RelativePath.Equals(tool.RelativePath, StringComparison.OrdinalIgnoreCase)))

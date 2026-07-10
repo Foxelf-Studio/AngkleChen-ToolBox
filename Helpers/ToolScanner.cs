@@ -1,4 +1,3 @@
-using System.Collections.Concurrent;
 using System.IO;
 using System.Text.Json;
 using 陈叔叔工具箱.Models;
@@ -6,31 +5,28 @@ using 陈叔叔工具箱.Models;
 namespace 陈叔叔工具箱.Helpers;
 
 /// <summary>
-/// 工具扫描器 - 自动扫描工具文件夹
+/// 工具管理器 - 管理用户手动添加的工具
 /// </summary>
 public static class ToolScanner
 {
     private static readonly string ConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tools.json");
-    private static readonly string ToolsDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "工具");
 
     // 缓存的工具列表
     private static List<ToolInfo>? _cachedTools;
 
     /// <summary>
-    /// 异步扫描工具（带缓存）
+    /// 加载用户手动添加的工具
     /// </summary>
-    public static async Task<List<ToolInfo>> ScanToolsAsync()
+    public static Task<List<ToolInfo>> LoadUserToolsAsync()
     {
-        // 如果有缓存，直接返回
-        if (_cachedTools != null)
-            return _cachedTools;
-
-        // 异步扫描，不阻塞UI
-        return await Task.Run(() =>
+        return Task.Run(() =>
         {
-            var tools = new List<ToolInfo>();
+            if (_cachedTools != null)
+                return _cachedTools;
 
-            // 1. 加载用户自定义工具配置
+            _cachedTools = new List<ToolInfo>();
+
+            // 加载用户自定义工具配置
             if (File.Exists(ConfigPath))
             {
                 try
@@ -39,140 +35,14 @@ public static class ToolScanner
                     var config = JsonSerializer.Deserialize<ToolsConfig>(json);
                     if (config?.Tools != null)
                     {
-                        tools.AddRange(config.Tools);
+                        _cachedTools.AddRange(config.Tools);
                     }
                 }
                 catch { }
             }
 
-            // 2. 扫描工具文件夹
-            if (Directory.Exists(ToolsDir))
-            {
-                ScanDirectory(ToolsDir, tools);
-            }
-
-            // 3. 缓存结果
-            _cachedTools = tools;
-            return tools;
+            return _cachedTools;
         });
-    }
-
-    // 需要过滤的文件名关键词（非工具文件）
-    private static readonly string[] _excludeKeywords = [
-        "uninstall", "unins", "卸载",
-        "update", "升级", "更新",
-        "setup", "安装", "installer",
-        "crash", "dump", "log", "tmp", "temp",
-        "backup", "备份", "bak",
-        "readme", "license", "说明", "help", "帮助",
-        "config", "配置", "settings",
-        "plugin", "插件", "addon",
-        "lib", "dll", "runtime", "依赖"
-    ];
-
-    /// <summary>
-    /// 递归扫描目录
-    /// </summary>
-    private static void ScanDirectory(string dir, List<ToolInfo> tools)
-    {
-        try
-        {
-            // 获取当前目录下的可执行文件
-            foreach (var file in Directory.GetFiles(dir))
-            {
-                var ext = Path.GetExtension(file).ToLower();
-
-                // 只扫描 exe 和 bat 文件
-                if (ext is not (".exe" or ".bat" or ".cmd"))
-                    continue;
-
-                var fileName = Path.GetFileNameWithoutExtension(file).ToLower();
-                var parentDirName = Path.GetFileName(dir).ToLower();
-
-                // 过滤非工具文件
-                if (_excludeKeywords.Any(k => fileName.Contains(k)))
-                    continue;
-
-                // 如果文件名与父目录名不同，可能是辅助程序（除非是单文件工具）
-                // 只有当目录下有多个exe时才过滤
-                var exeFiles = Directory.GetFiles(dir, "*.exe");
-                if (exeFiles.Length > 1)
-                {
-                    // 多个exe时，只保留与目录名相同或最相似的
-                    if (!fileName.Contains(parentDirName) && !parentDirName.Contains(fileName))
-                    {
-                        // 检查是否有更匹配的exe
-                        var bestMatch = exeFiles.FirstOrDefault(f =>
-                        {
-                            var fName = Path.GetFileNameWithoutExtension(f).ToLower();
-                            return fName.Contains(parentDirName) || parentDirName.Contains(fName);
-                        });
-
-                        if (bestMatch != null && bestMatch != file)
-                            continue; // 跳过这个不匹配的文件
-                    }
-                }
-
-                // 过滤小文件（可能是依赖库）
-                var fileInfo = new FileInfo(file);
-                if (fileInfo.Length < 10240) // 小于10KB
-                    continue;
-
-                var relativePath = Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, file);
-                var category = GetCategoryFromPath(dir);
-                var name = Path.GetFileNameWithoutExtension(file);
-
-                // 检查是否已存在（避免重复）
-                if (!tools.Any(t => t.RelativePath.Equals(relativePath, StringComparison.OrdinalIgnoreCase)))
-                {
-                    tools.Add(new ToolInfo(
-                        Name: name,
-                        Category: category,
-                        Icon: " ",
-                        Description: GetDescription(file),
-                        RelativePath: relativePath
-                    ));
-                }
-            }
-
-            // 递归扫描子目录
-            foreach (var subDir in Directory.GetDirectories(dir))
-            {
-                ScanDirectory(subDir, tools);
-            }
-        }
-        catch { }
-    }
-
-    /// <summary>
-    /// 从路径推断分类
-    /// </summary>
-    private static string GetCategoryFromPath(string dir)
-    {
-        var relativePath = Path.GetRelativePath(ToolsDir, dir);
-        var parts = relativePath.Split(Path.DirectorySeparatorChar);
-
-        // 第一级目录作为分类
-        if (parts.Length > 0 && parts[0] != ".")
-            return parts[0];
-
-        return "未分类";
-    }
-
-    /// <summary>
-    /// 获取工具描述（从exe文件版本信息）
-    /// </summary>
-    private static string GetDescription(string filePath)
-    {
-        try
-        {
-            var versionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(filePath);
-            if (!string.IsNullOrEmpty(versionInfo.FileDescription))
-                return versionInfo.FileDescription;
-        }
-        catch { }
-
-        return Path.GetFileNameWithoutExtension(filePath);
     }
 
     /// <summary>
@@ -183,6 +53,7 @@ public static class ToolScanner
         var config = new ToolsConfig { Tools = tools };
         var json = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
         File.WriteAllText(ConfigPath, json);
+        _cachedTools = tools;
     }
 
     /// <summary>
@@ -191,9 +62,13 @@ public static class ToolScanner
     public static void AddTool(ToolInfo tool)
     {
         var tools = _cachedTools ?? new List<ToolInfo>();
-        tools.Add(tool);
-        _cachedTools = tools;
-        SaveConfig(tools);
+
+        // 检查是否已存在
+        if (!tools.Any(t => t.RelativePath == tool.RelativePath))
+        {
+            tools.Add(tool);
+            SaveConfig(tools);
+        }
     }
 
     /// <summary>
@@ -208,26 +83,11 @@ public static class ToolScanner
     }
 
     /// <summary>
-    /// 清除缓存（强制重新扫描）
+    /// 清除缓存
     /// </summary>
     public static void ClearCache()
     {
         _cachedTools = null;
-    }
-
-    /// <summary>
-    /// 获取所有分类
-    /// </summary>
-    public static string[] GetCategories()
-    {
-        if (_cachedTools == null)
-            return Array.Empty<string>();
-
-        return _cachedTools
-            .Select(t => t.Category)
-            .Distinct()
-            .OrderBy(c => c)
-            .ToArray();
     }
 }
 
