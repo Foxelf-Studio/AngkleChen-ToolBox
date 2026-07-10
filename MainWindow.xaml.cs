@@ -480,32 +480,34 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         {
             try
             {
-                var targetDir = Path.Combine(ToolboxRoot, "工具", dialog.CategoryName!);
+                // 创建新工具信息
+                var newTool = new ToolInfo(
+                    Name: dialog.ToolName!,
+                    Category: dialog.CategoryName!,
+                    Icon: " ",
+                    Description: dialog.ToolDescription ?? "",
+                    RelativePath: dialog.SourcePath!
+                );
 
-                // 创建分类目录（如果不存在）
-                if (!Directory.Exists(targetDir))
-                    Directory.CreateDirectory(targetDir);
+                // 添加到工具列表
+                var toolsList = AllTools.ToList();
+                toolsList.Add(newTool);
+                AllTools = toolsList.ToArray();
 
-                var sourcePath = dialog.SourcePath!;
-                var isFolder = Directory.Exists(sourcePath);
+                // 添加到用户工具配置
+                ToolScanner.AddTool(newTool);
 
-                string destPath;
-                if (isFolder)
+                // 更新分类列表（如果需要）
+                var existingCat = Categories.FirstOrDefault(c => c.Id == dialog.CategoryName);
+                if (existingCat == null)
                 {
-                    // 复制整个文件夹
-                    var folderName = Path.GetFileName(sourcePath);
-                    destPath = Path.Combine(targetDir, folderName);
-                    CopyDirectory(sourcePath, destPath);
-                }
-                else
-                {
-                    // 复制单个文件
-                    var fileName = Path.GetFileName(sourcePath);
-                    destPath = Path.Combine(targetDir, fileName);
-                    File.Copy(sourcePath, destPath, true);
+                    var categoriesList = Categories.ToList();
+                    categoriesList.Add(new CatInfo(dialog.CategoryName!, dialog.CategoryName!, " ", dialog.CategoryName!));
+                    Categories = categoriesList.ToArray();
+                    CategoryList.ItemsSource = Categories;
                 }
 
-                // 刷新工具列表
+                // 刷新界面
                 ApplyFilter();
                 StatusTip = $"已添加工具: {dialog.ToolName}";
             }
