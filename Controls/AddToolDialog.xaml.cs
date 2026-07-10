@@ -62,11 +62,6 @@ public partial class AddToolDialog : Window
             DragMove();
     }
 
-    private void OnMinimizeClick(object sender, RoutedEventArgs e)
-    {
-        WindowState = WindowState.Minimized;
-    }
-
     private void OnComboClick(object sender, MouseButtonEventArgs e)
     {
         _isDropDownOpen = !_isDropDownOpen;
