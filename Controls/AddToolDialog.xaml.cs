@@ -2,7 +2,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Interop;
+using System.Windows.Media.Animation;
 using Microsoft.Win32;
 
 namespace 陈叔叔工具箱.Controls;
@@ -43,36 +43,16 @@ public partial class AddToolDialog : Window
             NewCategoryBorder.Visibility = Visibility.Visible;
         };
 
-        // 加载完成后设置圆角区域
-        Loaded += (_, _) => SetRoundedRegion(8);
-    }
-
-    private void SetRoundedRegion(int radius)
-    {
-        var helper = new WindowInteropHelper(this);
-        var rect = new RECT(0, 0, (int)ActualWidth, (int)ActualHeight);
-        var hRgn = CreateRoundRectRgn(rect.Left, rect.Top, rect.Right + 1, rect.Bottom + 1, radius * 2, radius * 2);
-        SetWindowRgn(helper.Handle, hRgn, true);
-        DeleteObject(hRgn);
-    }
-
-    [DllImport("gdi32.dll")]
-    private static extern IntPtr CreateRoundRectRgn(int x1, int y1, int x2, int y2, int cx, int cy);
-
-    [DllImport("user32.dll")]
-    private static extern int SetWindowRgn(IntPtr hWnd, IntPtr hRgn, bool bRedraw);
-
-    [DllImport("gdi32.dll")]
-    private static extern bool DeleteObject(IntPtr hObject);
-
-    [StructLayout(LayoutKind.Sequential)]
-    private struct RECT
-    {
-        public int Left, Top, Right, Bottom;
-        public RECT(int left, int top, int right, int bottom)
+        // 打开动画
+        Opacity = 0;
+        Loaded += (_, _) =>
         {
-            Left = left; Top = top; Right = right; Bottom = bottom;
-        }
+            var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(200))
+            {
+                EasingFunction = new PowerEase { EasingMode = EasingMode.EaseOut, Power = 2 }
+            };
+            BeginAnimation(OpacityProperty, fadeIn);
+        };
     }
 
     private void TitleBar_Drag(object sender, MouseButtonEventArgs e)
@@ -107,7 +87,6 @@ public partial class AddToolDialog : Window
     {
         if (_isFolder)
         {
-            // 使用 COM 互操作打开文件夹选择对话框
             var dialog = (IFileDialog)new FileOpenDialogRCW();
             dialog.GetOptions(out var options);
             dialog.SetOptions(options | FOS.FOS_PICKFOLDERS | FOS.FOS_FORCEFILESYSTEM | FOS.FOS_PATHMUSTEXIST);
@@ -185,14 +164,23 @@ public partial class AddToolDialog : Window
 
     private void OnCancelClick(object sender, RoutedEventArgs e)
     {
-        DialogResult = false;
-        Close();
+        CloseWithAnimation();
     }
 
     private void OnCloseClick(object sender, RoutedEventArgs e)
     {
-        DialogResult = false;
-        Close();
+        CloseWithAnimation();
+    }
+
+    private void CloseWithAnimation()
+    {
+        var fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(150));
+        fadeOut.Completed += (_, _) =>
+        {
+            DialogResult = false;
+            Close();
+        };
+        BeginAnimation(OpacityProperty, fadeOut);
     }
 }
 
