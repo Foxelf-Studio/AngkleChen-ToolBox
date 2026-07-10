@@ -1,6 +1,7 @@
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using Microsoft.Win32;
@@ -67,11 +68,28 @@ public partial class AddToolDialog : Window
         _isDropDownOpen = !_isDropDownOpen;
         DropDownPanel.Visibility = _isDropDownOpen ? Visibility.Visible : Visibility.Collapsed;
 
-        // 展开时自动滚动到最底部
-        if (_isDropDownOpen && CategoryListBox.Items.Count > 0)
+        // 展开时把窗口滚动到最底部
+        if (_isDropDownOpen)
         {
-            CategoryListBox.ScrollIntoView(CategoryListBox.Items[CategoryListBox.Items.Count - 1]);
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                var scrollViewer = FindVisualChild<ScrollViewer>(this);
+                scrollViewer?.ScrollToBottom();
+            }), System.Windows.Threading.DispatcherPriority.Loaded);
         }
+    }
+
+    private static T? FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
+    {
+        var count = System.Windows.Media.VisualTreeHelper.GetChildrenCount(parent);
+        for (int i = 0; i < count; i++)
+        {
+            var child = System.Windows.Media.VisualTreeHelper.GetChild(parent, i);
+            if (child is T result) return result;
+            var found = FindVisualChild<T>(child);
+            if (found != null) return found;
+        }
+        return null;
     }
 
     private void OnCategorySelected(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
