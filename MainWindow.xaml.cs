@@ -346,6 +346,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     }
 
     // ── 右键菜单：删除分类 ──────────────────────────
+    // ── Win11 风格右键菜单 ──────────────────────────
+    private static Window? _activeMenu;
+    private static bool _isMenuClosing;
+
     private void NavItem_RightClick(object sender, MouseButtonEventArgs e)
     {
         if (sender is not ListBoxItem item) return;
@@ -353,21 +357,183 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if (cat.Id == "all") return; // 不允许删除"全部工具"
 
         e.Handled = true;
-
-        // 创建右键菜单
-        var contextMenu = new ContextMenu();
-
-        var deleteMenuItem = new MenuItem
-        {
-            Header = "删除分类",
-        };
-        deleteMenuItem.Click += (s, args) => DeleteCategory(cat);
-        contextMenu.Items.Add(deleteMenuItem);
-
-        // 显示菜单
-        contextMenu.PlacementTarget = item;
-        contextMenu.IsOpen = true;
+        ShowCategoryMenu(cat, e);
     }
+
+    private void ShowCategoryMenu(CatInfo cat, MouseButtonEventArgs e)
+    {
+        // 关闭已有菜单
+        _activeMenu?.Close();
+        _activeMenu = null;
+
+        // 计算位置
+        var screenPos = PointToScreen(e.GetPosition(this));
+
+        // 创建菜单窗口
+        var menu = new Window
+        {
+            WindowStyle = WindowStyle.None,
+            AllowsTransparency = false,
+            Background = new SolidColorBrush(Color.FromRgb(0x2b, 0x2b, 0x2b)),
+            Width = 224,
+            SizeToContent = SizeToContent.Height,
+            ShowInTaskbar = false,
+            Topmost = true,
+            Left = screenPos.X + 8,
+            Top = screenPos.Y - 10,
+            ResizeMode = ResizeMode.NoResize,
+        };
+
+        // 加载后设置圆角区域
+        menu.Loaded += (_, _) =>
+        {
+            var helper = new System.Windows.Interop.WindowInteropHelper(menu);
+            int width = (int)menu.ActualWidth;
+            int height = (int)menu.ActualHeight;
+            var hRgn = CreateRoundRectRgn(0, 0, width + 1, height + 1, 16, 16);
+            SetWindowRgn(helper.Handle, hRgn, true);
+            DeleteObject(hRgn);
+        };
+
+        // 主容器
+        var border = new Border
+        {
+            Background = new SolidColorBrush(Color.FromRgb(0x2b, 0x2b, 0x2b)),
+            CornerRadius = new CornerRadius(8),
+            BorderBrush = new SolidColorBrush(Color.FromArgb(0x33, 0xff, 0xff, 0xff)),
+            BorderThickness = new Thickness(1),
+            Margin = new Thickness(0),
+        };
+
+        var stack = new StackPanel { Margin = new Thickness(4) };
+
+        // 关闭菜单方法
+        void CloseMenuWithAnimation(Action? onClosed = null)
+        {
+            if (_isMenuClosing) return;
+            _isMenuClosing = true;
+
+            var fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(100));
+            fadeOut.Completed += (_, _) =>
+            {
+                menu.Close();
+                _activeMenu = null;
+                _isMenuClosing = false;
+                onClosed?.Invoke();
+            };
+            menu.BeginAnimation(Window.OpacityProperty, fadeOut);
+        }
+
+        // 删除分类菜单项
+        stack.Children.Add(CreateMenuItem(
+            "M 3 3 L 5 3 L 5 1 L 11 1 L 11 3 L 13 3 L 13 5 L 3 5 Z M 4 5 L 12 5 L 11 15 L 5 15 Z",
+            "删除分类", () =>
+        {
+            CloseMenuWithAnimation(() => DeleteCategory(cat));
+        }, isDestructive: true));
+
+        border.Child = stack;
+        menu.Content = border;
+        menu.Opacity = 0;
+
+        // 失去焦点时关闭
+        menu.Deactivated += (_, _) => CloseMenuWithAnimation();
+        menu.Closed += (_, _) =>
+        {
+            if (_activeMenu == menu) _activeMenu = null;
+        };
+
+        menu.Show();
+        _activeMenu = menu;
+
+        // 确保不超出屏幕
+        menu.UpdateLayout();
+        var workArea = SystemParameters.WorkArea;
+        if (menu.Left + menu.Width > workArea.Right)
+            menu.Left = screenPos.X - menu.Width - 8;
+        if (menu.Top + menu.Height > workArea.Bottom)
+            menu.Top = workArea.Bottom - menu.Height - 8;
+
+        // 淡入动画
+        var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(150))
+        {
+            EasingFunction = new PowerEase { EasingMode = EasingMode.EaseOut, Power = 2 }
+        };
+        menu.BeginAnimation(Window.OpacityProperty, fadeIn);
+    }
+
+    private static Border CreateMenuItem(string pathData, string text, Action onClick, bool isDestructive = false)
+    {
+        var bgBrush = new SolidColorBrush(Color.FromRgb(0x2d, 0x2d, 0x2d));
+        var item = new Border
+        {
+            CornerRadius = new CornerRadius(4),
+            Padding = new Thickness(10, 8, 10, 8),
+            Cursor = Cursors.Hand,
+            Background = bgBrush,
+        };
+
+        var grid = new Grid();
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(24) });
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+        var iconPath = new System.Windows.Shapes.Path
+        {
+            Data = Geometry.Parse(pathData),
+            Fill = new SolidColorBrush(isDestructive ? Color.FromRgb(0xff, 0x6b, 0x6b) : Color.FromRgb(0xaa, 0xaa, 0xaa)),
+            Width = 14,
+            Height = 14,
+            Stretch = Stretch.Uniform,
+            VerticalAlignment = VerticalAlignment.Center,
+            HorizontalAlignment = HorizontalAlignment.Center,
+        };
+        Grid.SetColumn(iconPath, 0);
+
+        var nameText = new TextBlock
+        {
+            Text = text,
+            FontFamily = new FontFamily("Microsoft YaHei"),
+            FontSize = 12,
+            Foreground = isDestructive ? new SolidColorBrush(Color.FromRgb(0xff, 0x6b, 0x6b)) : Brushes.White,
+            VerticalAlignment = VerticalAlignment.Center,
+            Margin = new Thickness(8, 0, 0, 0),
+        };
+        Grid.SetColumn(nameText, 1);
+
+        grid.Children.Add(iconPath);
+        grid.Children.Add(nameText);
+        item.Child = grid;
+
+        var hoverColor = Color.FromRgb(0x35, 0x35, 0x35);
+        var normalColor = Color.FromRgb(0x2d, 0x2d, 0x2d);
+
+        item.MouseEnter += (_, _) =>
+        {
+            var anim = new ColorAnimation(hoverColor, TimeSpan.FromMilliseconds(150));
+            bgBrush.BeginAnimation(SolidColorBrush.ColorProperty, anim);
+        };
+        item.MouseLeave += (_, _) =>
+        {
+            var anim = new ColorAnimation(normalColor, TimeSpan.FromMilliseconds(150));
+            bgBrush.BeginAnimation(SolidColorBrush.ColorProperty, anim);
+        };
+        item.PreviewMouseLeftButtonDown += (_, e) =>
+        {
+            e.Handled = true;
+            onClick();
+        };
+
+        return item;
+    }
+
+    [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+    private static extern IntPtr CreateRoundRectRgn(int x1, int y1, int x2, int y2, int cx, int cy);
+
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    private static extern int SetWindowRgn(IntPtr hWnd, IntPtr hRgn, bool bRedraw);
+
+    [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+    private static extern bool DeleteObject(IntPtr hObject);
 
 
 
