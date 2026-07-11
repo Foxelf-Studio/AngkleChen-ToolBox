@@ -242,15 +242,16 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 await Dispatcher.InvokeAsync(() =>
                 {
                     ApplyFilter();
+                });
 
-                    // 异步加载图标（后台线程，不阻塞 UI）
-                    var toolPaths = AllTools.Select(t => t.RelativePath).ToList();
-                    Task.Run(async () =>
-                    {
-                        await IconHelper.LoadIconsAsync(toolPaths);
-                        // 图标加载完成后刷新界面
-                        await Dispatcher.InvokeAsync(() => ApplyFilter());
-                    });
+                // 在后台线程异步加载图标
+                var toolPaths = AllTools.Select(t => t.RelativePath).ToList();
+                await IconHelper.LoadIconsAsync(toolPaths);
+
+                // 图标加载完成后刷新界面
+                await Dispatcher.InvokeAsync(() =>
+                {
+                    ApplyFilter();
                 });
             });
 
