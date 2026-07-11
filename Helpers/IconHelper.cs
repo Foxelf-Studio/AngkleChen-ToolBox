@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
@@ -7,51 +8,88 @@ using System.Windows.Media.Imaging;
 
 namespace 陈叔叔工具箱.Helpers;
 
-/// <summary>
-/// 图标提取助手 - 支持异步加载和缓存
-/// </summary>
 public static class IconHelper
 {
     private static readonly ConcurrentDictionary<string, ImageSource> _cache = new();
     private static string _toolboxRoot = "";
-    private static readonly ImageSource _defaultIcon;
-
-    static IconHelper()
-    {
-        // 创建默认图标（透明像素）
-        var fb = new WriteableBitmap(1, 1, 96, 96, PixelFormats.Bgra32, null);
-        fb.Freeze();
-        _defaultIcon = fb;
-    }
 
     public static void Init(string root) => _toolboxRoot = root;
 
-    /// <summary>
-    /// 同步获取图标（从缓存）
-    /// </summary>
     public static ImageSource GetIcon(string relativePath)
     {
-        var fullPath = System.IO.Path.Combine(_toolboxRoot, relativePath);
-        return _cache.GetOrAdd(fullPath, _ => _defaultIcon);
+        var fullPath = Path.Combine(_toolboxRoot, relativePath);
+
+        // 先尝试从缓存文件加载
+        var cachePath = AppConfig.GetIconCachePath(relativePath);
+        if (File.Exists(cachePath))
+        {
+            return _cache.GetOrAdd(fullPath, _ => LoadIconFromFile(cachePath));
+        }
+
+        return _cache.GetOrAdd(fullPath, ExtractIcon);
     }
 
     /// <summary>
-    /// 异步加载图标
+    /// 从缓存文件加载图标
     /// </summary>
-    public static async Task LoadIconsAsync(IEnumerable<string> relativePaths)
+    private static ImageSource LoadIconFromFile(string filePath)
     {
-        await Task.Run(() =>
+        try
         {
-            foreach (var relativePath in relativePaths)
+            var bytes = File.ReadAllBytes(filePath);
+            using var stream = new MemoryStream(bytes);
+            var bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.StreamSource = stream;
+            bitmap.EndInit();
+            bitmap.Freeze();
+            return bitmap;
+        }
+        catch
+        {
+            var fb = new WriteableBitmap(1, 1, 96, 96, PixelFormats.Bgra32, null);
+            fb.Freeze();
+            return fb;
+        }
+    }
+
+    /// <summary>
+    /// 提取图标并返回 PNG 字节数组（用于缓存）
+    /// </summary>
+    public static byte[]? ExtractIconToFile(string path)
+    {
+        try
+        {
+            // 对于打开网页的 .bat 文件，使用 Edge 浏览器图标
+            var iconPath = path;
+            if (Path.GetExtension(path).Equals(".bat", StringComparison.OrdinalIgnoreCase))
             {
-                var fullPath = System.IO.Path.Combine(_toolboxRoot, relativePath);
-                if (!_cache.ContainsKey(fullPath))
+                if (_edgeIconKeywords.Any(k => path.Contains(k)))
                 {
-                    var icon = ExtractIcon(fullPath);
-                    _cache[fullPath] = icon;
+                    var edgePath = @"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe";
+                    if (File.Exists(edgePath))
+                        iconPath = edgePath;
                 }
             }
-        });
+
+            var info = new SHFILEINFO();
+            SHGetFileInfo(iconPath, 0, ref info, (uint)Marshal.SizeOf<SHFILEINFO>(),
+                SHGFI_ICON | SHGFI_LARGEICON);
+
+            if (info.hIcon != IntPtr.Zero)
+            {
+                using var icon = System.Drawing.Icon.FromHandle(info.hIcon);
+                using var bitmap = icon.ToBitmap();
+                using var stream = new MemoryStream();
+                bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                DestroyIcon(info.hIcon);
+                return stream.ToArray();
+            }
+        }
+        catch { }
+
+        return null;
     }
 
     // 需要使用 Edge 图标的 bat 文件路径关键词
@@ -67,12 +105,12 @@ public static class IconHelper
         {
             // 对于打开网页的 .bat 文件，使用 Edge 浏览器图标
             var iconPath = path;
-            if (System.IO.Path.GetExtension(path).Equals(".bat", StringComparison.OrdinalIgnoreCase))
+            if (Path.GetExtension(path).Equals(".bat", StringComparison.OrdinalIgnoreCase))
             {
                 if (_edgeIconKeywords.Any(k => path.Contains(k)))
                 {
                     var edgePath = @"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe";
-                    if (System.IO.File.Exists(edgePath))
+                    if (File.Exists(edgePath))
                         iconPath = edgePath;
                 }
             }
@@ -93,7 +131,9 @@ public static class IconHelper
         }
         catch { }
 
-        return _defaultIcon;
+        var fb = new WriteableBitmap(1, 1, 96, 96, PixelFormats.Bgra32, null);
+        fb.Freeze();
+        return fb;
     }
 
     // ── P/Invoke ────────────────────────────────────

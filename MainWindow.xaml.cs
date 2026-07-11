@@ -10,6 +10,7 @@ using System.Windows.Media.Animation;
 using 陈叔叔工具箱.Controls;
 using 陈叔叔工具箱.Helpers;
 using 陈叔叔工具箱.Models;
+using CatInfo = 陈叔叔工具箱.Models.CatInfo;
 
 using DoubleAnimation = System.Windows.Media.Animation.DoubleAnimation;
 using PowerEase = System.Windows.Media.Animation.PowerEase;
@@ -24,8 +25,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     // ── 工具箱根目录 ──────────────────────────────
     private static readonly string ToolboxRoot = AppDomain.CurrentDomain.BaseDirectory;
 
-    // ── 分类 ──────────────────────────────────────
-    private record CatInfo(string Id, string Name, string IconGlyph, string Subtitle);
+    // ── 配置管理器 ────────────────────────────────
+    private AppConfig _config = null!;
+
 
     // Segoe MDL2 Assets — Windows 内置官方图标字体
     private CatInfo[] Categories =
@@ -218,42 +220,23 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         // 初始化图标缓存
         IconHelper.Init(ToolboxRoot);
 
-        _suppressAnim = true; // 必须在 SelectedIndex 之前，抑制初始加载动画
+        // 加载配置
+        _config = AppConfig.Load();
 
-        // 先加载删除的分类，过滤掉已删除的分类后再显示
-        var deletedCategories = LoadDeletedCategories();
-        Categories = Categories.Where(c => !deletedCategories.Contains(c.Id)).ToArray();
-        CategoryList.ItemsSource = Categories;
-        CategoryList.SelectedIndex = 0;
+        _suppressAnim = true;
+
+        // 从配置加载分类和工具
+        LoadFromConfig();
 
         // 初始化指示条
         Dispatcher.BeginInvoke(new Action(() => MoveIndicator(0, false)),
             System.Windows.Threading.DispatcherPriority.Loaded);
 
-        // 异步加载工具（不阻塞UI）
+        // 延迟加载图标和检查更新
         Loaded += (_, _) =>
         {
-            // 使用 Task.Run 在后台线程加载，不阻塞 UI
-            Task.Run(async () =>
-            {
-                await LoadToolsAsync();
-
-                // 回到 UI 线程更新界面
-                await Dispatcher.InvokeAsync(() =>
-                {
-                    ApplyFilter();
-                });
-
-                // 在后台线程异步加载图标
-                var toolPaths = AllTools.Select(t => t.RelativePath).ToList();
-                await IconHelper.LoadIconsAsync(toolPaths);
-
-                // 图标加载完成后刷新界面
-                await Dispatcher.InvokeAsync(() =>
-                {
-                    ApplyFilter();
-                });
-            });
+            // 后台缓存图标
+            Task.Run(() => _config.CacheAllIcons());
 
             // 延迟2秒检查更新
             var timer = new System.Windows.Threading.DispatcherTimer
@@ -269,81 +252,21 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         };
     }
 
-    // ── 异步加载工具 ──────────────────────────────
-    private async Task LoadToolsAsync()
+    // ── 从配置加载数据 ────────────────────────────
+    private void LoadFromConfig()
     {
-        try
+        // 加载分类
+        var categories = new List<CatInfo>
         {
-            // 加载用户手动添加的工具
-            var userTools = await ToolScanner.LoadUserToolsAsync();
+            new("all", "全部工具", " ", "浏览所有工具")
+        };
+        categories.AddRange(_config.GetCategories());
+        Categories = categories.ToArray();
+        CategoryList.ItemsSource = Categories;
+        CategoryList.SelectedIndex = 0;
 
-            // 合并硬编码工具和用户工具
-            var allTools = new List<ToolInfo>(AllTools);
-
-            foreach (var tool in userTools)
-            {
-                // 避免重复
-                if (!allTools.Any(t => t.RelativePath.Equals(tool.RelativePath, StringComparison.OrdinalIgnoreCase)))
-                {
-                    allTools.Add(tool);
-                }
-            }
-
-            AllTools = allTools.ToArray();
-
-            // 更新分类列表
-            var categories = new List<CatInfo>
-            {
-                new("all", "全部工具", "", "浏览所有工具")
-            };
-
-            // 从工具列表中提取分类，排除已删除的分类
-            var deletedCategories = LoadDeletedCategories();
-            var toolCategories = AllTools
-                .Select(t => t.Category)
-                .Distinct()
-                .Where(c => !deletedCategories.Contains(c))
-                .OrderBy(c => c);
-
-            foreach (var cat in toolCategories)
-            {
-                // 查找分类图标
-                var existingCat = Categories.FirstOrDefault(c => c.Id == cat);
-                if (existingCat != null)
-                {
-                    categories.Add(existingCat);
-                }
-                else
-                {
-                    categories.Add(new CatInfo(cat, cat, " ", cat));
-                }
-            }
-
-            // 按照指定顺序排序分类
-            var categoryOrder = new List<string>
-            {
-                "全部工具", "娱乐工具", "实用工具", "搞机工具", "文件工具", "清理工具",
-                "依赖", "CPU工具", "内存工具", "显卡工具", "硬盘工具", "烤鸡工具",
-                "外设工具", "显示器工具", "系统工具", "游戏平台"
-            };
-
-            categories.Sort((a, b) =>
-            {
-                var indexA = categoryOrder.IndexOf(a.Name);
-                var indexB = categoryOrder.IndexOf(b.Name);
-                if (indexA == -1) indexA = 100;
-                if (indexB == -1) indexB = 100;
-                return indexA.CompareTo(indexB);
-            });
-
-            Categories = categories.ToArray();
-            CategoryList.ItemsSource = Categories;
-            CategoryList.SelectedIndex = 0;
-        }
-        catch (Exception ex)
-        {
-            Logger.Log($"加载工具失败: {ex.Message}");
-        }
+        // 加载工具
+        AllTools = _config.GetAllTools().ToArray();
     }
 
     // ── 导航按钮线性高亮动画 ──────────────────────
@@ -594,9 +517,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             Categories = list.ToArray();
             CategoryList.ItemsSource = Categories;
 
-            // 保存已删除的分类到配置文件
-            SaveDeletedCategories(cat.Name);
-
             // 如果删除的是当前选中的分类，切换到"全部工具"
             if (_activeCategory == cat.Id)
             {
@@ -613,43 +533,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         }
     }
 
-    private void SaveDeletedCategories(string categoryName)
-    {
-        var configPath = Path.Combine(ToolboxRoot, "deleted_categories.json");
-        var deleted = new List<string>();
 
-        if (File.Exists(configPath))
-        {
-            try
-            {
-                var json = File.ReadAllText(configPath);
-                deleted = System.Text.Json.JsonSerializer.Deserialize<List<string>>(json) ?? new List<string>();
-            }
-            catch { }
-        }
-
-        if (!deleted.Contains(categoryName))
-        {
-            deleted.Add(categoryName);
-            File.WriteAllText(configPath, System.Text.Json.JsonSerializer.Serialize(deleted));
-        }
-    }
-
-    private List<string> LoadDeletedCategories()
-    {
-        var configPath = Path.Combine(ToolboxRoot, "deleted_categories.json");
-        if (!File.Exists(configPath)) return new List<string>();
-
-        try
-        {
-            var json = File.ReadAllText(configPath);
-            return System.Text.Json.JsonSerializer.Deserialize<List<string>>(json) ?? new List<string>();
-        }
-        catch
-        {
-            return new List<string>();
-        }
-    }
 
     private void ResetNavItemBackgrounds()
     {
@@ -734,10 +618,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private void OnAddTool(object sender, RoutedEventArgs e)
     {
         // 获取已有分类列表
-        var existingCategories = Categories
-            .Where(c => c.Id != "all")
-            .Select(c => c.Name)
-            .ToArray();
+        var existingCategories = _config.Categories.Select(c => c.Name).ToArray();
 
         var dialog = new AddToolDialog(ToolboxRoot, existingCategories)
         {
@@ -748,32 +629,19 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         {
             try
             {
-                // 创建新工具信息
-                var newTool = new ToolInfo(
-                    Name: dialog.ToolName!,
-                    Category: dialog.CategoryName!,
-                    Icon: " ",
-                    Description: dialog.ToolDescription ?? "",
-                    RelativePath: dialog.SourcePath!
-                );
-
-                // 添加到工具列表
-                var toolsList = AllTools.ToList();
-                toolsList.Add(newTool);
-                AllTools = toolsList.ToArray();
-
-                // 添加到用户工具配置
-                ToolScanner.AddTool(newTool);
-
-                // 更新分类列表（如果需要）
-                var existingCat = Categories.FirstOrDefault(c => c.Id == dialog.CategoryName);
-                if (existingCat == null)
+                // 创建新工具配置
+                var newTool = new AppConfig.ToolConfig
                 {
-                    var categoriesList = Categories.ToList();
-                    categoriesList.Add(new CatInfo(dialog.CategoryName!, dialog.CategoryName!, " ", dialog.CategoryName!));
-                    Categories = categoriesList.ToArray();
-                    CategoryList.ItemsSource = Categories;
-                }
+                    Name = dialog.ToolName!,
+                    Description = dialog.ToolDescription ?? "",
+                    RelativePath = dialog.SourcePath!
+                };
+
+                // 添加到配置
+                _config.AddTool(dialog.CategoryName!, newTool);
+
+                // 重新加载配置
+                LoadFromConfig();
 
                 // 刷新界面
                 ApplyFilter();
@@ -1227,33 +1095,23 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
         try
         {
-            // 确定要删除的目标（如果是文件，删除其父文件夹）
-            string? targetDir = null;
+            // 从配置中删除
+            _config.RemoveTool(t.RelativePath);
 
+            // 删除文件/文件夹
             if (File.Exists(path))
             {
-                targetDir = Path.GetDirectoryName(path);
+                var dir = Path.GetDirectoryName(path);
+                if (dir != null && Directory.Exists(dir))
+                    Directory.Delete(dir, true);
             }
             else if (Directory.Exists(path))
             {
-                targetDir = path;
-            }
-            else
-            {
-                CustomMessageBox.Show("文件不存在，可能已被删除。", "提示");
+                Directory.Delete(path, true);
             }
 
-            // 删除整个文件夹
-            if (targetDir != null && Directory.Exists(targetDir))
-            {
-                Directory.Delete(targetDir, true);
-                Logger.Log($"删除文件夹: {targetDir}");
-            }
-
-            // 从 AllTools 中移除该工具（避免重复显示）
-            var toolsList = AllTools.ToList();
-            toolsList.RemoveAll(x => x.RelativePath == t.RelativePath);
-            AllTools = toolsList.ToArray();
+            // 重新加载配置
+            LoadFromConfig();
 
             // 刷新工具列表
             ApplyFilter();
