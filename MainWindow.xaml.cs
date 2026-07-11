@@ -271,7 +271,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             // 更新分类列表
             var categories = new List<CatInfo>
             {
-                new("all", "全部工具", "", "浏览所有工具")
+                new("all", "全部工具", "", "浏览所有工具")
             };
 
             // 从工具列表中提取分类

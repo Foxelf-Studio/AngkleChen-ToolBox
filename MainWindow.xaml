@@ -406,7 +406,7 @@
                         </Grid.RowDefinitions>
 
                         <!-- 标题行 -->
-                        <Grid Grid.Row="0">
+                        <Grid Grid.Row="0" Margin="0,-4,0,0">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <TextBlock Text="&#xE895;"
                                            FontFamily="Segoe MDL2 Assets"
@@ -426,11 +426,9 @@
                                     FontFamily="Segoe MDL2 Assets"
                                     FontSize="10"
                                     Foreground="#777777"
-                                    Background="Transparent"
-                                    BorderThickness="0"
-                                    Width="24" Height="24"
-                                    Padding="0"
-                                    Click="OnToastCloseClick" />
+                                    Width="20" Height="20"
+                                    Click="OnToastCloseClick"
+                                    Style="{StaticResource SmallCaptionButton}" />
                         </Grid>
 
                         <!-- 描述 -->
@@ -439,7 +437,8 @@
                                    FontFamily="Microsoft YaHei"
                                    FontSize="11"
                                    Foreground="#aaaaaa"
-                                   VerticalAlignment="Center" />
+                                   VerticalAlignment="Center"
+                                   Margin="0,-4,0,0" />
 
                         <!-- 按钮 -->
                         <Button Grid.Row="2"
