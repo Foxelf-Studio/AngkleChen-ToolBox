@@ -427,7 +427,7 @@
                                     FontSize="8"
                                     Foreground="#777777"
                                     Width="15" Height="15"
-                                    Margin="0,-2,-5,0"
+                                    Margin="0,1,-5,0"
                                     Click="OnToastCloseClick"
                                     Style="{StaticResource ToastCloseButton}" />
                         </Grid>
