@@ -219,6 +219,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         IconHelper.Init(ToolboxRoot);
 
         _suppressAnim = true; // 必须在 SelectedIndex 之前，抑制初始加载动画
+
+        // 先加载删除的分类，过滤掉已删除的分类后再显示
+        var deletedCategories = LoadDeletedCategories();
+        Categories = Categories.Where(c => !deletedCategories.Contains(c.Id)).ToArray();
         CategoryList.ItemsSource = Categories;
         CategoryList.SelectedIndex = 0;
 
