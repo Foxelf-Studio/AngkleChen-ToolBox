@@ -132,7 +132,6 @@
                          Background="Transparent"
                          BorderThickness="0"
                          SelectionChanged="OnCategoryChanged"
-                         PreviewMouseRightButtonDown="CategoryList_PreviewMouseRightButtonDown"
                          Margin="4,0,4,0"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
@@ -148,7 +147,7 @@
                             <Setter Property="Cursor" Value="Hand" />
                             <EventSetter Event="MouseEnter" Handler="NavItem_MouseEnter" />
                             <EventSetter Event="MouseLeave" Handler="NavItem_MouseLeave" />
-                            <EventSetter Event="MouseRightButtonDown" Handler="NavItem_RightClick" />
+                            <EventSetter Event="PreviewMouseRightButtonDown" Handler="NavItem_RightClick" />
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="ListBoxItem">
