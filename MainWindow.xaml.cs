@@ -354,6 +354,28 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
         e.Handled = true;
 
+        // 创建右键菜单
+        var contextMenu = new ContextMenu();
+        var deleteMenuItem = new MenuItem
+        {
+            Header = "删除分类",
+            Foreground = System.Windows.Media.Brushes.White,
+        };
+        deleteMenuItem.Click += (s, args) => DeleteCategory(cat);
+        contextMenu.Items.Add(deleteMenuItem);
+
+        // 设置菜单样式
+        contextMenu.Background = new System.Windows.Media.SolidColorBrush(
+            System.Windows.Media.Color.FromRgb(0x2b, 0x2b, 0x2b));
+        contextMenu.Foreground = System.Windows.Media.Brushes.White;
+
+        // 显示菜单
+        contextMenu.PlacementTarget = item;
+        contextMenu.IsOpen = true;
+    }
+
+    private void DeleteCategory(CatInfo cat)
+    {
         var categoryDir = Path.Combine(ToolboxRoot, "工具", cat.Name);
         bool hasTools = Directory.Exists(categoryDir) && Directory.GetFiles(categoryDir, "*", SearchOption.AllDirectories).Length > 0;
 
