@@ -274,10 +274,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 new("all", "全部工具", "", "浏览所有工具")
             };
 
-            // 从工具列表中提取分类
+            // 从工具列表中提取分类，排除已删除的分类
+            var deletedCategories = LoadDeletedCategories();
             var toolCategories = AllTools
                 .Select(t => t.Category)
                 .Distinct()
+                .Where(c => !deletedCategories.Contains(c))
                 .OrderBy(c => c);
 
             foreach (var cat in toolCategories)
@@ -569,6 +571,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             Categories = list.ToArray();
             CategoryList.ItemsSource = Categories;
 
+            // 保存已删除的分类到配置文件
+            SaveDeletedCategories(cat.Name);
+
             // 如果删除的是当前选中的分类，切换到"全部工具"
             if (_activeCategory == cat.Id)
             {
@@ -582,6 +587,44 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         {
             CustomMessageBox.Show($"删除失败: {ex.Message}", "错误");
             Logger.Log($"删除分类失败: {ex.Message}");
+        }
+    }
+
+    private void SaveDeletedCategories(string categoryName)
+    {
+        var configPath = Path.Combine(ToolboxRoot, "deleted_categories.json");
+        var deleted = new List<string>();
+
+        if (File.Exists(configPath))
+        {
+            try
+            {
+                var json = File.ReadAllText(configPath);
+                deleted = System.Text.Json.JsonSerializer.Deserialize<List<string>>(json) ?? new List<string>();
+            }
+            catch { }
+        }
+
+        if (!deleted.Contains(categoryName))
+        {
+            deleted.Add(categoryName);
+            File.WriteAllText(configPath, System.Text.Json.JsonSerializer.Serialize(deleted));
+        }
+    }
+
+    private List<string> LoadDeletedCategories()
+    {
+        var configPath = Path.Combine(ToolboxRoot, "deleted_categories.json");
+        if (!File.Exists(configPath)) return new List<string>();
+
+        try
+        {
+            var json = File.ReadAllText(configPath);
+            return System.Text.Json.JsonSerializer.Deserialize<List<string>>(json) ?? new List<string>();
+        }
+        catch
+        {
+            return new List<string>();
         }
     }
 
