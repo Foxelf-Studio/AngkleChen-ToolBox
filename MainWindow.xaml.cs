@@ -258,7 +258,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         // 加载分类
         var categories = new List<CatInfo>
         {
-            new("all", "全部工具", " ", "浏览所有工具")
+            new("all", "全部工具", "", "浏览所有工具")
         };
         categories.AddRange(_config.GetCategories());
         Categories = categories.ToArray();
