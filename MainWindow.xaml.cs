@@ -70,7 +70,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         new("鲁大师",       "搞机工具", " ", "鲁大师硬件检测工具，支持CPU/显卡/内存/硬盘性能跑分，温度监控，驱动管理。",         @"工具\搞机工具\鲁大师\ludashisetup.exe"),
 
         new("图压",         "文件工具", " ", "图压图片压缩工具，支持JPG/PNG/GIF/WebP批量压缩，保持画质的同时大幅减小文件体积。",       @"工具\文件工具\图压\图压.exe"),
-        new("磁盘精灵",     "文件工具", " ", "DiskGenius专业版，支持磁盘分区管理、数据恢复、备份还原、分区迁移、坏道检测修复。",    @"工具\文件工具\DiskGenius\DiskGenius-Pro-v6.0.0.1631-x64-Chs.exe"),
+        new("磁盘精灵",     "文件工具", " ", "DiskGenius专业版，支持磁盘分区管理、数据恢复、备份还原、分区迁移、坏道检测修复。",    @"工具\文件工具\磁盘精灵\DiskGenius-Pro-v6.0.0.1631-x64-Chs.exe"),
         new("迅雷",         "文件工具", " ", "迅雷极速版，支持BT/磁力链接/HTTP多线程下载，P2P加速，离线下载，边下边播。",           @"工具\文件工具\迅雷\program\thunder.exe"),
         new("格式转换",     "文件工具", " ", "格式工厂等在线格式转换工具集合，支持视频、音频、图片、文档等格式互相转换。",        @"工具\文件工具\格式转换工具"),
         new("HiBit Uninstaller","清理工具"," ","HiBit Uninstaller，支持强制卸载、批量卸载、注册表清理、垃圾文件清理、启动项管理。",   @"工具\清理工具\hibit\HiBitUninstaller.exe"),
