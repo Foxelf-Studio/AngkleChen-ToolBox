@@ -108,12 +108,12 @@ public partial class ToolCard : UserControl
         // 计算位置（光标右侧，用 WPF 原生方式）
         var screenPos = this.PointToScreen(e.GetPosition(this));
 
-        // 创建菜单窗口
+        // 创建菜单窗口 - 使用 AllowsTransparency=false 避免边缘回绕
         var menu = new Window
         {
             WindowStyle = WindowStyle.None,
-            AllowsTransparency = true,
-            Background = Brushes.Transparent,
+            AllowsTransparency = false,
+            Background = new SolidColorBrush(Color.FromRgb(0x2b, 0x2b, 0x2b)),
             Width = 220,
             SizeToContent = SizeToContent.Height,
             ShowInTaskbar = false,
@@ -121,6 +121,17 @@ public partial class ToolCard : UserControl
             Left = screenPos.X + 8,
             Top = screenPos.Y - 10,
             ResizeMode = ResizeMode.NoResize,
+        };
+
+        // 加载后设置圆角区域
+        menu.Loaded += (_, _) =>
+        {
+            var helper = new System.Windows.Interop.WindowInteropHelper(menu);
+            int width = (int)menu.ActualWidth;
+            int height = (int)menu.ActualHeight;
+            var hRgn = CreateRoundRectRgn(0, 0, width + 1, height + 1, 16, 16);
+            SetWindowRgn(helper.Handle, hRgn, true);
+            DeleteObject(hRgn);
         };
 
         // 主容器（圆角背景）
@@ -131,13 +142,6 @@ public partial class ToolCard : UserControl
             BorderBrush = new SolidColorBrush(Color.FromArgb(0x33, 0xff, 0xff, 0xff)),
             BorderThickness = new Thickness(1),
             Margin = new Thickness(4),
-            Effect = new System.Windows.Media.Effects.DropShadowEffect
-            {
-                Color = Colors.Black,
-                Opacity = 0.4,
-                ShadowDepth = 2,
-                BlurRadius = 12,
-            },
         };
 
         var stack = new StackPanel { Margin = new Thickness(4) };
@@ -335,5 +339,21 @@ public partial class ToolCard : UserControl
             else
                 card._selectOut?.Begin();
         }
+    }
+
+    // ── Windows API ──────────────────────────────
+    [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+    private static extern IntPtr CreateRoundRectRgn(int x1, int y1, int x2, int y2, int cx, int cy);
+
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    private static extern int SetWindowRgn(IntPtr hWnd, IntPtr hRgn, bool bRedraw);
+
+    [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+    private static extern bool DeleteObject(IntPtr hObject);
+
+    [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+    private struct RECT
+    {
+        public int Left, Top, Right, Bottom;
     }
 }

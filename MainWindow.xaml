@@ -396,9 +396,9 @@
                         CornerRadius="8"
                         BorderBrush="#3effffff"
                         BorderThickness="1"
-                        Margin="0,-20,8,0"
+                        Margin="0,-20,18,0"
                         Visibility="Collapsed">
-                    <Grid Margin="10,8">
+                    <Grid Margin="10,6">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
@@ -424,9 +424,9 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
                                     FontFamily="Segoe MDL2 Assets"
-                                    FontSize="8"
+                                    FontSize="10"
                                     Foreground="#777777"
-                                    Width="16" Height="16"
+                                    Width="24" Height="24"
                                     Click="OnToastCloseClick"
                                     Style="{StaticResource SmallCaptionButton}" />
                         </Grid>
