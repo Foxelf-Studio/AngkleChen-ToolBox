@@ -120,8 +120,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         new("SSDZ",           "硬盘工具", " ", "SSDZ固态硬盘检测工具，显示SSD型号、固件版本、通电时间、写入量等信息。",    @"工具\硬盘工具\SSDZ\SSDZ.exe"),
 
         // 烤鸡工具
-        new("FurMark",        "烤鸡工具", " ", "FurMark GPU压力测试工具，通过OpenGL高负载渲染测试显卡稳定性和散热性能，俗称烤机。",        @"工具\烤鸡工具\FurMark_win64\furmark.exe"),
-        new("FurMark GUI",    "烤鸡工具", " ", "FurMark GUI版GPU烤机工具，支持自定义分辨率、抗锯齿、运行时间等参数。",        @"工具\烤鸡工具\FurMark_win64\FurMark_GUI.exe"),
+        new("FurMark",        "烤鸡工具", " ", "FurMark GPU压力测试工具，通过OpenGL高负载渲染测试显卡稳定性和散热性能，俗称烤机。",        @"工具\烤鸡工具\furmark.exe"),
+        new("FurMark GUI",    "烤鸡工具", " ", "FurMark GUI版GPU烤机工具，支持自定义分辨率、抗锯齿、运行时间等参数。",        @"工具\烤鸡工具\FurMark_GUI.exe"),
 
         // 外设工具
         new("鼠标测试",       "外设工具", " ", "AresonMouseTest鼠标性能测试工具，测试鼠标回报率、按键响应、DPI精度、丢帧情况。",       @"工具\外设工具\AresonMouseTest\鼠标测试软件AresonMouseTestProgram.exe"),
@@ -293,6 +293,23 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                     categories.Add(new CatInfo(cat, cat, " ", cat));
                 }
             }
+
+            // 按照指定顺序排序分类
+            var categoryOrder = new List<string>
+            {
+                "全部工具", "娱乐工具", "实用工具", "搞机工具", "文件工具", "清理工具",
+                "依赖", "CPU工具", "内存工具", "显卡工具", "硬盘工具", "烤鸡工具",
+                "外设工具", "显示器工具", "系统工具", "游戏平台"
+            };
+
+            categories.Sort((a, b) =>
+            {
+                var indexA = categoryOrder.IndexOf(a.Name);
+                var indexB = categoryOrder.IndexOf(b.Name);
+                if (indexA == -1) indexA = 100;
+                if (indexB == -1) indexB = 100;
+                return indexA.CompareTo(indexB);
+            });
 
             Categories = categories.ToArray();
             CategoryList.ItemsSource = Categories;
