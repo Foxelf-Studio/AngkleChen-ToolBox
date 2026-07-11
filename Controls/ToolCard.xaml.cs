@@ -114,7 +114,7 @@ public partial class ToolCard : UserControl
             WindowStyle = WindowStyle.None,
             AllowsTransparency = false,
             Background = new SolidColorBrush(Color.FromRgb(0x2b, 0x2b, 0x2b)),
-            Width = 220,
+            Width = 224,
             SizeToContent = SizeToContent.Height,
             ShowInTaskbar = false,
             Topmost = true,
@@ -141,7 +141,7 @@ public partial class ToolCard : UserControl
             CornerRadius = new CornerRadius(8),
             BorderBrush = new SolidColorBrush(Color.FromArgb(0x33, 0xff, 0xff, 0xff)),
             BorderThickness = new Thickness(1),
-            Margin = new Thickness(4),
+            Margin = new Thickness(0),
         };
 
         var stack = new StackPanel { Margin = new Thickness(4) };
