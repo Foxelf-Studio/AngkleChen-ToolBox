@@ -424,11 +424,13 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
                                     FontFamily="Segoe MDL2 Assets"
-                                    FontSize="8"
+                                    FontSize="10"
                                     Foreground="#777777"
-                                    Width="16" Height="16"
-                                    Click="OnToastCloseClick"
-                                    Style="{StaticResource SmallCaptionButton}" />
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Width="24" Height="24"
+                                    Padding="0"
+                                    Click="OnToastCloseClick" />
                         </Grid>
 
                         <!-- 描述 -->

@@ -23,8 +23,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 {
     // ── 工具箱根目录 ──────────────────────────────
     private static readonly string ToolboxRoot = AppDomain.CurrentDomain.BaseDirectory;
-    // 调试：在构造函数中添加日志
-    private static readonly bool _debugMode = true;
 
     // ── 分类 ──────────────────────────────────────
     private record CatInfo(string Id, string Name, string IconGlyph, string Subtitle);
@@ -72,7 +70,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         new("鲁大师",       "搞机工具", " ", "鲁大师硬件检测工具，支持CPU/显卡/内存/硬盘性能跑分，温度监控，驱动管理。",         @"工具\搞机工具\鲁大师\ludashisetup.exe"),
 
         new("图压",         "文件工具", " ", "图压图片压缩工具，支持JPG/PNG/GIF/WebP批量压缩，保持画质的同时大幅减小文件体积。",       @"工具\文件工具\图压\图压.exe"),
-        new("磁盘精灵",     "文件工具", " ", "DiskGenius专业版，支持磁盘分区管理、数据恢复、备份还原、分区迁移、坏道检测修复。",    @"工具\文件工具\磁盘精灵\DiskGenius-Pro-v6.0.0.1631-x64-Chs.exe"),
+        new("磁盘精灵",     "文件工具", " ", "DiskGenius专业版，支持磁盘分区管理、数据恢复、备份还原、分区迁移、坏道检测修复。",    @"工具\文件工具\DiskGenius\DiskGenius-Pro-v6.0.0.1631-x64-Chs.exe"),
         new("迅雷",         "文件工具", " ", "迅雷极速版，支持BT/磁力链接/HTTP多线程下载，P2P加速，离线下载，边下边播。",           @"工具\文件工具\迅雷\program\thunder.exe"),
         new("格式转换",     "文件工具", " ", "格式工厂等在线格式转换工具集合，支持视频、音频、图片、文档等格式互相转换。",        @"工具\文件工具\格式转换工具"),
         new("HiBit Uninstaller","清理工具"," ","HiBit Uninstaller，支持强制卸载、批量卸载、注册表清理、垃圾文件清理、启动项管理。",   @"工具\清理工具\hibit\HiBitUninstaller.exe"),
@@ -122,8 +120,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         new("SSDZ",           "硬盘工具", " ", "SSDZ固态硬盘检测工具，显示SSD型号、固件版本、通电时间、写入量等信息。",    @"工具\硬盘工具\SSDZ\SSDZ.exe"),
 
         // 烤鸡工具
-        new("FurMark",        "烤鸡工具", " ", "FurMark GPU压力测试工具，通过OpenGL高负载渲染测试显卡稳定性和散热性能，俗称烤机。",        @"工具\烤鸡工具\furmark.exe"),
-        new("FurMark GUI",    "烤鸡工具", " ", "FurMark GUI版GPU烤机工具，支持自定义分辨率、抗锯齿、运行时间等参数。",        @"工具\烤鸡工具\FurMark_GUI.exe"),
+        new("FurMark",        "烤鸡工具", " ", "FurMark GPU压力测试工具，通过OpenGL高负载渲染测试显卡稳定性和散热性能，俗称烤机。",        @"工具\烤鸡工具\FurMark_win64\furmark.exe"),
+        new("FurMark GUI",    "烤鸡工具", " ", "FurMark GUI版GPU烤机工具，支持自定义分辨率、抗锯齿、运行时间等参数。",        @"工具\烤鸡工具\FurMark_win64\FurMark_GUI.exe"),
 
         // 外设工具
         new("鼠标测试",       "外设工具", " ", "AresonMouseTest鼠标性能测试工具，测试鼠标回报率、按键响应、DPI精度、丢帧情况。",       @"工具\外设工具\AresonMouseTest\鼠标测试软件AresonMouseTestProgram.exe"),
@@ -273,7 +271,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             // 更新分类列表
             var categories = new List<CatInfo>
             {
-                new("all", "全部工具", " ", "浏览所有工具")
+                new("all", "全部工具", "", "浏览所有工具")
             };
 
             // 从工具列表中提取分类
@@ -859,15 +857,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         filtered = filtered.Where(t =>
         {
             var path = System.IO.Path.Combine(ToolboxRoot, t.RelativePath);
-            var exists = System.IO.File.Exists(path) || System.IO.Directory.Exists(path);
-
-            // 调试：记录被过滤的工具
-            if (!exists && _debugMode)
-            {
-                Logger.Log($"[过滤] {t.Name} - 路径不存在: {path}");
-            }
-
-            return exists;
+            return System.IO.File.Exists(path) || System.IO.Directory.Exists(path);
         });
 
         if (_activeCategory != "all")

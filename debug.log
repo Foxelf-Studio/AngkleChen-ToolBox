@@ -103,3 +103,62 @@
 [2026-07-11 12:15:53.961] 版本比较结果: -1 (当前=1.1.0, 最新=1.2.0)
 [2026-07-11 12:15:53.962] 发现新版本！
 [2026-07-11 12:15:53.962] === 检查更新完成: HasUpdate=True ===
+[2026-07-11 12:34:46.458] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:34:46.503] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:34:48.512] === 开始检查更新 ===
+[2026-07-11 12:34:48.513] 当前版本: 1.1.0
+[2026-07-11 12:34:48.513] 正在获取最新 Release...
+[2026-07-11 12:34:48.515] 请求 URL: https://api.github.com/repos/Foxelf-Studio/AngkleChen-ToolBox/releases?per_page=1
+[2026-07-11 12:34:48.515] 发送 HTTP 请求...
+[2026-07-11 12:34:50.662] HTTP 响应状态: OK
+[2026-07-11 12:34:50.663] 读取响应内容...
+[2026-07-11 12:34:50.664] 响应内容长度: 5099 字节
+[2026-07-11 12:34:50.664] 解析 JSON...
+[2026-07-11 12:34:50.670] 解析成功，共 1 个 Release
+[2026-07-11 12:34:50.671] 获取到 Release: tag=v1.2.0, name=v1.2.0 - 更新测试
+[2026-07-11 12:34:50.672] 最新版本: 1.2.0
+[2026-07-11 12:34:50.673] 版本比较结果: -1 (当前=1.1.0, 最新=1.2.0)
+[2026-07-11 12:34:50.673] 发现新版本！
+[2026-07-11 12:34:50.673] === 检查更新完成: HasUpdate=True ===
+[2026-07-11 12:36:23.199] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:36:24.296] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:36:24.607] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:36:25.641] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:36:26.001] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:36:26.558] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:36:26.871] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:36:27.918] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:36:29.152] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:36:30.984] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:36:31.591] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:36:32.477] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:36:35.983] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:36:35.990] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:36:36.626] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:36:37.254] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:36:37.404] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:36:37.550] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:36:39.269] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:36:39.276] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:36:39.775] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:36:39.943] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:36:51.341] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:36:52.094] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:36:52.424] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:37:07.860] === 开始检查更新 ===
+[2026-07-11 12:37:07.860] 当前版本: 1.1.0
+[2026-07-11 12:37:07.861] 正在获取最新 Release...
+[2026-07-11 12:37:07.861] 请求 URL: https://api.github.com/repos/Foxelf-Studio/AngkleChen-ToolBox/releases?per_page=1
+[2026-07-11 12:37:07.861] 发送 HTTP 请求...
+[2026-07-11 12:37:09.517] HTTP 响应状态: OK
+[2026-07-11 12:37:09.518] 读取响应内容...
+[2026-07-11 12:37:09.518] 响应内容长度: 5099 字节
+[2026-07-11 12:37:09.518] 解析 JSON...
+[2026-07-11 12:37:09.519] 解析成功，共 1 个 Release
+[2026-07-11 12:37:09.519] 获取到 Release: tag=v1.2.0, name=v1.2.0 - 更新测试
+[2026-07-11 12:37:09.520] 最新版本: 1.2.0
+[2026-07-11 12:37:09.520] 版本比较结果: -1 (当前=1.1.0, 最新=1.2.0)
+[2026-07-11 12:37:09.520] 发现新版本！
+[2026-07-11 12:37:09.521] === 检查更新完成: HasUpdate=True ===
+[2026-07-11 12:37:42.482] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
+[2026-07-11 12:37:42.988] [过滤] AMDVBFlashDriverInstaller - 路径不存在: E:\陈叔叔工具箱\工具\搞机工具\amdvbflash_win_3.15\AMDVBFlashDriverInstaller.exe
