@@ -1121,7 +1121,14 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 t.Category.ToLower().Contains(q));
         }
 
-        var list = filtered.ToList();
+        // 按照导航栏分类顺序排序
+        var categoryOrder = Categories.Select(c => c.Name).ToList();
+        var list = filtered.OrderBy(t =>
+        {
+            var index = categoryOrder.IndexOf(t.Category);
+            return index == -1 ? 999 : index;
+        }).ThenBy(t => t.Name).ToList();
+
         CardItems.ItemsSource = list;
         StatusText = $"共 {list.Count} 款工具  ·  v1.1";
     }
