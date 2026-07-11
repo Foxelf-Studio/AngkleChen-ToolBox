@@ -132,6 +132,7 @@
                          Background="Transparent"
                          BorderThickness="0"
                          SelectionChanged="OnCategoryChanged"
+                         PreviewMouseRightButtonDown="CategoryList_PreviewMouseRightButtonDown"
                          Margin="4,0,4,0"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"

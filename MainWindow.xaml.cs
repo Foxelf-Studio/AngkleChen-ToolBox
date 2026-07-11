@@ -374,6 +374,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         contextMenu.IsOpen = true;
     }
 
+    // 阻止右键点击时切换分类
+    private void CategoryList_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        e.Handled = true;
+    }
+
     private void DeleteCategory(CatInfo cat)
     {
         var categoryDir = Path.Combine(ToolboxRoot, "工具", cat.Name);
