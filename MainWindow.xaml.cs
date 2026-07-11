@@ -215,7 +215,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         InitializeComponent();
         DataContext = this;
 
-        // 初始化图标缓存（从工具 exe 中提取真实图标）
+        // 初始化图标缓存
         IconHelper.Init(ToolboxRoot);
 
         _suppressAnim = true; // 必须在 SelectedIndex 之前，抑制初始加载动画
@@ -231,10 +231,28 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             System.Windows.Threading.DispatcherPriority.Loaded);
 
         // 异步加载工具（不阻塞UI）
-        Loaded += async (_, _) =>
+        Loaded += (_, _) =>
         {
-            await LoadToolsAsync();
-            ApplyFilter();
+            // 使用 Task.Run 在后台线程加载，不阻塞 UI
+            Task.Run(async () =>
+            {
+                await LoadToolsAsync();
+
+                // 回到 UI 线程更新界面
+                await Dispatcher.InvokeAsync(() =>
+                {
+                    ApplyFilter();
+
+                    // 异步加载图标（后台线程，不阻塞 UI）
+                    var toolPaths = AllTools.Select(t => t.RelativePath).ToList();
+                    Task.Run(async () =>
+                    {
+                        await IconHelper.LoadIconsAsync(toolPaths);
+                        // 图标加载完成后刷新界面
+                        await Dispatcher.InvokeAsync(() => ApplyFilter());
+                    });
+                });
+            });
 
             // 延迟2秒检查更新
             var timer = new System.Windows.Threading.DispatcherTimer

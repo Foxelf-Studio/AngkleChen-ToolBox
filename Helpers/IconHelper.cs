@@ -7,17 +7,51 @@ using System.Windows.Media.Imaging;
 
 namespace 陈叔叔工具箱.Helpers;
 
+/// <summary>
+/// 图标提取助手 - 支持异步加载和缓存
+/// </summary>
 public static class IconHelper
 {
     private static readonly ConcurrentDictionary<string, ImageSource> _cache = new();
     private static string _toolboxRoot = "";
+    private static readonly ImageSource _defaultIcon;
+
+    static IconHelper()
+    {
+        // 创建默认图标（透明像素）
+        var fb = new WriteableBitmap(1, 1, 96, 96, PixelFormats.Bgra32, null);
+        fb.Freeze();
+        _defaultIcon = fb;
+    }
 
     public static void Init(string root) => _toolboxRoot = root;
 
+    /// <summary>
+    /// 同步获取图标（从缓存）
+    /// </summary>
     public static ImageSource GetIcon(string relativePath)
     {
         var fullPath = System.IO.Path.Combine(_toolboxRoot, relativePath);
-        return _cache.GetOrAdd(fullPath, ExtractIcon);
+        return _cache.GetOrAdd(fullPath, _ => _defaultIcon);
+    }
+
+    /// <summary>
+    /// 异步加载图标
+    /// </summary>
+    public static async Task LoadIconsAsync(IEnumerable<string> relativePaths)
+    {
+        await Task.Run(() =>
+        {
+            foreach (var relativePath in relativePaths)
+            {
+                var fullPath = System.IO.Path.Combine(_toolboxRoot, relativePath);
+                if (!_cache.ContainsKey(fullPath))
+                {
+                    var icon = ExtractIcon(fullPath);
+                    _cache[fullPath] = icon;
+                }
+            }
+        });
     }
 
     // 需要使用 Edge 图标的 bat 文件路径关键词
@@ -59,9 +93,7 @@ public static class IconHelper
         }
         catch { }
 
-        var fb = new WriteableBitmap(1, 1, 96, 96, PixelFormats.Bgra32, null);
-        fb.Freeze();
-        return fb;
+        return _defaultIcon;
     }
 
     // ── P/Invoke ────────────────────────────────────
