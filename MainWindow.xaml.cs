@@ -629,16 +629,55 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         {
             try
             {
+                var sourcePath = dialog.SourcePath!;
+                var categoryName = dialog.CategoryName!;
+                var isFolder = Directory.Exists(sourcePath);
+
+                // 计算目标路径
+                var destDir = Path.Combine(ToolboxRoot, "工具", categoryName);
+                string destPath;
+
+                if (isFolder)
+                {
+                    var folderName = Path.GetFileName(sourcePath);
+                    destPath = Path.Combine(destDir, folderName);
+                }
+                else
+                {
+                    var fileName = Path.GetFileName(sourcePath);
+                    destPath = Path.Combine(destDir, fileName);
+                }
+
+                // 先复制文件到工具目录（确保文件存在后再保存配置）
+                if (!sourcePath.StartsWith(Path.Combine(ToolboxRoot, "工具"), StringComparison.OrdinalIgnoreCase))
+                {
+                    // 确保目标目录存在
+                    if (!Directory.Exists(destDir))
+                        Directory.CreateDirectory(destDir);
+
+                    if (isFolder)
+                    {
+                        CopyDirectory(sourcePath, destPath);
+                    }
+                    else
+                    {
+                        File.Copy(sourcePath, destPath, true);
+                    }
+                }
+
+                // 计算相对路径
+                var relativePath = Path.GetRelativePath(ToolboxRoot, destPath);
+
                 // 创建新工具配置
                 var newTool = new AppConfig.ToolConfig
                 {
                     Name = dialog.ToolName!,
                     Description = dialog.ToolDescription ?? "",
-                    RelativePath = dialog.SourcePath!
+                    RelativePath = relativePath
                 };
 
-                // 添加到配置
-                _config.AddTool(dialog.CategoryName!, newTool);
+                // 添加到配置（文件复制完成后再保存）
+                _config.AddTool(categoryName, newTool);
 
                 // 重新加载配置
                 LoadFromConfig();
@@ -1017,7 +1056,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         }).ThenBy(t => t.Name).ToList();
 
         CardItems.ItemsSource = list;
-        StatusText = $"共 {list.Count} 款工具  ·  v1.1";
+        StatusText = $"共 {list.Count} 款工具  ·  v{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString(3) ?? "1.1.0"}";
     }
 
     // ── 工具选中（单击） ─────────────────────────
