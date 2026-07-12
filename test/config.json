@@ -19,11 +19,6 @@
           "name": "\u6D1B\u96EA\u97F3\u4E50",
           "description": "\u6D1B\u96EA\u97F3\u4E50\u684C\u9762\u7248\uFF0C\u5F00\u6E90\u514D\u8D39\u97F3\u4E50\u64AD\u653E\u5668\uFF0C\u652F\u6301\u591A\u5E73\u53F0\u97F3\u6E90\u3001\u65E0\u635F\u97F3\u8D28\u3001\u6B4C\u8BCD\u663E\u793A\u3001\u6B4C\u5355\u5BFC\u5165\u3002",
           "relativePath": "\u5DE5\u5177\\\u5A31\u4E50\u5DE5\u5177\\\u6D1B\u96EA\u97F3\u4E50\\lx-music-desktop.exe"
-        },
-        {
-          "name": "MicrosoftEdgeSetup",
-          "description": "",
-          "relativePath": "\u5DE5\u5177\\\u5A31\u4E50\u5DE5\u5177\\MicrosoftEdgeSetup.exe"
         }
       ]
     },
@@ -68,9 +63,14 @@
           "relativePath": "\u5DE5\u5177\\\u5B9E\u7528\u5DE5\u5177\\\u7F51\u5361\u9A71\u52A8\\gwwk__360DrvMgrInstaller_net.exe"
         },
         {
-          "name": "\u81EA\u52A8\u66F4\u65B0\u65F6\u95F4",
-          "description": "Seewo\u7F51\u7EDC\u65F6\u95F4\u540C\u6B65\u5DE5\u5177\uFF0C\u901A\u8FC7NTP\u670D\u52A1\u5668\u6821\u51C6\u7CFB\u7EDF\u65F6\u95F4\uFF0C\u9002\u7528\u4E8E\u6559\u80B2\u4E00\u4F53\u673A\u7B49\u8BBE\u5907\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5B9E\u7528\u5DE5\u5177\\\u81EA\u52A8\u66F4\u65B0\u7CFB\u7EDF\u65F6\u95F4\\SeewoOpt.exe"
+          "name": "MicrosoftEdgeSetup",
+          "description": "",
+          "relativePath": "\u5DE5\u5177\\\u5B9E\u7528\u5DE5\u5177\\MicrosoftEdgeSetup.exe"
+        },
+        {
+          "name": "\u5E0C\u6C83\u4F18\u5316\u5DE5\u5177",
+          "description": "\u9648\u53D4\u53D4\u5B98\u65B9\u51FA\u54C1\u5DE5\u5177\uFF0C\u7528\u4E8E\u89E3\u51B3\u8001\u65E7Win7\u8BBE\u5907\u65E0\u6CD5\u81EA\u52A8\u66F4\u65B0\u7CFB\u7EDF\u65F6\u95F4\u7684\u95EE\u9898\uFF0C\u5DF2\u5F00\u6E90\u3002",
+          "relativePath": "\u5DE5\u5177\\\u5B9E\u7528\u5DE5\u5177\\SeewoOpt.exe"
         }
       ]
     },
@@ -112,11 +112,6 @@
           "relativePath": "\u5DE5\u5177\\\u6587\u4EF6\u5DE5\u5177\\\u56FE\u538B\\\u56FE\u538B.exe"
         },
         {
-          "name": "\u78C1\u76D8\u7CBE\u7075",
-          "description": "DiskGenius\u4E13\u4E1A\u7248\uFF0C\u652F\u6301\u78C1\u76D8\u5206\u533A\u7BA1\u7406\u3001\u6570\u636E\u6062\u590D\u3001\u5907\u4EFD\u8FD8\u539F\u3001\u5206\u533A\u8FC1\u79FB\u3001\u574F\u9053\u68C0\u6D4B\u4FEE\u590D\u3002",
-          "relativePath": "\u5DE5\u5177\\\u6587\u4EF6\u5DE5\u5177\\\u78C1\u76D8\u7CBE\u7075\\DiskGenius-Pro-v6.0.0.1631-x64-Chs.exe"
-        },
-        {
           "name": "\u8FC5\u96F7",
           "description": "\u8FC5\u96F7\u6781\u901F\u7248\uFF0C\u652F\u6301BT/\u78C1\u529B\u94FE\u63A5/HTTP\u591A\u7EBF\u7A0B\u4E0B\u8F7D\uFF0CP2P\u52A0\u901F\uFF0C\u79BB\u7EBF\u4E0B\u8F7D\uFF0C\u8FB9\u4E0B\u8FB9\u64AD\u3002",
           "relativePath": "\u5DE5\u5177\\\u6587\u4EF6\u5DE5\u5177\\\u8FC5\u96F7\\program\\thunder.exe"
@@ -125,6 +120,16 @@
           "name": "\u683C\u5F0F\u8F6C\u6362",
           "description": "\u683C\u5F0F\u5DE5\u5382\u7B49\u5728\u7EBF\u683C\u5F0F\u8F6C\u6362\u5DE5\u5177\u96C6\u5408\uFF0C\u652F\u6301\u89C6\u9891\u3001\u97F3\u9891\u3001\u56FE\u7247\u3001\u6587\u6863\u7B49\u683C\u5F0F\u4E92\u76F8\u8F6C\u6362\u3002",
           "relativePath": "\u5DE5\u5177\\\u6587\u4EF6\u5DE5\u5177\\\u683C\u5F0F\u8F6C\u6362\u5DE5\u5177"
+        },
+        {
+          "name": "\u78C1\u76D8\u7CBE\u7075",
+          "description": "DiskGenius\u4E13\u4E1A\u724864\u4F4D\uFF0C\u652F\u6301\u78C1\u76D8\u5206\u533A\u7BA1\u7406\u3001\u6570\u636E\u6062\u590D\u3001\u5907\u4EFD\u8FD8\u539F\u3001\u5206\u533A\u8FC1\u79FB\u3001\u574F\u9053\u68C0\u6D4B\u4FEE\u590D\u3002",
+          "relativePath": "\u5DE5\u5177\\\u6587\u4EF6\u5DE5\u5177\\DiskGenius-Pro-v6.0.0.1631-x64-Chs.exe"
+        },
+        {
+          "name": "\u78C1\u76D8\u7CBE\u7075\uFF0832\u4F4D\uFF09",
+          "description": "DiskGenius\u4E13\u4E1A\u724832\u4F4D\uFF0C\u652F\u6301\u78C1\u76D8\u5206\u533A\u7BA1\u7406\u3001\u6570\u636E\u6062\u590D\u3001\u5907\u4EFD\u8FD8\u539F\u3001\u5206\u533A\u8FC1\u79FB\u3001\u574F\u9053\u68C0\u6D4B\u4FEE\u590D\u3002",
+          "relativePath": "\u5DE5\u5177\\\u6587\u4EF6\u5DE5\u5177\\DiskGenius-Pro-v6.0.0.1631-x86-Chs.exe"
         }
       ]
     },
@@ -169,6 +174,16 @@
           "name": "VC\u002B\u002B \u8FD0\u884C\u5E93",
           "description": "Microsoft Visual C\u002B\u002B 2005-2022\u8FD0\u884C\u5E93\u5408\u96C6\uFF0C\u8BB8\u591A\u8F6F\u4EF6\u548C\u6E38\u620F\u7684\u5FC5\u8981\u4F9D\u8D56\u7EC4\u4EF6\u3002",
           "relativePath": "\u5DE5\u5177\\\u4F9D\u8D56\\vc\\vc_redist.x86.exe"
+        },
+        {
+          "name": ".NET Framework 4.7.2",
+          "description": ".NET Framework 4.7.2\u79BB\u7EBF\u5B89\u88C5\u5305\uFF0C\u8BB8\u591A\u8F6F\u4EF6\u548C\u6E38\u620F\u7684\u8FD0\u884C\u4F9D\u8D56\uFF0C\u652F\u6301Windows 7/8/10",
+          "relativePath": "\u5DE5\u5177\\\u4F9D\u8D56\\NDP472-KB4054530-x86-x64-AllOS-ENU.exe"
+        },
+        {
+          "name": "VC\u002B\u002B \u8FD0\u884C\u5E93",
+          "description": "Microsoft Visual C\u002B\u002B2005-2022\u8FD0\u884C\u5E93\u5408\u96C6\u548C\u6E38\u620F\u7684\u5FC5\u8981\u4F9D\u8D56\u7EC4\u4EF6\u3002",
+          "relativePath": "\u5DE5\u5177\\\u4F9D\u8D56\\vc_redist.x86.exe"
         }
       ]
     },

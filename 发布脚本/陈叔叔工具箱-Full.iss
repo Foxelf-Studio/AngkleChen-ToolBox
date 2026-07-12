@@ -3,10 +3,10 @@
 ; ============================================
 
 #define MyAppName "陈叔叔工具箱"
-#define MyAppVersion "1.2.0"
+#define MyAppVersion "2.0.0"
 #define MyAppPublisher "陈叔叔"
 #define MyAppExeName "陈叔叔工具箱.exe"
-#define MyOutputName "AngkleChenToolBox-1.2.0-Full-Win-x86_64-Setup"
+#define MyOutputName "AngkleChenToolBox-2.0.0-Full-Win-x86_64-Setup"
 
 [Setup]
 AppId={{A1B2C3D4-5678-9ABC-DEF0-1234567890AB}

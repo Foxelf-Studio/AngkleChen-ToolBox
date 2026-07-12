@@ -1,70 +1,115 @@
-[2026-07-12 11:46:04.203] 保存配置: 16 个分类
-[2026-07-12 11:46:04.212] 创建默认配置
-[2026-07-12 11:46:04.223] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = all, Name = 全部工具, IconGlyph = , Subtitle = 浏览所有工具 }
-[2026-07-12 11:46:04.224] OnCategoryChanged: cat=全部工具, newIndex=0, oldIndex=0, _suppressAnim=True
-[2026-07-12 11:46:04.225] ApplyFilter: 开始, _activeCategory=all, AllTools.Length=86
-[2026-07-12 11:46:04.233] ApplyFilter: 完成, 显示 82 个工具
-[2026-07-12 11:46:04.768] 批量缓存图标: 0 个
-[2026-07-12 11:46:06.781] === 开始检查更新 ===
-[2026-07-12 11:46:06.782] 当前版本: 1.1.0
-[2026-07-12 11:46:06.782] 正在获取最新 Release...
-[2026-07-12 11:46:06.784] 请求 URL: https://api.github.com/repos/Foxelf-Studio/AngkleChen-ToolBox/releases?per_page=1
-[2026-07-12 11:46:06.785] 发送 HTTP 请求...
-[2026-07-12 11:46:07.678] HTTP 响应状态: OK
-[2026-07-12 11:46:07.678] 读取响应内容...
-[2026-07-12 11:46:07.679] 响应内容长度: 5099 字节
-[2026-07-12 11:46:07.680] 解析 JSON...
-[2026-07-12 11:46:07.693] 解析成功，共 1 个 Release
-[2026-07-12 11:46:07.731] 获取到 Release: tag=v1.2.0, name=v1.2.0 - 更新测试
-[2026-07-12 11:46:07.732] 最新版本: 1.2.0
-[2026-07-12 11:46:07.733] 版本比较结果: -1 (当前=1.1.0, 最新=1.2.0)
-[2026-07-12 11:46:07.733] 发现新版本！
-[2026-07-12 11:46:07.733] === 检查更新完成: HasUpdate=True ===
-[2026-07-12 11:48:09.767] 加载配置: 16 个分类
-[2026-07-12 11:48:09.787] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = all, Name = 全部工具, IconGlyph = , Subtitle = 浏览所有工具 }
-[2026-07-12 11:48:09.787] OnCategoryChanged: cat=全部工具, newIndex=0, oldIndex=0, _suppressAnim=True
-[2026-07-12 11:48:09.789] ApplyFilter: 开始, _activeCategory=all, AllTools.Length=87
-[2026-07-12 11:48:09.796] ApplyFilter: 完成, 显示 82 个工具
-[2026-07-12 11:48:10.345] 批量缓存图标: 0 个
-[2026-07-12 11:48:12.393] === 开始检查更新 ===
-[2026-07-12 11:48:12.394] 当前版本: 1.1.0
-[2026-07-12 11:48:12.394] 正在获取最新 Release...
-[2026-07-12 11:48:12.396] 请求 URL: https://api.github.com/repos/Foxelf-Studio/AngkleChen-ToolBox/releases?per_page=1
-[2026-07-12 11:48:12.396] 发送 HTTP 请求...
-[2026-07-12 11:48:13.173] HTTP 响应状态: OK
-[2026-07-12 11:48:13.174] 读取响应内容...
-[2026-07-12 11:48:13.175] 响应内容长度: 5099 字节
-[2026-07-12 11:48:13.175] 解析 JSON...
-[2026-07-12 11:48:13.183] 解析成功，共 1 个 Release
-[2026-07-12 11:48:13.186] 获取到 Release: tag=v1.2.0, name=v1.2.0 - 更新测试
-[2026-07-12 11:48:13.187] 最新版本: 1.2.0
-[2026-07-12 11:48:13.188] 版本比较结果: -1 (当前=1.1.0, 最新=1.2.0)
-[2026-07-12 11:48:13.188] 发现新版本！
-[2026-07-12 11:48:13.188] === 检查更新完成: HasUpdate=True ===
-[2026-07-12 11:48:14.255] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = 娱乐工具, Name = 娱乐工具, IconGlyph = , Subtitle = 音乐与视频播放 }
-[2026-07-12 11:48:14.255] OnCategoryChanged: cat=娱乐工具, newIndex=1, oldIndex=0, _suppressAnim=False
-[2026-07-12 11:48:14.506] ApplyFilter: 开始, _activeCategory=娱乐工具, AllTools.Length=87
-[2026-07-12 11:48:14.520] ApplyFilter: 完成, 显示 2 个工具
-[2026-07-12 11:48:15.117] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = 实用工具, Name = 实用工具, IconGlyph = , Subtitle = 系统安装与诊断 }
-[2026-07-12 11:48:15.118] OnCategoryChanged: cat=实用工具, newIndex=2, oldIndex=1, _suppressAnim=False
-[2026-07-12 11:48:15.357] ApplyFilter: 开始, _activeCategory=实用工具, AllTools.Length=87
-[2026-07-12 11:48:15.360] ApplyFilter: 完成, 显示 7 个工具
-[2026-07-12 11:48:16.486] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = 搞机工具, Name = 搞机工具, IconGlyph = , Subtitle = 激活·调试·跑分 }
-[2026-07-12 11:48:16.486] OnCategoryChanged: cat=搞机工具, newIndex=3, oldIndex=2, _suppressAnim=False
-[2026-07-12 11:48:16.734] ApplyFilter: 开始, _activeCategory=搞机工具, AllTools.Length=87
-[2026-07-12 11:48:16.737] ApplyFilter: 完成, 显示 4 个工具
-[2026-07-12 11:48:17.346] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = 文件工具, Name = 文件工具, IconGlyph = , Subtitle = 下载·压缩·分区 }
-[2026-07-12 11:48:17.346] OnCategoryChanged: cat=文件工具, newIndex=4, oldIndex=3, _suppressAnim=False
-[2026-07-12 11:48:17.590] ApplyFilter: 开始, _activeCategory=文件工具, AllTools.Length=87
-[2026-07-12 11:48:17.592] ApplyFilter: 完成, 显示 4 个工具
-[2026-07-12 11:48:27.326] 加载配置: 16 个分类
-[2026-07-12 11:48:27.345] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = all, Name = 全部工具, IconGlyph = , Subtitle = 浏览所有工具 }
-[2026-07-12 11:48:27.346] OnCategoryChanged: cat=全部工具, newIndex=0, oldIndex=0, _suppressAnim=True
-[2026-07-12 11:48:27.347] ApplyFilter: 开始, _activeCategory=all, AllTools.Length=87
-[2026-07-12 11:48:27.354] ApplyFilter: 完成, 显示 82 个工具
-[2026-07-12 11:48:27.883] 批量缓存图标: 0 个
-[2026-07-12 11:48:29.908] === 开始检查更新 ===
-[2026-07-12 11:48:29.908] 当前版本: 1.1.0
-[2026-07-12 11:48:29.909] 正在获取最新 Release...
-[2026-07-12 11:48:29.911] 请求 URL: https://api.github.com/repos/Foxelf-Studio/AngkleChen-ToolBox/releases?per_page=1
-[2026-07-12 11:48:29.911] 发送 HTTP 请求...
+[2026-07-12 12:05:28.152] 加载配置: 16 个分类
+[2026-07-12 12:05:28.173] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = all, Name = 全部工具, IconGlyph = , Subtitle = 浏览所有工具 }
+[2026-07-12 12:05:28.174] OnCategoryChanged: cat=全部工具, newIndex=0, oldIndex=0, _suppressAnim=True
+[2026-07-12 12:05:28.175] ApplyFilter: 开始, _activeCategory=all, AllTools.Length=90
+[2026-07-12 12:05:28.182] ApplyFilter: 完成, 显示 86 个工具
+[2026-07-12 12:05:29.693] 缓存图标: 工具\娱乐工具\PiliPlus-Win\piliplus.exe
+[2026-07-12 12:05:29.704] 缓存图标: 工具\娱乐工具\洛雪音乐\lx-music-desktop.exe
+[2026-07-12 12:05:29.708] 缓存图标: 工具\实用工具\Office Tool x64\Office Tool Plus.exe
+[2026-07-12 12:05:29.715] 缓存图标: 工具\实用工具\Office Tool x32\Office Tool Plus.exe
+[2026-07-12 12:05:29.721] 缓存图标: 工具\实用工具\pcr532\PN532CardReader.exe
+[2026-07-12 12:05:29.727] 缓存图标: 工具\实用工具\核显驱动\Intelhxqdwin10.exe
+[2026-07-12 12:05:29.731] 缓存图标: 工具\实用工具\wps2019\W.P.S.10314.12012.2019.exe
+[2026-07-12 12:05:29.736] 缓存图标: 工具\实用工具\网卡驱动\gwwk__360DrvMgrInstaller_net.exe
+[2026-07-12 12:05:29.739] 缓存图标: 工具\实用工具\MicrosoftEdgeSetup.exe
+[2026-07-12 12:05:29.743] 缓存图标: 工具\实用工具\SeewoOpt.exe
+[2026-07-12 12:05:29.747] 缓存图标: 工具\搞机工具\HEU激活工具\HEU_KMS_Activator_v63.3.0.exe
+[2026-07-12 12:05:29.752] 缓存图标: 工具\搞机工具\沧水KMS\KMS-Cangshui.net.bat
+[2026-07-12 12:05:29.755] 缓存图标: 工具\搞机工具\安卓手表adb实用工具箱\安卓手表ADB实用工具箱 66.0.0.exe
+[2026-07-12 12:05:29.763] 缓存图标: 工具\搞机工具\鲁大师\ludashisetup.exe
+[2026-07-12 12:05:29.766] 缓存图标: 工具\文件工具\图压\图压.exe
+[2026-07-12 12:05:29.769] 缓存图标: 工具\文件工具\迅雷\program\thunder.exe
+[2026-07-12 12:05:29.772] 缓存图标: 工具\文件工具\格式转换工具
+[2026-07-12 12:05:29.776] 缓存图标: 工具\文件工具\DiskGenius-Pro-v6.0.0.1631-x64-Chs.exe
+[2026-07-12 12:05:29.779] 缓存图标: 工具\文件工具\DiskGenius-Pro-v6.0.0.1631-x86-Chs.exe
+[2026-07-12 12:05:29.782] 缓存图标: 工具\清理工具\hibit\HiBitUninstaller.exe
+[2026-07-12 12:05:29.785] 缓存图标: 工具\清理工具\IOBit\IObitUninstaller-Pro-14.4.0.3-Portable.exe
+[2026-07-12 12:05:29.788] 缓存图标: 工具\清理工具\Geek Uninstaller\Geek Uninstaller.exe
+[2026-07-12 12:05:29.791] 缓存图标: 工具\清理工具\SoftCnKiller2.85\SoftCnKiller.exe
+[2026-07-12 12:05:29.796] 缓存图标: 工具\依赖\NDP472-KB4054530-x86-x64-AllOS-ENU.exe
+[2026-07-12 12:05:29.799] 缓存图标: 工具\依赖\vc_redist.x86.exe
+[2026-07-12 12:05:29.801] 缓存图标: 工具\CPU工具\CPUZ\cpuz_x64.exe
+[2026-07-12 12:05:29.804] 缓存图标: 工具\CPU工具\CoreTemp\Core Temp x64.exe
+[2026-07-12 12:05:29.808] 缓存图标: 工具\CPU工具\ThrottleStop\ThrottleStop.exe
+[2026-07-12 12:05:29.815] 缓存图标: 工具\CPU工具\Prime95\prime95.exe
+[2026-07-12 12:05:29.818] 缓存图标: 工具\CPU工具\superpi\Superpi.exe
+[2026-07-12 12:05:29.829] 缓存图标: 工具\CPU工具\wPrime\wPrime.exe
+[2026-07-12 12:05:29.842] 缓存图标: 工具\CPU工具\LinX\LinX.exe
+[2026-07-12 12:05:29.845] 缓存图标: 工具\内存工具\memtest\memtest.exe
+[2026-07-12 12:05:29.848] 缓存图标: 工具\内存工具\memtest64\MemTest64.exe
+[2026-07-12 12:05:29.851] 缓存图标: 工具\内存工具\Thaiphoon\Thaiphoon.exe
+[2026-07-12 12:05:29.862] 缓存图标: 工具\内存工具\tm5\TM5.exe
+[2026-07-12 12:05:29.865] 缓存图标: 工具\内存工具\ZenTimings\ZenTimings.exe
+[2026-07-12 12:05:29.870] 缓存图标: 工具\内存工具\魔方内存盘\ramdisk.exe
+[2026-07-12 12:05:29.874] 缓存图标: 工具\显卡工具\GPUZ\GPU-Z.exe
+[2026-07-12 12:05:29.877] 缓存图标: 工具\显卡工具\DDU\Display Driver Uninstaller.exe
+[2026-07-12 12:05:29.880] 缓存图标: 工具\显卡工具\nvidiaInspector\nvidiaInspector.exe
+[2026-07-12 12:05:29.886] 缓存图标: 工具\显卡工具\dxvachecker\DXVAChecker.exe
+[2026-07-12 12:05:29.892] 缓存图标: 工具\显卡工具\AMD显卡驱动下载\Start.bat
+[2026-07-12 12:05:29.895] 缓存图标: 工具\显卡工具\Nvidia显卡驱动下载\Start.bat
+[2026-07-12 12:05:29.902] 缓存图标: 工具\显卡工具\MSIAfterburnerSetup\start.bat
+[2026-07-12 12:05:29.906] 缓存图标: 工具\硬盘工具\CrystalDiskInfo\DiskInfo64S.exe
+[2026-07-12 12:05:29.909] 缓存图标: 工具\硬盘工具\CrystalDiskMark\DiskMark64S.exe
+[2026-07-12 12:05:29.912] 缓存图标: 工具\硬盘工具\ASSSDBenchmark\ASSSDBenchmark.exe
+[2026-07-12 12:05:29.915] 缓存图标: 工具\硬盘工具\HDTune\HDTune.exe
+[2026-07-12 12:05:29.920] 缓存图标: 工具\硬盘工具\SpaceSniffer\SpaceSniffer.exe
+[2026-07-12 12:05:29.923] 缓存图标: 工具\硬盘工具\WizTree\WizTree.exe
+[2026-07-12 12:05:29.926] 缓存图标: 工具\硬盘工具\Defraggler\Defraggler.exe
+[2026-07-12 12:05:29.929] 缓存图标: 工具\硬盘工具\finaldata\FINALDATA.exe
+[2026-07-12 12:05:29.932] 缓存图标: 工具\硬盘工具\魔方数据恢复\魔方数据恢复.exe
+[2026-07-12 12:05:29.936] 缓存图标: 工具\硬盘工具\TxBENCH\TxBENCH.exe
+[2026-07-12 12:05:29.939] 缓存图标: 工具\硬盘工具\SSDZ\SSDZ.exe
+[2026-07-12 12:05:29.942] 缓存图标: 工具\烤鸡工具\furmark.exe
+[2026-07-12 12:05:29.945] 缓存图标: 工具\烤鸡工具\FurMark_GUI.exe
+[2026-07-12 12:05:29.951] 缓存图标: 工具\外设工具\AresonMouseTest\鼠标测试软件AresonMouseTestProgram.exe
+[2026-07-12 12:05:29.954] 缓存图标: 工具\外设工具\Keyboard Test Utility\Keyboard Test Utility.exe
+[2026-07-12 12:05:29.957] 缓存图标: 工具\外设工具\KeyTweak\KeyTweak.exe
+[2026-07-12 12:05:29.960] 缓存图标: 工具\外设工具\MouseTester\MouseTester.exe
+[2026-07-12 12:05:29.966] 缓存图标: 工具\外设工具\在线外设测试中心\在线外设测试中心.bat
+[2026-07-12 12:05:29.969] 缓存图标: 工具\显示器工具\色域检测\monitorinfo.exe
+[2026-07-12 12:05:29.974] 缓存图标: 工具\显示器工具\UFO测试\Start.bat
+[2026-07-12 12:05:29.980] 缓存图标: 工具\显示器工具\在线屏幕测试\在线屏幕测试.bat
+[2026-07-12 12:05:29.984] 缓存图标: 工具\综合检测\AIDA64\aida64.exe
+[2026-07-12 12:05:29.990] 缓存图标: 工具\综合检测\hwinfo\HWiNFO64.exe
+[2026-07-12 12:05:29.996] 缓存图标: 工具\综合检测\HWMonitor\HWMonitor_x64.exe
+[2026-07-12 12:05:30.000] 缓存图标: 工具\综合检测\speccy\Speccy64.exe
+[2026-07-12 12:05:30.003] 缓存图标: 工具\系统工具\Dism++\Dism++x64.exe
+[2026-07-12 12:05:30.006] 缓存图标: 工具\系统工具\DirectX_Repair\DirectX Repair.exe
+[2026-07-12 12:05:30.010] 缓存图标: 工具\系统工具\procexp\procexp64.exe
+[2026-07-12 12:05:30.020] 缓存图标: 工具\系统工具\WinDbg\windbg.exe
+[2026-07-12 12:05:30.027] 缓存图标: 工具\系统工具\Everything\everything.exe
+[2026-07-12 12:05:30.030] 缓存图标: 工具\系统工具\FanControl\FanControl.exe
+[2026-07-12 12:05:30.034] 缓存图标: 工具\系统工具\rufus\rufus.exe
+[2026-07-12 12:05:30.038] 缓存图标: 工具\系统工具\ventoy\Ventoy2Disk.exe
+[2026-07-12 12:05:30.045] 缓存图标: 工具\系统工具\ULTRAISO\ULTRAISO.exe
+[2026-07-12 12:05:30.048] 缓存图标: 工具\系统工具\bluescreenview\BlueScreenViewx64.exe
+[2026-07-12 12:05:30.052] 缓存图标: 工具\系统工具\BatteryInfoView\BatteryInfoView.exe
+[2026-07-12 12:05:30.060] 缓存图标: 工具\系统工具\next_itellyou\Start.bat
+[2026-07-12 12:05:30.066] 缓存图标: 工具\游戏平台\Steam\下载Steam.bat
+[2026-07-12 12:05:30.071] 缓存图标: 工具\游戏平台\epic\Start.bat
+[2026-07-12 12:05:30.078] 缓存图标: 工具\游戏平台\eaapp\Start.bat
+[2026-07-12 12:05:30.083] 缓存图标: 工具\游戏平台\battle\Start.bat
+[2026-07-12 12:05:30.083] 批量缓存图标: 86 个
+[2026-07-12 12:05:31.701] === 开始检查更新 ===
+[2026-07-12 12:05:31.702] 当前版本: 1.1.0
+[2026-07-12 12:05:31.702] 正在获取最新 Release...
+[2026-07-12 12:05:31.704] 请求 URL: https://api.github.com/repos/Foxelf-Studio/AngkleChen-ToolBox/releases?per_page=1
+[2026-07-12 12:05:31.704] 发送 HTTP 请求...
+[2026-07-12 12:05:32.507] HTTP 响应状态: OK
+[2026-07-12 12:05:32.507] 读取响应内容...
+[2026-07-12 12:05:32.509] 响应内容长度: 5099 字节
+[2026-07-12 12:05:32.509] 解析 JSON...
+[2026-07-12 12:05:32.517] 解析成功，共 1 个 Release
+[2026-07-12 12:05:32.519] 获取到 Release: tag=v1.2.0, name=v1.2.0 - 更新测试
+[2026-07-12 12:05:32.520] 最新版本: 1.2.0
+[2026-07-12 12:05:32.520] 版本比较结果: -1 (当前=1.1.0, 最新=1.2.0)
+[2026-07-12 12:05:32.520] 发现新版本！
+[2026-07-12 12:05:32.521] === 检查更新完成: HasUpdate=True ===
+[2026-07-12 12:05:35.082] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = 娱乐工具, Name = 娱乐工具, IconGlyph = , Subtitle = 音乐与视频播放 }
+[2026-07-12 12:05:35.082] OnCategoryChanged: cat=娱乐工具, newIndex=1, oldIndex=0, _suppressAnim=False
+[2026-07-12 12:05:35.332] ApplyFilter: 开始, _activeCategory=娱乐工具, AllTools.Length=90
+[2026-07-12 12:05:35.345] ApplyFilter: 完成, 显示 2 个工具
+[2026-07-12 12:05:35.926] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = 实用工具, Name = 实用工具, IconGlyph = , Subtitle = 系统安装与诊断 }
+[2026-07-12 12:05:35.926] OnCategoryChanged: cat=实用工具, newIndex=2, oldIndex=1, _suppressAnim=False
+[2026-07-12 12:05:36.169] ApplyFilter: 开始, _activeCategory=实用工具, AllTools.Length=90
+[2026-07-12 12:05:36.171] ApplyFilter: 完成, 显示 8 个工具
