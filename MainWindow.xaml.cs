@@ -255,7 +255,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     // ── 从配置加载数据 ────────────────────────────
     private void LoadFromConfig()
     {
-        // 加载分类
+        // 先加载工具（必须在 SelectedIndex 之前，否则触发 OnCategoryChanged 时 AllTools 还是旧的）
+        AllTools = _config.GetAllTools().ToArray();
+
+        // 再加载分类
         var categories = new List<CatInfo>
         {
             new("all", "全部工具", "", "浏览所有工具")
@@ -264,9 +267,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         Categories = categories.ToArray();
         CategoryList.ItemsSource = Categories;
         CategoryList.SelectedIndex = 0;
-
-        // 加载工具
-        AllTools = _config.GetAllTools().ToArray();
     }
 
     // ── 导航按钮线性高亮动画 ──────────────────────
@@ -789,6 +789,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     // ── 分类切换 ──────────────────────────────────
     private void OnCategoryChanged(object sender, SelectionChangedEventArgs e)
     {
+        Logger.Log($"OnCategoryChanged: 触发, SelectedItem={CategoryList.SelectedItem?.ToString()}");
         if (CategoryList.SelectedItem is CatInfo cat)
         {
             var cats = Categories;
@@ -797,6 +798,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             _prevCatIndex = newIndex;
 
             _activeCategory = cat.Id;
+            Logger.Log($"OnCategoryChanged: cat={cat.Name}, newIndex={newIndex}, oldIndex={oldIndex}, _suppressAnim={_suppressAnim}");
 
             if (!_suppressAnim && oldIndex != newIndex)
             {
@@ -1087,6 +1089,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void ApplyFilter()
     {
+        Logger.Log($"ApplyFilter: 开始, _activeCategory={_activeCategory}, AllTools.Length={AllTools.Length}");
         var query = SearchBox.Text.Trim();
         var filtered = AllTools.AsEnumerable();
 
@@ -1119,6 +1122,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
         CardItems.ItemsSource = list;
         StatusText = $"共 {list.Count} 款工具  ·  v{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString(3) ?? "1.1.0"}";
+        Logger.Log($"ApplyFilter: 完成, 显示 {list.Count} 个工具");
     }
 
     // ── 工具选中（单击） ─────────────────────────
