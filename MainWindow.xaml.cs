@@ -1206,18 +1206,17 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             // 删除文件/文件夹
             if (File.Exists(path))
             {
-                var dir = Path.GetDirectoryName(path);
-                Logger.Log($"删除文件所在目录: {dir}");
-                if (dir != null && Directory.Exists(dir))
-                {
-                    Directory.Delete(dir, true);
-                    Logger.Log($"目录已删除: {dir}");
-                }
+                // 单文件：只删除文件本身
+                Logger.Log($"删除单文件: {path}");
+                File.Delete(path);
+                Logger.Log($"文件已删除: {path}");
             }
             else if (Directory.Exists(path))
             {
+                // 文件夹：删除整个文件夹
+                Logger.Log($"删除文件夹: {path}");
                 Directory.Delete(path, true);
-                Logger.Log($"目录已删除: {path}");
+                Logger.Log($"文件夹已删除: {path}");
             }
             else
             {

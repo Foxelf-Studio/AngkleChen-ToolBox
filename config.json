@@ -43,11 +43,6 @@
           "relativePath": "\u5DE5\u5177\\\u5B9E\u7528\u5DE5\u5177\\Office Tool x32\\Office Tool Plus.exe"
         },
         {
-          "name": "PCR532 \u8BFB\u5361\u5668",
-          "description": "\u57FA\u4E8EPN532\u82AF\u7247\u7684NFC\u8BFB\u5361\u5668\u5DE5\u5177\uFF0C\u652F\u6301IC\u5361\u8BFB\u5199\u3001UID\u8BFB\u53D6\u3001\u95E8\u7981\u5361\u6A21\u62DF\u3001Mifare Classic\u7834\u89E3\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5B9E\u7528\u5DE5\u5177\\pcr532\\PN532CardReader.exe"
-        },
-        {
           "name": "Intel \u6838\u663E\u9A71\u52A8",
           "description": "Intel\u6838\u82AF\u663E\u5361\u9A71\u52A8\u79BB\u7EBF\u5B89\u88C5\u5305\uFF0C\u652F\u6301HD/UHD/Iris\u7CFB\u5217\u6838\u663E\uFF0C\u9002\u7528\u4E8EWindows 10/11\u7CFB\u7EDF\u3002",
           "relativePath": "\u5DE5\u5177\\\u5B9E\u7528\u5DE5\u5177\\\u6838\u663E\u9A71\u52A8\\Intelhxqdwin10.exe"
@@ -66,11 +61,6 @@
           "name": "\u81EA\u52A8\u66F4\u65B0\u65F6\u95F4",
           "description": "Seewo\u7F51\u7EDC\u65F6\u95F4\u540C\u6B65\u5DE5\u5177\uFF0C\u901A\u8FC7NTP\u670D\u52A1\u5668\u6821\u51C6\u7CFB\u7EDF\u65F6\u95F4\uFF0C\u9002\u7528\u4E8E\u6559\u80B2\u4E00\u4F53\u673A\u7B49\u8BBE\u5907\u3002",
           "relativePath": "\u5DE5\u5177\\\u5B9E\u7528\u5DE5\u5177\\\u81EA\u52A8\u66F4\u65B0\u7CFB\u7EDF\u65F6\u95F4\\SeewoOpt.exe"
-        },
-        {
-          "name": "MicrosoftEdgeSetup",
-          "description": "\u5FAE\u8F6FEdge\u6D4F\u89C8\u5668\u5728\u7EBF\u5B89\u88C5\u7A0B\u5E8F\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5B9E\u7528\u5DE5\u5177\\MicrosoftEdgeSetup.exe"
         }
       ]
     },
