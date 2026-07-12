@@ -487,8 +487,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void DeleteCategory(CatInfo cat)
     {
+        Logger.Log($"=== 开始删除分类: {cat.Name} ===");
+
         var categoryDir = Path.Combine(ToolboxRoot, "工具", cat.Name);
         bool hasTools = Directory.Exists(categoryDir) && Directory.GetFiles(categoryDir, "*", SearchOption.AllDirectories).Length > 0;
+        Logger.Log($"分类目录: {categoryDir}, 是否有工具: {hasTools}");
 
         string message;
         if (hasTools)
@@ -501,35 +504,51 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         }
 
         var result = CustomMessageBox.Show(message, "确认删除", MessageBoxButton.YesNo);
-        if (result != MessageBoxResult.Yes) return;
+        if (result != MessageBoxResult.Yes)
+        {
+            Logger.Log("用户取消删除分类");
+            return;
+        }
 
         try
         {
+            // 从配置中删除分类
+            Logger.Log("从配置中删除分类...");
+            var removeResult = _config.RemoveCategory(cat.Name);
+            Logger.Log($"配置删除结果: {removeResult}");
+
             // 删除目录（如果存在）
             if (Directory.Exists(categoryDir))
             {
+                Logger.Log($"删除分类目录: {categoryDir}");
                 Directory.Delete(categoryDir, true);
+                Logger.Log("分类目录已删除");
+            }
+            else
+            {
+                Logger.Log("分类目录不存在，跳过删除");
             }
 
-            // 从分类列表中移除
-            var list = Categories.ToList();
-            list.Remove(cat);
-            Categories = list.ToArray();
-            CategoryList.ItemsSource = Categories;
+            // 重新加载配置
+            Logger.Log("重新加载配置...");
+            LoadFromConfig();
+            Logger.Log($"重新加载完成, 工具总数: {AllTools.Length}");
 
             // 如果删除的是当前选中的分类，切换到"全部工具"
             if (_activeCategory == cat.Id)
             {
+                Logger.Log("删除的是当前选中分类，切换到全部工具");
                 CategoryList.SelectedIndex = 0;
             }
 
             ApplyFilter();
-            Logger.Log($"删除分类: {cat.Name}");
+            Logger.Log($"=== 删除分类完成: {cat.Name} ===");
         }
         catch (Exception ex)
         {
-            CustomMessageBox.Show($"删除失败: {ex.Message}", "错误");
             Logger.Log($"删除分类失败: {ex.Message}");
+            Logger.Log($"异常堆栈: {ex.StackTrace}");
+            CustomMessageBox.Show($"删除失败: {ex.Message}", "错误");
         }
     }
 
@@ -617,8 +636,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     // ── 添加工具 ──────────────────────────────────
     private void OnAddTool(object sender, RoutedEventArgs e)
     {
+        Logger.Log("=== 开始添加工具 ===");
+
         // 获取已有分类列表
         var existingCategories = _config.Categories.Select(c => c.Name).ToArray();
+        Logger.Log($"可用分类: {string.Join(", ", existingCategories)}");
 
         var dialog = new AddToolDialog(ToolboxRoot, existingCategories)
         {
@@ -631,7 +653,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             {
                 var sourcePath = dialog.SourcePath!;
                 var categoryName = dialog.CategoryName!;
+                var toolName = dialog.ToolName!;
+                var toolDesc = dialog.ToolDescription ?? "";
                 var isFolder = Directory.Exists(sourcePath);
+
+                Logger.Log($"用户选择: 名称={toolName}, 分类={categoryName}, 路径={sourcePath}, 是否文件夹={isFolder}");
 
                 // 计算目标路径
                 var destDir = Path.Combine(ToolboxRoot, "工具", categoryName);
@@ -648,48 +674,84 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                     destPath = Path.Combine(destDir, fileName);
                 }
 
+                Logger.Log($"目标路径: {destPath}");
+                Logger.Log($"目标目录: {destDir}");
+
                 // 先复制文件到工具目录（确保文件存在后再保存配置）
-                if (!sourcePath.StartsWith(Path.Combine(ToolboxRoot, "工具"), StringComparison.OrdinalIgnoreCase))
+                var toolboxToolsDir = Path.Combine(ToolboxRoot, "工具");
+                var isInToolsDir = sourcePath.StartsWith(toolboxToolsDir, StringComparison.OrdinalIgnoreCase);
+                Logger.Log($"源路径是否在工具目录内: {isInToolsDir}");
+
+                if (!isInToolsDir)
                 {
                     // 确保目标目录存在
                     if (!Directory.Exists(destDir))
+                    {
+                        Logger.Log($"创建目标目录: {destDir}");
                         Directory.CreateDirectory(destDir);
+                    }
 
                     if (isFolder)
                     {
+                        Logger.Log($"开始复制文件夹: {sourcePath} -> {destPath}");
                         CopyDirectory(sourcePath, destPath);
+                        Logger.Log($"文件夹复制完成");
                     }
                     else
                     {
+                        Logger.Log($"开始复制文件: {sourcePath} -> {destPath}");
                         File.Copy(sourcePath, destPath, true);
+                        Logger.Log($"文件复制完成");
                     }
+
+                    // 验证文件是否存在
+                    var fileExists = File.Exists(destPath);
+                    var dirExists = Directory.Exists(destPath);
+                    Logger.Log($"目标文件/目录是否存在: 文件={fileExists}, 目录={dirExists}");
+                }
+                else
+                {
+                    Logger.Log("源路径在工具目录内，跳过复制");
                 }
 
                 // 计算相对路径
                 var relativePath = Path.GetRelativePath(ToolboxRoot, destPath);
+                Logger.Log($"相对路径: {relativePath}");
 
                 // 创建新工具配置
                 var newTool = new AppConfig.ToolConfig
                 {
-                    Name = dialog.ToolName!,
-                    Description = dialog.ToolDescription ?? "",
+                    Name = toolName,
+                    Description = toolDesc,
                     RelativePath = relativePath
                 };
 
+                Logger.Log($"添加到配置: 名称={newTool.Name}, 路径={newTool.RelativePath}");
+
                 // 添加到配置（文件复制完成后再保存）
-                _config.AddTool(categoryName, newTool);
+                var addResult = _config.AddTool(categoryName, newTool);
+                Logger.Log($"配置添加结果: {addResult}");
 
                 // 重新加载配置
+                Logger.Log("重新加载配置...");
                 LoadFromConfig();
+                Logger.Log($"重新加载完成, 工具总数: {AllTools.Length}");
 
                 // 刷新界面
                 ApplyFilter();
-                StatusTip = $"已添加工具: {dialog.ToolName}";
+                StatusTip = $"已添加工具: {toolName}";
+                Logger.Log($"=== 添加工具完成: {toolName} ===");
             }
             catch (Exception ex)
             {
+                Logger.Log($"添加工具失败: {ex.Message}");
+                Logger.Log($"异常堆栈: {ex.StackTrace}");
                 CustomMessageBox.Show($"添加工具失败: {ex.Message}", "错误");
             }
+        }
+        else
+        {
+            Logger.Log("用户取消添加工具");
         }
     }
 
@@ -1130,32 +1192,48 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         if (tool is not ToolInfo t) return;
 
+        Logger.Log($"=== 开始删除工具: {t.Name} ===");
         var path = Path.Combine(ToolboxRoot, t.RelativePath);
+        Logger.Log($"工具路径: {path}");
 
         try
         {
             // 从配置中删除
-            _config.RemoveTool(t.RelativePath);
+            Logger.Log("从配置中删除...");
+            var removeResult = _config.RemoveTool(t.RelativePath);
+            Logger.Log($"配置删除结果: {removeResult}");
 
             // 删除文件/文件夹
             if (File.Exists(path))
             {
                 var dir = Path.GetDirectoryName(path);
+                Logger.Log($"删除文件所在目录: {dir}");
                 if (dir != null && Directory.Exists(dir))
+                {
                     Directory.Delete(dir, true);
+                    Logger.Log($"目录已删除: {dir}");
+                }
             }
             else if (Directory.Exists(path))
             {
                 Directory.Delete(path, true);
+                Logger.Log($"目录已删除: {path}");
+            }
+            else
+            {
+                Logger.Log($"路径不存在: {path}");
             }
 
             // 重新加载配置
+            Logger.Log("重新加载配置...");
             LoadFromConfig();
+            Logger.Log($"重新加载完成, 工具总数: {AllTools.Length}");
 
             // 刷新工具列表
             ApplyFilter();
 
             StatusTip = $"已删除 {t.Name}";
+            Logger.Log($"=== 删除工具完成: {t.Name} ===");
             Logger.Log($"删除工具: {t.Name}, 路径: {path}");
         }
         catch (Exception ex)
