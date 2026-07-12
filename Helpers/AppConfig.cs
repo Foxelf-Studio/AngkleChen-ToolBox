@@ -10,8 +10,9 @@ namespace 陈叔叔工具箱.Helpers;
 /// </summary>
 public class AppConfig
 {
-    private static readonly string ConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json");
-    private static readonly string IconCacheDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "IconCache");
+    private static readonly string BaseDir = Path.GetDirectoryName(Environment.ProcessPath) ?? BaseDir;
+    private static readonly string ConfigPath = Path.Combine(BaseDir, "config.json");
+    private static readonly string IconCacheDir = Path.Combine(BaseDir, "IconCache");
     private static readonly object _lock = new();
 
     /// <summary>
@@ -93,7 +94,7 @@ public class AppConfig
     /// </summary>
     private void FixAbsolutePaths()
     {
-        var baseDir = AppDomain.CurrentDomain.BaseDirectory;
+        var baseDir = BaseDir;
         var fixedCount = 0;
 
         foreach (var category in Categories)
@@ -259,7 +260,7 @@ public class AppConfig
     {
         try
         {
-            var baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            var baseDir = BaseDir;
             var fullPath = Path.Combine(baseDir, relativePath);
             if (!File.Exists(fullPath) && !Directory.Exists(fullPath)) return;
 
@@ -327,7 +328,7 @@ public class AppConfig
     /// </summary>
     public void CacheAllIcons()
     {
-        var baseDir = AppDomain.CurrentDomain.BaseDirectory;
+        var baseDir = BaseDir;
 
         // 确保缓存目录存在
         if (!Directory.Exists(IconCacheDir))

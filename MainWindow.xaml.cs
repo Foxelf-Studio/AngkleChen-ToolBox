@@ -23,7 +23,8 @@ namespace 陈叔叔工具箱;
 public partial class MainWindow : Window, INotifyPropertyChanged
 {
     // ── 工具箱根目录 ──────────────────────────────
-    private static readonly string ToolboxRoot = AppDomain.CurrentDomain.BaseDirectory;
+    // 使用 exe 所在目录，而不是 BaseDirectory（单文件应用可能返回临时目录）
+    private static readonly string ToolboxRoot = Path.GetDirectoryName(Environment.ProcessPath) ?? AppDomain.CurrentDomain.BaseDirectory;
 
     // ── 配置管理器 ────────────────────────────────
     private AppConfig _config = null!;

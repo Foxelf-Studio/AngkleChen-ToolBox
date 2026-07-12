@@ -19,6 +19,11 @@
           "name": "\u6D1B\u96EA\u97F3\u4E50",
           "description": "\u6D1B\u96EA\u97F3\u4E50\u684C\u9762\u7248\uFF0C\u5F00\u6E90\u514D\u8D39\u97F3\u4E50\u64AD\u653E\u5668\uFF0C\u652F\u6301\u591A\u5E73\u53F0\u97F3\u6E90\u3001\u65E0\u635F\u97F3\u8D28\u3001\u6B4C\u8BCD\u663E\u793A\u3001\u6B4C\u5355\u5BFC\u5165\u3002",
           "relativePath": "\u5DE5\u5177\\\u5A31\u4E50\u5DE5\u5177\\\u6D1B\u96EA\u97F3\u4E50\\lx-music-desktop.exe"
+        },
+        {
+          "name": "MicrosoftEdgeSetup",
+          "description": "",
+          "relativePath": "\u5DE5\u5177\\\u5A31\u4E50\u5DE5\u5177\\MicrosoftEdgeSetup.exe"
         }
       ]
     },

@@ -155,3 +155,58 @@
 [2026-07-12 11:40:17.700] 版本比较结果: -1 (当前=1.1.0, 最新=1.2.0)
 [2026-07-12 11:40:17.700] 发现新版本！
 [2026-07-12 11:40:17.701] === 检查更新完成: HasUpdate=True ===
+[2026-07-12 11:47:18.872] 保存配置: 16 个分类
+[2026-07-12 11:47:18.881] 创建默认配置
+[2026-07-12 11:47:18.893] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = all, Name = 全部工具, IconGlyph = , Subtitle = 浏览所有工具 }
+[2026-07-12 11:47:18.894] OnCategoryChanged: cat=全部工具, newIndex=0, oldIndex=0, _suppressAnim=True
+[2026-07-12 11:47:18.895] ApplyFilter: 开始, _activeCategory=all, AllTools.Length=86
+[2026-07-12 11:47:18.902] ApplyFilter: 完成, 显示 82 个工具
+[2026-07-12 11:47:19.513] 缓存图标: 工具\实用工具\pcr532\PN532CardReader.exe
+[2026-07-12 11:47:19.514] 批量缓存图标: 1 个
+[2026-07-12 11:47:21.496] === 开始检查更新 ===
+[2026-07-12 11:47:21.497] 当前版本: 1.1.0
+[2026-07-12 11:47:21.497] 正在获取最新 Release...
+[2026-07-12 11:47:21.499] 请求 URL: https://api.github.com/repos/Foxelf-Studio/AngkleChen-ToolBox/releases?per_page=1
+[2026-07-12 11:47:21.500] 发送 HTTP 请求...
+[2026-07-12 11:47:22.826] HTTP 响应状态: OK
+[2026-07-12 11:47:22.826] 读取响应内容...
+[2026-07-12 11:47:22.828] 响应内容长度: 5099 字节
+[2026-07-12 11:47:22.828] 解析 JSON...
+[2026-07-12 11:47:22.841] 解析成功，共 1 个 Release
+[2026-07-12 11:47:22.843] 获取到 Release: tag=v1.2.0, name=v1.2.0 - 更新测试
+[2026-07-12 11:47:22.843] 最新版本: 1.2.0
+[2026-07-12 11:47:22.844] 版本比较结果: -1 (当前=1.1.0, 最新=1.2.0)
+[2026-07-12 11:47:22.844] 发现新版本！
+[2026-07-12 11:47:22.845] === 检查更新完成: HasUpdate=True ===
+[2026-07-12 11:47:23.221] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = 娱乐工具, Name = 娱乐工具, IconGlyph = , Subtitle = 音乐与视频播放 }
+[2026-07-12 11:47:23.222] OnCategoryChanged: cat=娱乐工具, newIndex=1, oldIndex=0, _suppressAnim=False
+[2026-07-12 11:47:23.514] ApplyFilter: 开始, _activeCategory=娱乐工具, AllTools.Length=86
+[2026-07-12 11:47:23.529] ApplyFilter: 完成, 显示 2 个工具
+[2026-07-12 11:47:23.782] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = all, Name = 全部工具, IconGlyph = , Subtitle = 浏览所有工具 }
+[2026-07-12 11:47:23.782] OnCategoryChanged: cat=全部工具, newIndex=0, oldIndex=1, _suppressAnim=False
+[2026-07-12 11:47:24.070] ApplyFilter: 开始, _activeCategory=all, AllTools.Length=86
+[2026-07-12 11:47:24.075] ApplyFilter: 完成, 显示 82 个工具
+[2026-07-12 11:47:28.876] === 开始添加工具 ===
+[2026-07-12 11:47:28.877] 可用分类: 娱乐工具, 实用工具, 搞机工具, 文件工具, 清理工具, 依赖, CPU工具, 内存工具, 显卡工具, 硬盘工具, 烤鸡工具, 外设工具, 显示器工具, 综合检测, 系统工具, 游戏平台
+[2026-07-12 11:47:36.601] 用户选择: 名称=MicrosoftEdgeSetup, 分类=娱乐工具, 路径=E:\陈叔叔工具箱\工具\娱乐工具\MicrosoftEdgeSetup.exe, 是否文件夹=False
+[2026-07-12 11:47:36.601] 目标路径: E:\陈叔叔工具箱\工具\娱乐工具\MicrosoftEdgeSetup.exe
+[2026-07-12 11:47:36.602] 目标目录: E:\陈叔叔工具箱\工具\娱乐工具
+[2026-07-12 11:47:36.602] 源路径是否在工具目录内: True
+[2026-07-12 11:47:36.602] 源路径在工具目录内，跳过复制
+[2026-07-12 11:47:36.603] 相对路径: 工具\娱乐工具\MicrosoftEdgeSetup.exe
+[2026-07-12 11:47:36.603] 添加到配置: 名称=MicrosoftEdgeSetup, 路径=工具\娱乐工具\MicrosoftEdgeSetup.exe
+[2026-07-12 11:47:36.608] 保存配置: 16 个分类
+[2026-07-12 11:47:36.622] 缓存图标: 工具\娱乐工具\MicrosoftEdgeSetup.exe
+[2026-07-12 11:47:36.623] 添加工具: MicrosoftEdgeSetup -> 娱乐工具
+[2026-07-12 11:47:36.623] 配置添加结果: True
+[2026-07-12 11:47:36.623] 重新加载配置...
+[2026-07-12 11:47:36.627] 重新加载完成, 工具总数: 87
+[2026-07-12 11:47:36.627] ApplyFilter: 开始, _activeCategory=all, AllTools.Length=87
+[2026-07-12 11:47:36.635] ApplyFilter: 完成, 显示 83 个工具
+[2026-07-12 11:47:36.636] === 添加工具完成: MicrosoftEdgeSetup ===
+[2026-07-12 11:47:44.055] 加载配置: 16 个分类
+[2026-07-12 11:47:44.082] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = all, Name = 全部工具, IconGlyph = , Subtitle = 浏览所有工具 }
+[2026-07-12 11:47:44.082] OnCategoryChanged: cat=全部工具, newIndex=0, oldIndex=0, _suppressAnim=True
+[2026-07-12 11:47:44.084] ApplyFilter: 开始, _activeCategory=all, AllTools.Length=87
+[2026-07-12 11:47:44.092] ApplyFilter: 完成, 显示 83 个工具
+[2026-07-12 11:47:44.629] 批量缓存图标: 0 个
