@@ -492,3 +492,9 @@
 [2026-07-12 12:05:23.242] ApplyFilter: 开始, _activeCategory=all, AllTools.Length=90
 [2026-07-12 12:05:23.249] ApplyFilter: 完成, 显示 86 个工具
 [2026-07-12 12:05:23.804] 批量缓存图标: 0 个
+[2026-07-12 12:17:47.039] 加载配置: 16 个分类
+[2026-07-12 12:17:47.063] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = all, Name = 全部工具, IconGlyph = , Subtitle = 浏览所有工具 }
+[2026-07-12 12:17:47.064] OnCategoryChanged: cat=全部工具, newIndex=0, oldIndex=0, _suppressAnim=True
+[2026-07-12 12:17:47.065] ApplyFilter: 开始, _activeCategory=all, AllTools.Length=90
+[2026-07-12 12:17:47.073] ApplyFilter: 完成, 显示 86 个工具
+[2026-07-12 12:17:47.699] 批量缓存图标: 0 个

@@ -4,7 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
-    <AssemblyName>陈叔叔工具箱</AssemblyName>
+    <AssemblyName>AngkleChenToolBox</AssemblyName>
     <RootNamespace>陈叔叔工具箱</RootNamespace>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
