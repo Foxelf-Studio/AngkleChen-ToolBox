@@ -1,559 +1,559 @@
 {
   "categories": [
     {
-      "name": "\u5A31\u4E50\u5DE5\u5177",
-      "icon": "\uE8D6",
-      "description": "\u97F3\u4E50\u4E0E\u89C6\u9891\u64AD\u653E",
+      "name": "娱乐工具",
+      "icon": "",
+      "description": "音乐与视频播放",
       "tools": [
         {
-          "name": "\u9177\u6211\u97F3\u4E50",
-          "description": "\u9177\u6211\u97F3\u4E50PC\u7248\uFF0C\u652F\u6301\u5728\u7EBF\u542C\u6B4C\u3001\u6B4C\u8BCD\u663E\u793A\u3001\u97F3\u6548\u8C03\u8282\u3001\u672C\u5730\u97F3\u4E50\u7BA1\u7406\uFF0C\u652F\u6301\u65E0\u635F\u97F3\u8D28\u4E0B\u8F7D\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5A31\u4E50\u5DE5\u5177\\KwMusic\\KwMusic.exe"
+          "name": "酷我音乐",
+          "description": "酷我音乐PC版，支持在线听歌、歌词显示、音效调节、本地音乐管理，支持无损音质下载。",
+          "relativePath": "工具\\娱乐工具\\KwMusic\\KwMusic.exe"
         },
         {
           "name": "PiliPlus",
-          "description": "\u7B2C\u4E09\u65B9\u54D4\u54E9\u54D4\u54E9\u5BA2\u6237\u7AEF\uFF0C\u652F\u6301\u5F39\u5E55\u64AD\u653E\u3001\u89C6\u9891\u4E0B\u8F7D\u3001\u591A\u6E05\u6670\u5EA6\u5207\u6362\uFF0C\u57FA\u4E8EFlutter\u5F00\u53D1\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5A31\u4E50\u5DE5\u5177\\PiliPlus-Win\\piliplus.exe"
+          "description": "第三方哔哩哔哩客户端，支持弹幕播放、视频下载、多清晰度切换，基于Flutter开发。",
+          "relativePath": "工具\\娱乐工具\\PiliPlus-Win\\piliplus.exe"
         },
         {
-          "name": "\u6D1B\u96EA\u97F3\u4E50",
-          "description": "\u6D1B\u96EA\u97F3\u4E50\u684C\u9762\u7248\uFF0C\u5F00\u6E90\u514D\u8D39\u97F3\u4E50\u64AD\u653E\u5668\uFF0C\u652F\u6301\u591A\u5E73\u53F0\u97F3\u6E90\u3001\u65E0\u635F\u97F3\u8D28\u3001\u6B4C\u8BCD\u663E\u793A\u3001\u6B4C\u5355\u5BFC\u5165\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5A31\u4E50\u5DE5\u5177\\\u6D1B\u96EA\u97F3\u4E50\\lx-music-desktop.exe"
+          "name": "洛雪音乐",
+          "description": "洛雪音乐桌面版，开源免费音乐播放器，支持多平台音源、无损音质、歌词显示、歌单导入。",
+          "relativePath": "工具\\娱乐工具\\洛雪音乐\\lx-music-desktop.exe"
         }
       ]
     },
     {
-      "name": "\u5B9E\u7528\u5DE5\u5177",
-      "icon": "\uE713",
-      "description": "\u7CFB\u7EDF\u5B89\u88C5\u4E0E\u8BCA\u65AD",
+      "name": "实用工具",
+      "icon": "",
+      "description": "系统安装与诊断",
       "tools": [
         {
-          "name": "Edge \u6D4F\u89C8\u5668",
-          "description": "\u5FAE\u8F6FEdge\u6D4F\u89C8\u5668\u5728\u7EBF\u5B89\u88C5\u7A0B\u5E8F\uFF0C\u57FA\u4E8EChromium\u5185\u6838\uFF0C\u652F\u6301\u6269\u5C55\u63D2\u4EF6\u3001\u96C6\u9526\u3001\u6C89\u6D78\u5F0F\u9605\u8BFB\u5668\u7B49\u529F\u80FD\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5B9E\u7528\u5DE5\u5177\\edge\\MicrosoftEdgeSetup.exe"
+          "name": "Edge 浏览器",
+          "description": "微软Edge浏览器在线安装程序，基于Chromium内核，支持扩展插件、集锦、沉浸式阅读器等功能。",
+          "relativePath": "工具\\实用工具\\edge\\MicrosoftEdgeSetup.exe"
         },
         {
           "name": "Office Tool Plus",
-          "description": "\u5FAE\u8F6FOffice\u90E8\u7F72\u5DE5\u5177\uFF0C\u652F\u6301Office 2016-2024\u53CAMicrosoft 365\u7684\u5728\u7EBF/\u79BB\u7EBF\u5B89\u88C5\u3001\u6FC0\u6D3B\u3001\u66F4\u65B0\u7BA1\u7406\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5B9E\u7528\u5DE5\u5177\\Office Tool x64\\Office Tool Plus.exe"
+          "description": "微软Office部署工具，支持Office 2016-2024及Microsoft 365的在线/离线安装、激活、更新管理。",
+          "relativePath": "工具\\实用工具\\Office Tool x64\\Office Tool Plus.exe"
         },
         {
-          "name": "Office Tool (32\u4F4D)",
-          "description": "Office Tool Plus 32\u4F4D\u7248\u672C\uFF0C\u9002\u7528\u4E8E32\u4F4DWindows\u7CFB\u7EDF\uFF0C\u529F\u80FD\u4E0E64\u4F4D\u7248\u672C\u76F8\u540C\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5B9E\u7528\u5DE5\u5177\\Office Tool x32\\Office Tool Plus.exe"
+          "name": "Office Tool (32位)",
+          "description": "Office Tool Plus 32位版本，适用于32位Windows系统，功能与64位版本相同。",
+          "relativePath": "工具\\实用工具\\Office Tool x32\\Office Tool Plus.exe"
         },
         {
-          "name": "Intel \u6838\u663E\u9A71\u52A8",
-          "description": "Intel\u6838\u82AF\u663E\u5361\u9A71\u52A8\u79BB\u7EBF\u5B89\u88C5\u5305\uFF0C\u652F\u6301HD/UHD/Iris\u7CFB\u5217\u6838\u663E\uFF0C\u9002\u7528\u4E8EWindows 10/11\u7CFB\u7EDF\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5B9E\u7528\u5DE5\u5177\\\u6838\u663E\u9A71\u52A8\\Intelhxqdwin10.exe"
+          "name": "Intel 核显驱动",
+          "description": "Intel核芯显卡驱动离线安装包，支持HD/UHD/Iris系列核显，适用于Windows 10/11系统。",
+          "relativePath": "工具\\实用工具\\核显驱动\\Intelhxqdwin10.exe"
         },
         {
           "name": "WPS 2019",
-          "description": "WPS Office 2019\u4E13\u4E1A\u7248\u5B89\u88C5\u7A0B\u5E8F\uFF0C\u517C\u5BB9\u5FAE\u8F6FOffice\u683C\u5F0F\uFF0C\u652F\u6301\u6587\u5B57\u3001\u8868\u683C\u3001\u6F14\u793A\u4E09\u5927\u7EC4\u4EF6\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5B9E\u7528\u5DE5\u5177\\wps2019\\W.P.S.10314.12012.2019.exe"
+          "description": "WPS Office 2019专业版安装程序，兼容微软Office格式，支持文字、表格、演示三大组件。",
+          "relativePath": "工具\\实用工具\\wps2019\\W.P.S.10314.12012.2019.exe"
         },
         {
-          "name": "\u7F51\u5361\u9A71\u52A8",
-          "description": "360\u9A71\u52A8\u5927\u5E08\u7F51\u5361\u7248\uFF0C\u5185\u7F6E\u4E07\u80FD\u7F51\u5361\u9A71\u52A8\uFF0C\u89E3\u51B3\u91CD\u88C5\u7CFB\u7EDF\u540E\u65E0\u6CD5\u8054\u7F51\u7684\u95EE\u9898\uFF0C\u652F\u6301\u6709\u7EBF/\u65E0\u7EBF\u7F51\u5361\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5B9E\u7528\u5DE5\u5177\\\u7F51\u5361\u9A71\u52A8\\gwwk__360DrvMgrInstaller_net.exe"
+          "name": "网卡驱动",
+          "description": "360驱动大师网卡版，内置万能网卡驱动，解决重装系统后无法联网的问题，支持有线/无线网卡。",
+          "relativePath": "工具\\实用工具\\网卡驱动\\gwwk__360DrvMgrInstaller_net.exe"
         },
         {
-          "name": "\u81EA\u52A8\u66F4\u65B0\u65F6\u95F4",
-          "description": "Seewo\u7F51\u7EDC\u65F6\u95F4\u540C\u6B65\u5DE5\u5177\uFF0C\u901A\u8FC7NTP\u670D\u52A1\u5668\u6821\u51C6\u7CFB\u7EDF\u65F6\u95F4\uFF0C\u9002\u7528\u4E8E\u6559\u80B2\u4E00\u4F53\u673A\u7B49\u8BBE\u5907\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5B9E\u7528\u5DE5\u5177\\\u81EA\u52A8\u66F4\u65B0\u7CFB\u7EDF\u65F6\u95F4\\SeewoOpt.exe"
+          "name": "自动更新时间",
+          "description": "Seewo网络时间同步工具，通过NTP服务器校准系统时间，适用于教育一体机等设备。",
+          "relativePath": "工具\\实用工具\\自动更新系统时间\\SeewoOpt.exe"
         },
         {
           "name": "MicrosoftEdgeSetup",
-          "description": "\u5FAE\u8F6FEdge\u6D4F\u89C8\u5668\u5728\u7EBF\u5B89\u88C5\u7A0B\u5E8F\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5B9E\u7528\u5DE5\u5177\\MicrosoftEdgeSetup.exe"
+          "description": "微软Edge浏览器在线安装程序。",
+          "relativePath": "工具\\实用工具\\MicrosoftEdgeSetup.exe"
         }
       ]
     },
     {
-      "name": "\u641E\u673A\u5DE5\u5177",
-      "icon": "\uE90F",
-      "description": "\u6FC0\u6D3B\u00B7\u8C03\u8BD5\u00B7\u8DD1\u5206",
+      "name": "搞机工具",
+      "icon": "",
+      "description": "激活·调试·跑分",
       "tools": [
         {
-          "name": "HEU KMS \u6FC0\u6D3B",
-          "description": "HEU KMS Activator\uFF0C\u652F\u6301Windows Vista~11\u53CAOffice 2010~2024\u7684KMS\u6FC0\u6D3B\uFF0C\u65E0\u9700\u8054\u7F51\uFF0C\u64CD\u4F5C\u7B80\u5355\u3002",
-          "relativePath": "\u5DE5\u5177\\\u641E\u673A\u5DE5\u5177\\HEU\u6FC0\u6D3B\u5DE5\u5177\\HEU_KMS_Activator_v63.3.0.exe"
+          "name": "HEU KMS 激活",
+          "description": "HEU KMS Activator，支持Windows Vista~11及Office 2010~2024的KMS激活，无需联网，操作简单。",
+          "relativePath": "工具\\搞机工具\\HEU激活工具\\HEU_KMS_Activator_v63.3.0.exe"
         },
         {
-          "name": "\u6CA7\u6C34 KMS",
-          "description": "\u6CA7\u6C34KMS\u6FC0\u6D3B\u6279\u5904\u7406\u811A\u672C\uFF0C\u901A\u8FC7KMS\u670D\u52A1\u5668\u6FC0\u6D3BWindows\u548COffice\uFF0C\u652F\u6301\u591A\u79CD\u7248\u672C\u3002",
-          "relativePath": "\u5DE5\u5177\\\u641E\u673A\u5DE5\u5177\\\u6CA7\u6C34KMS\\KMS-Cangshui.net.bat"
+          "name": "沧水 KMS",
+          "description": "沧水KMS激活批处理脚本，通过KMS服务器激活Windows和Office，支持多种版本。",
+          "relativePath": "工具\\搞机工具\\沧水KMS\\KMS-Cangshui.net.bat"
         },
         {
-          "name": "\u5B89\u5353\u624B\u8868 ADB",
-          "description": "\u5B89\u5353\u624B\u8868ADB\u8C03\u8BD5\u5DE5\u5177\uFF0C\u652F\u6301\u5B89\u88C5\u5E94\u7528\u3001\u4F20\u8F93\u6587\u4EF6\u3001\u4FEE\u6539\u7CFB\u7EDF\u8BBE\u7F6E\uFF0C\u9002\u7528\u4E8E\u5404\u7C7B\u5B89\u5353\u667A\u80FD\u624B\u8868\u3002",
-          "relativePath": "\u5DE5\u5177\\\u641E\u673A\u5DE5\u5177\\\u5B89\u5353\u624B\u8868adb\u5B9E\u7528\u5DE5\u5177\u7BB1\\\u5B89\u5353\u624B\u8868ADB\u5B9E\u7528\u5DE5\u5177\u7BB1 66.0.0.exe"
+          "name": "安卓手表 ADB",
+          "description": "安卓手表ADB调试工具，支持安装应用、传输文件、修改系统设置，适用于各类安卓智能手表。",
+          "relativePath": "工具\\搞机工具\\安卓手表adb实用工具箱\\安卓手表ADB实用工具箱 66.0.0.exe"
         },
         {
-          "name": "\u9C81\u5927\u5E08",
-          "description": "\u9C81\u5927\u5E08\u786C\u4EF6\u68C0\u6D4B\u5DE5\u5177\uFF0C\u652F\u6301CPU/\u663E\u5361/\u5185\u5B58/\u786C\u76D8\u6027\u80FD\u8DD1\u5206\uFF0C\u6E29\u5EA6\u76D1\u63A7\uFF0C\u9A71\u52A8\u7BA1\u7406\u3002",
-          "relativePath": "\u5DE5\u5177\\\u641E\u673A\u5DE5\u5177\\\u9C81\u5927\u5E08\\ludashisetup.exe"
+          "name": "鲁大师",
+          "description": "鲁大师硬件检测工具，支持CPU/显卡/内存/硬盘性能跑分，温度监控，驱动管理。",
+          "relativePath": "工具\\搞机工具\\鲁大师\\ludashisetup.exe"
         }
       ]
     },
     {
-      "name": "\u6587\u4EF6\u5DE5\u5177",
-      "icon": "\uE8B7",
-      "description": "\u4E0B\u8F7D\u00B7\u538B\u7F29\u00B7\u5206\u533A",
+      "name": "文件工具",
+      "icon": "",
+      "description": "下载·压缩·分区",
       "tools": [
         {
-          "name": "\u56FE\u538B",
-          "description": "\u56FE\u538B\u56FE\u7247\u538B\u7F29\u5DE5\u5177\uFF0C\u652F\u6301JPG/PNG/GIF/WebP\u6279\u91CF\u538B\u7F29\uFF0C\u4FDD\u6301\u753B\u8D28\u7684\u540C\u65F6\u5927\u5E45\u51CF\u5C0F\u6587\u4EF6\u4F53\u79EF\u3002",
-          "relativePath": "\u5DE5\u5177\\\u6587\u4EF6\u5DE5\u5177\\\u56FE\u538B\\\u56FE\u538B.exe"
+          "name": "图压",
+          "description": "图压图片压缩工具，支持JPG/PNG/GIF/WebP批量压缩，保持画质的同时大幅减小文件体积。",
+          "relativePath": "工具\\文件工具\\图压\\图压.exe"
         },
         {
-          "name": "\u78C1\u76D8\u7CBE\u7075",
-          "description": "DiskGenius\u4E13\u4E1A\u7248\uFF0C\u652F\u6301\u78C1\u76D8\u5206\u533A\u7BA1\u7406\u3001\u6570\u636E\u6062\u590D\u3001\u5907\u4EFD\u8FD8\u539F\u3001\u5206\u533A\u8FC1\u79FB\u3001\u574F\u9053\u68C0\u6D4B\u4FEE\u590D\u3002",
-          "relativePath": "\u5DE5\u5177\\\u6587\u4EF6\u5DE5\u5177\\\u78C1\u76D8\u7CBE\u7075\\DiskGenius-Pro-v6.0.0.1631-x64-Chs.exe"
+          "name": "磁盘精灵",
+          "description": "DiskGenius专业版，支持磁盘分区管理、数据恢复、备份还原、分区迁移、坏道检测修复。",
+          "relativePath": "工具\\文件工具\\磁盘精灵\\DiskGenius-Pro-v6.0.0.1631-x64-Chs.exe"
         },
         {
-          "name": "\u8FC5\u96F7",
-          "description": "\u8FC5\u96F7\u6781\u901F\u7248\uFF0C\u652F\u6301BT/\u78C1\u529B\u94FE\u63A5/HTTP\u591A\u7EBF\u7A0B\u4E0B\u8F7D\uFF0CP2P\u52A0\u901F\uFF0C\u79BB\u7EBF\u4E0B\u8F7D\uFF0C\u8FB9\u4E0B\u8FB9\u64AD\u3002",
-          "relativePath": "\u5DE5\u5177\\\u6587\u4EF6\u5DE5\u5177\\\u8FC5\u96F7\\program\\thunder.exe"
+          "name": "迅雷",
+          "description": "迅雷极速版，支持BT/磁力链接/HTTP多线程下载，P2P加速，离线下载，边下边播。",
+          "relativePath": "工具\\文件工具\\迅雷\\program\\thunder.exe"
         },
         {
-          "name": "\u683C\u5F0F\u8F6C\u6362",
-          "description": "\u683C\u5F0F\u5DE5\u5382\u7B49\u5728\u7EBF\u683C\u5F0F\u8F6C\u6362\u5DE5\u5177\u96C6\u5408\uFF0C\u652F\u6301\u89C6\u9891\u3001\u97F3\u9891\u3001\u56FE\u7247\u3001\u6587\u6863\u7B49\u683C\u5F0F\u4E92\u76F8\u8F6C\u6362\u3002",
-          "relativePath": "\u5DE5\u5177\\\u6587\u4EF6\u5DE5\u5177\\\u683C\u5F0F\u8F6C\u6362\u5DE5\u5177"
+          "name": "格式转换",
+          "description": "格式工厂等在线格式转换工具集合，支持视频、音频、图片、文档等格式互相转换。",
+          "relativePath": "工具\\文件工具\\格式转换工具"
         }
       ]
     },
     {
-      "name": "\u6E05\u7406\u5DE5\u5177",
-      "icon": "\uE74D",
-      "description": "\u5378\u8F7D\u00B7\u6E05\u7406\u00B7\u62E6\u622A",
+      "name": "清理工具",
+      "icon": "",
+      "description": "卸载·清理·拦截",
       "tools": [
         {
           "name": "HiBit Uninstaller",
-          "description": "HiBit Uninstaller\uFF0C\u652F\u6301\u5F3A\u5236\u5378\u8F7D\u3001\u6279\u91CF\u5378\u8F7D\u3001\u6CE8\u518C\u8868\u6E05\u7406\u3001\u5783\u573E\u6587\u4EF6\u6E05\u7406\u3001\u542F\u52A8\u9879\u7BA1\u7406\u3002",
-          "relativePath": "\u5DE5\u5177\\\u6E05\u7406\u5DE5\u5177\\hibit\\HiBitUninstaller.exe"
+          "description": "HiBit Uninstaller，支持强制卸载、批量卸载、注册表清理、垃圾文件清理、启动项管理。",
+          "relativePath": "工具\\清理工具\\hibit\\HiBitUninstaller.exe"
         },
         {
           "name": "IObit Uninstaller",
-          "description": "IObit Uninstaller\u4E13\u4E1A\u7248\u4FBF\u643A\u7248\uFF0C\u652F\u6301\u5F3A\u5236\u5378\u8F7D\u3001\u8F6F\u4EF6\u5065\u5EB7\u68C0\u6D4B\u3001\u5B89\u88C5\u76D1\u89C6\u3001\u6D4F\u89C8\u5668\u63D2\u4EF6\u6E05\u7406\u3002",
-          "relativePath": "\u5DE5\u5177\\\u6E05\u7406\u5DE5\u5177\\IOBit\\IObitUninstaller-Pro-14.4.0.3-Portable.exe"
+          "description": "IObit Uninstaller专业版便携版，支持强制卸载、软件健康检测、安装监视、浏览器插件清理。",
+          "relativePath": "工具\\清理工具\\IOBit\\IObitUninstaller-Pro-14.4.0.3-Portable.exe"
         },
         {
           "name": "Geek Uninstaller",
-          "description": "Geek Uninstaller\u8F7B\u91CF\u7EA7\u5378\u8F7D\u5DE5\u5177\uFF0C\u652F\u6301\u5F3A\u5236\u5378\u8F7D\u3001\u6E05\u7406\u6B8B\u7559\u3001\u7BA1\u7406Windows Store\u5E94\u7528\u3002",
-          "relativePath": "\u5DE5\u5177\\\u6E05\u7406\u5DE5\u5177\\Geek Uninstaller\\Geek Uninstaller.exe"
+          "description": "Geek Uninstaller轻量级卸载工具，支持强制卸载、清理残留、管理Windows Store应用。",
+          "relativePath": "工具\\清理工具\\Geek Uninstaller\\Geek Uninstaller.exe"
         },
         {
           "name": "SoftCnKiller",
-          "description": "SoftCnKiller\uFF0C\u4E13\u6CBB\u56FD\u5185\u6D41\u6C13\u8F6F\u4EF6\uFF0C\u652F\u6301\u67E5\u6740\u6076\u610F\u7A0B\u5E8F\u3001\u62E6\u622A\u5F39\u7A97\u5E7F\u544A\u3001\u4FEE\u590D\u6D4F\u89C8\u5668\u52AB\u6301\u3002",
-          "relativePath": "\u5DE5\u5177\\\u6E05\u7406\u5DE5\u5177\\SoftCnKiller2.85\\SoftCnKiller.exe"
+          "description": "SoftCnKiller，专治国内流氓软件，支持查杀恶意程序、拦截弹窗广告、修复浏览器劫持。",
+          "relativePath": "工具\\清理工具\\SoftCnKiller2.85\\SoftCnKiller.exe"
         }
       ]
     },
     {
-      "name": "\u4F9D\u8D56",
-      "icon": "\uE8B9",
-      "description": "\u8FD0\u884C\u5E93\u4E0E\u6846\u67B6",
+      "name": "依赖",
+      "icon": "",
+      "description": "运行库与框架",
       "tools": [
         {
           "name": ".NET Framework 4.7",
-          "description": ".NET Framework 4.7.2\u79BB\u7EBF\u5B89\u88C5\u5305\uFF0C\u8BB8\u591A\u8F6F\u4EF6\u548C\u6E38\u620F\u7684\u8FD0\u884C\u4F9D\u8D56\uFF0C\u652F\u6301Windows 7/8/10\u3002",
-          "relativePath": "\u5DE5\u5177\\\u4F9D\u8D56\\.net\\NDP472-KB4054530-x86-x64-AllOS-ENU.exe"
+          "description": ".NET Framework 4.7.2离线安装包，许多软件和游戏的运行依赖，支持Windows 7/8/10。",
+          "relativePath": "工具\\依赖\\.net\\NDP472-KB4054530-x86-x64-AllOS-ENU.exe"
         },
         {
-          "name": "VC\u002B\u002B \u8FD0\u884C\u5E93",
-          "description": "Microsoft Visual C\u002B\u002B 2005-2022\u8FD0\u884C\u5E93\u5408\u96C6\uFF0C\u8BB8\u591A\u8F6F\u4EF6\u548C\u6E38\u620F\u7684\u5FC5\u8981\u4F9D\u8D56\u7EC4\u4EF6\u3002",
-          "relativePath": "\u5DE5\u5177\\\u4F9D\u8D56\\vc\\vc_redist.x86.exe"
+          "name": "VC++ 运行库",
+          "description": "Microsoft Visual C++ 2005-2022运行库合集，许多软件和游戏的必要依赖组件。",
+          "relativePath": "工具\\依赖\\vc\\vc_redist.x86.exe"
         },
         {
-          "name": "VC\u002B\u002B \u8FD0\u884C\u5E93",
-          "description": "Microsoft Visual C\u002B\u002B 2005-2022\u8FD0\u884C\u5E93\u5408\u96C6\u548C\u6E38\u620F\u7684\u5FC5\u8981\u4F9D\u8D56\u7EC4\u4EF6\u3002",
-          "relativePath": "E:\\\u9648\u53D4\u53D4\u5DE5\u5177\u7BB1\\\u5DE5\u5177\\\u4F9D\u8D56\\vc_redist.x86.exe"
+          "name": "VC++ 运行库",
+          "description": "Microsoft Visual C++ 2005-2022运行库合集和游戏的必要依赖组件。",
+          "relativePath": "工具\\依赖\\vc_redist.x86.exe"
         },
         {
           "name": ".NET Framework 4.7.2",
-          "description": ".NET Framework 4.7.2\u79BB\u7EBF\u5B89\u88C5\u5305\uFF0C\u8BB8\u591A\u8F6F\u4EF6\u548C\u6E38\u620F\u7684\u8FD0\u884C\u4F9D\u8D56\uFF0C\u652F\u6301Windows 7/8/10",
-          "relativePath": "\u5DE5\u5177\\\u4F9D\u8D56\\NDP472-KB4054530-x86-x64-AllOS-ENU.exe"
+          "description": ".NET Framework 4.7.2离线安装包，许多软件和游戏的运行依赖，支持Windows 7/8/10",
+          "relativePath": "工具\\依赖\\NDP472-KB4054530-x86-x64-AllOS-ENU.exe"
         },
         {
-          "name": "VC\u002B\u002B \u8FD0\u884C\u5E93",
-          "description": "Microsoft Visual C\u002B\u002B2005-2022\u8FD0\u884C\u5E93\u5408\u96C6\u548C\u6E38\u620F\u7684\u5FC5\u8981\u4F9D\u8D56\u7EC4\u4EF6\u3002",
-          "relativePath": "\u5DE5\u5177\\\u4F9D\u8D56\\vc_redist.x86.exe"
+          "name": "VC++ 运行库",
+          "description": "Microsoft Visual C++2005-2022运行库合集和游戏的必要依赖组件。",
+          "relativePath": "工具\\依赖\\vc_redist.x86.exe"
         }
       ]
     },
     {
-      "name": "CPU\u5DE5\u5177",
-      "icon": "\uE90F",
-      "description": "\u5904\u7406\u5668\u68C0\u6D4B\u4E0E\u6D4B\u8BD5",
+      "name": "CPU工具",
+      "icon": "",
+      "description": "处理器检测与测试",
       "tools": [
         {
           "name": "CPU-Z",
-          "description": "CPU-Z\u5904\u7406\u5668\u68C0\u6D4B\u5DE5\u5177\uFF0C\u663E\u793ACPU\u578B\u53F7\u3001\u6838\u5FC3\u6570\u3001\u9891\u7387\u3001\u7F13\u5B58\u3001\u4E3B\u677F\u3001\u5185\u5B58\u7B49\u8BE6\u7EC6\u786C\u4EF6\u4FE1\u606F\u3002",
-          "relativePath": "\u5DE5\u5177\\CPU\u5DE5\u5177\\CPUZ\\cpuz_x64.exe"
+          "description": "CPU-Z处理器检测工具，显示CPU型号、核心数、频率、缓存、主板、内存等详细硬件信息。",
+          "relativePath": "工具\\CPU工具\\CPUZ\\cpuz_x64.exe"
         },
         {
           "name": "Core Temp",
-          "description": "Core Temp\u8F7B\u91CF\u7EA7CPU\u6E29\u5EA6\u76D1\u63A7\u5DE5\u5177\uFF0C\u5B9E\u65F6\u663E\u793A\u5404\u6838\u5FC3\u6E29\u5EA6\u3001\u9891\u7387\u3001\u8D1F\u8F7D\uFF0C\u652F\u6301\u9AD8\u6E29\u62A5\u8B66\u3002",
-          "relativePath": "\u5DE5\u5177\\CPU\u5DE5\u5177\\CoreTemp\\Core Temp x64.exe"
+          "description": "Core Temp轻量级CPU温度监控工具，实时显示各核心温度、频率、负载，支持高温报警。",
+          "relativePath": "工具\\CPU工具\\CoreTemp\\Core Temp x64.exe"
         },
         {
           "name": "ThrottleStop",
-          "description": "ThrottleStop CPU\u964D\u538B\u5DE5\u5177\uFF0C\u652F\u6301\u8C03\u6574CPU\u7535\u538B\u3001\u9891\u7387\u3001\u529F\u8017\u9650\u5236\uFF0C\u964D\u4F4E\u6E29\u5EA6\u5EF6\u957F\u7EED\u822A\u3002",
-          "relativePath": "\u5DE5\u5177\\CPU\u5DE5\u5177\\ThrottleStop\\ThrottleStop.exe"
+          "description": "ThrottleStop CPU降压工具，支持调整CPU电压、频率、功耗限制，降低温度延长续航。",
+          "relativePath": "工具\\CPU工具\\ThrottleStop\\ThrottleStop.exe"
         },
         {
           "name": "Prime95",
-          "description": "Prime95 CPU\u538B\u529B\u6D4B\u8BD5\u5DE5\u5177\uFF0C\u901A\u8FC7\u6885\u68EE\u7D20\u6570\u8BA1\u7B97\u5BF9CPU\u8FDB\u884C\u6781\u9650\u62F7\u673A\uFF0C\u68C0\u6D4B\u7A33\u5B9A\u6027\u3002",
-          "relativePath": "\u5DE5\u5177\\CPU\u5DE5\u5177\\Prime95\\prime95.exe"
+          "description": "Prime95 CPU压力测试工具，通过梅森素数计算对CPU进行极限拷机，检测稳定性。",
+          "relativePath": "工具\\CPU工具\\Prime95\\prime95.exe"
         },
         {
           "name": "SuperPI",
-          "description": "SuperPI\u5706\u5468\u7387\u8BA1\u7B97\u6D4B\u8BD5\uFF0C\u901A\u8FC7\u8BA1\u7B97PI\u503C\u6D4B\u8BD5CPU\u5355\u6838\u6027\u80FD\u548C\u7A33\u5B9A\u6027\uFF0C\u7ECF\u5178\u8DD1\u5206\u5DE5\u5177\u3002",
-          "relativePath": "\u5DE5\u5177\\CPU\u5DE5\u5177\\superpi\\Superpi.exe"
+          "description": "SuperPI圆周率计算测试，通过计算PI值测试CPU单核性能和稳定性，经典跑分工具。",
+          "relativePath": "工具\\CPU工具\\superpi\\Superpi.exe"
         },
         {
           "name": "wPrime",
-          "description": "wPrime\u591A\u7EBF\u7A0BCPU\u57FA\u51C6\u6D4B\u8BD5\u5DE5\u5177\uFF0C\u901A\u8FC7\u8BA1\u7B97\u5E73\u65B9\u6839\u503C\u6D4B\u8BD5CPU\u591A\u6838\u6027\u80FD\u3002",
-          "relativePath": "\u5DE5\u5177\\CPU\u5DE5\u5177\\wPrime\\wPrime.exe"
+          "description": "wPrime多线程CPU基准测试工具，通过计算平方根值测试CPU多核性能。",
+          "relativePath": "工具\\CPU工具\\wPrime\\wPrime.exe"
         },
         {
           "name": "LinX",
-          "description": "LinX\u57FA\u4E8EIntel Linpack\u7684CPU\u538B\u529B\u6D4B\u8BD5\u5DE5\u5177\uFF0C\u6BD4Prime95\u66F4\u4E25\u683C\uFF0C\u80FD\u5FEB\u901F\u53D1\u73B0CPU\u4E0D\u7A33\u5B9A\u95EE\u9898\u3002",
-          "relativePath": "\u5DE5\u5177\\CPU\u5DE5\u5177\\LinX\\LinX.exe"
+          "description": "LinX基于Intel Linpack的CPU压力测试工具，比Prime95更严格，能快速发现CPU不稳定问题。",
+          "relativePath": "工具\\CPU工具\\LinX\\LinX.exe"
         }
       ]
     },
     {
-      "name": "\u5185\u5B58\u5DE5\u5177",
-      "icon": "\uE8F4",
-      "description": "\u5185\u5B58\u68C0\u6D4B\u4E0E\u7BA1\u7406",
+      "name": "内存工具",
+      "icon": "",
+      "description": "内存检测与管理",
       "tools": [
         {
           "name": "MemTest",
-          "description": "MemTest\u5185\u5B58\u9519\u8BEF\u68C0\u6D4B\u5DE5\u5177\uFF0C\u901A\u8FC7\u53CD\u590D\u8BFB\u5199\u6D4B\u8BD5\u5185\u5B58\u6761\u662F\u5426\u5B58\u5728\u574F\u5757\uFF0C\u5EFA\u8BAE\u8FD0\u884C\u81F3\u5C111\u8F6E\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5185\u5B58\u5DE5\u5177\\memtest\\memtest.exe"
+          "description": "MemTest内存错误检测工具，通过反复读写测试内存条是否存在坏块，建议运行至少1轮。",
+          "relativePath": "工具\\内存工具\\memtest\\memtest.exe"
         },
         {
           "name": "MemTest64",
-          "description": "MemTest64 64\u4F4D\u5185\u5B58\u6D4B\u8BD5\u5DE5\u5177\uFF0C\u53EF\u5728Windows\u4E0B\u76F4\u63A5\u6D4B\u8BD5\u5185\u5B58\uFF0C\u65E0\u9700\u8FDB\u5165DOS\u73AF\u5883\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5185\u5B58\u5DE5\u5177\\memtest64\\MemTest64.exe"
+          "description": "MemTest64 64位内存测试工具，可在Windows下直接测试内存，无需进入DOS环境。",
+          "relativePath": "工具\\内存工具\\memtest64\\MemTest64.exe"
         },
         {
           "name": "Thaiphoon",
-          "description": "Thaiphoon Burner\u5185\u5B58\u9897\u7C92\u4FE1\u606F\u8BFB\u53D6\u5DE5\u5177\uFF0C\u663E\u793A\u5185\u5B58\u5382\u5546\u3001\u9897\u7C92\u578B\u53F7\u3001\u65F6\u5E8F\u53C2\u6570\u3001XMP\u4FE1\u606F\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5185\u5B58\u5DE5\u5177\\Thaiphoon\\Thaiphoon.exe"
+          "description": "Thaiphoon Burner内存颗粒信息读取工具，显示内存厂商、颗粒型号、时序参数、XMP信息。",
+          "relativePath": "工具\\内存工具\\Thaiphoon\\Thaiphoon.exe"
         },
         {
           "name": "TM5",
-          "description": "TM5\u5185\u5B58\u7A33\u5B9A\u6027\u6D4B\u8BD5\u5DE5\u5177\uFF0C\u914D\u5408\u81EA\u5B9A\u4E49\u914D\u7F6E\u6587\u4EF6\u53EF\u7CBE\u786E\u68C0\u6D4B\u5185\u5B58\u8D85\u9891\u540E\u7684\u7A33\u5B9A\u6027\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5185\u5B58\u5DE5\u5177\\tm5\\TM5.exe"
+          "description": "TM5内存稳定性测试工具，配合自定义配置文件可精确检测内存超频后的稳定性。",
+          "relativePath": "工具\\内存工具\\tm5\\TM5.exe"
         },
         {
           "name": "ZenTimings",
-          "description": "ZenTimings AMD\u5E73\u53F0\u5185\u5B58\u65F6\u5E8F\u67E5\u770B\u5DE5\u5177\uFF0C\u663E\u793A\u9891\u7387\u3001\u65F6\u5E8F\u3001\u7535\u538B\u3001Gear Down Mode\u7B49\u53C2\u6570\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5185\u5B58\u5DE5\u5177\\ZenTimings\\ZenTimings.exe"
+          "description": "ZenTimings AMD平台内存时序查看工具，显示频率、时序、电压、Gear Down Mode等参数。",
+          "relativePath": "工具\\内存工具\\ZenTimings\\ZenTimings.exe"
         },
         {
-          "name": "\u9B54\u65B9\u5185\u5B58\u76D8",
-          "description": "\u9B54\u65B9\u5185\u5B58\u76D8\uFF0C\u5C06\u5185\u5B58\u865A\u62DF\u4E3A\u786C\u76D8\u5206\u533A\uFF0C\u8BFB\u5199\u901F\u5EA6\u6781\u5FEB\uFF0C\u9002\u5408\u5B58\u653E\u4E34\u65F6\u6587\u4EF6\u548C\u7F13\u5B58\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5185\u5B58\u5DE5\u5177\\\u9B54\u65B9\u5185\u5B58\u76D8\\ramdisk.exe"
+          "name": "魔方内存盘",
+          "description": "魔方内存盘，将内存虚拟为硬盘分区，读写速度极快，适合存放临时文件和缓存。",
+          "relativePath": "工具\\内存工具\\魔方内存盘\\ramdisk.exe"
         }
       ]
     },
     {
-      "name": "\u663E\u5361\u5DE5\u5177",
-      "icon": "\uEB9F",
-      "description": "GPU\u68C0\u6D4B\u4E0E\u9A71\u52A8",
+      "name": "显卡工具",
+      "icon": "",
+      "description": "GPU检测与驱动",
       "tools": [
         {
           "name": "GPU-Z",
-          "description": "GPU-Z\u663E\u5361\u4FE1\u606F\u68C0\u6D4B\u5DE5\u5177\uFF0C\u663E\u793AGPU\u578B\u53F7\u3001\u663E\u5B58\u3001\u9891\u7387\u3001\u6E29\u5EA6\u3001\u529F\u8017\u7B49\u8BE6\u7EC6\u53C2\u6570\u3002",
-          "relativePath": "\u5DE5\u5177\\\u663E\u5361\u5DE5\u5177\\GPUZ\\GPU-Z.exe"
+          "description": "GPU-Z显卡信息检测工具，显示GPU型号、显存、频率、温度、功耗等详细参数。",
+          "relativePath": "工具\\显卡工具\\GPUZ\\GPU-Z.exe"
         },
         {
           "name": "DDU",
-          "description": "DDU(Display Driver Uninstaller)\u663E\u5361\u9A71\u52A8\u5F7B\u5E95\u5378\u8F7D\u5DE5\u5177\uFF0C\u652F\u6301NVIDIA/AMD/Intel\u9A71\u52A8\u6E05\u7406\u3002",
-          "relativePath": "\u5DE5\u5177\\\u663E\u5361\u5DE5\u5177\\DDU\\Display Driver Uninstaller.exe"
+          "description": "DDU(Display Driver Uninstaller)显卡驱动彻底卸载工具，支持NVIDIA/AMD/Intel驱动清理。",
+          "relativePath": "工具\\显卡工具\\DDU\\Display Driver Uninstaller.exe"
         },
         {
           "name": "nvidiaInspector",
-          "description": "nvidiaInspector NVIDIA\u663E\u5361\u53C2\u6570\u8C03\u8282\u5DE5\u5177\uFF0C\u652F\u6301\u8C03\u6574\u9891\u7387\u3001\u7535\u538B\u3001\u529F\u8017\u9650\u5236\u3001\u98CE\u6247\u66F2\u7EBF\u3002",
-          "relativePath": "\u5DE5\u5177\\\u663E\u5361\u5DE5\u5177\\nvidiaInspector\\nvidiaInspector.exe"
+          "description": "nvidiaInspector NVIDIA显卡参数调节工具，支持调整频率、电压、功耗限制、风扇曲线。",
+          "relativePath": "工具\\显卡工具\\nvidiaInspector\\nvidiaInspector.exe"
         },
         {
           "name": "DXVAChecker",
-          "description": "DXVAChecker\u89C6\u9891\u786C\u4EF6\u52A0\u901F\u80FD\u529B\u68C0\u6D4B\u5DE5\u5177\uFF0C\u663E\u793AGPU\u652F\u6301\u7684\u89E3\u7801\u683C\u5F0F\u548C\u7F16\u7801\u80FD\u529B\u3002",
-          "relativePath": "\u5DE5\u5177\\\u663E\u5361\u5DE5\u5177\\dxvachecker\\DXVAChecker.exe"
+          "description": "DXVAChecker视频硬件加速能力检测工具，显示GPU支持的解码格式和编码能力。",
+          "relativePath": "工具\\显卡工具\\dxvachecker\\DXVAChecker.exe"
         },
         {
-          "name": "AMD\u9A71\u52A8\u4E0B\u8F7D",
-          "description": "AMD\u663E\u5361\u9A71\u52A8\u5B98\u65B9\u4E0B\u8F7D\u9875\u9762\uFF0C\u63D0\u4F9BRadeon\u7CFB\u5217\u663E\u5361\u6700\u65B0\u9A71\u52A8\u7A0B\u5E8F\u4E0B\u8F7D\u3002",
-          "relativePath": "\u5DE5\u5177\\\u663E\u5361\u5DE5\u5177\\AMD\u663E\u5361\u9A71\u52A8\u4E0B\u8F7D\\Start.bat"
+          "name": "AMD驱动下载",
+          "description": "AMD显卡驱动官方下载页面，提供Radeon系列显卡最新驱动程序下载。",
+          "relativePath": "工具\\显卡工具\\AMD显卡驱动下载\\Start.bat"
         },
         {
-          "name": "Nvidia\u9A71\u52A8\u4E0B\u8F7D",
-          "description": "NVIDIA\u663E\u5361\u9A71\u52A8\u5B98\u65B9\u4E0B\u8F7D\u9875\u9762\uFF0C\u63D0\u4F9BGeForce\u7CFB\u5217\u663E\u5361\u6700\u65B0Game Ready\u9A71\u52A8\u4E0B\u8F7D\u3002",
-          "relativePath": "\u5DE5\u5177\\\u663E\u5361\u5DE5\u5177\\Nvidia\u663E\u5361\u9A71\u52A8\u4E0B\u8F7D\\Start.bat"
+          "name": "Nvidia驱动下载",
+          "description": "NVIDIA显卡驱动官方下载页面，提供GeForce系列显卡最新Game Ready驱动下载。",
+          "relativePath": "工具\\显卡工具\\Nvidia显卡驱动下载\\Start.bat"
         },
         {
           "name": "MSI Afterburner",
-          "description": "MSI Afterburner\u663E\u5361\u8D85\u9891\u5DE5\u5177\u4E0B\u8F7D\u9875\u9762\uFF0C\u652F\u6301NVIDIA/AMD\u663E\u5361\u9891\u7387\u8C03\u8282\u3001\u76D1\u63A7\u3001\u5F55\u50CF\u3002",
-          "relativePath": "\u5DE5\u5177\\\u663E\u5361\u5DE5\u5177\\MSIAfterburnerSetup\\start.bat"
+          "description": "MSI Afterburner显卡超频工具下载页面，支持NVIDIA/AMD显卡频率调节、监控、录像。",
+          "relativePath": "工具\\显卡工具\\MSIAfterburnerSetup\\start.bat"
         }
       ]
     },
     {
-      "name": "\u786C\u76D8\u5DE5\u5177",
-      "icon": "\uEDA2",
-      "description": "\u78C1\u76D8\u68C0\u6D4B\u4E0E\u6062\u590D",
+      "name": "硬盘工具",
+      "icon": "",
+      "description": "磁盘检测与恢复",
       "tools": [
         {
           "name": "CrystalDiskInfo",
-          "description": "CrystalDiskInfo\u786C\u76D8\u5065\u5EB7\u68C0\u6D4B\u5DE5\u5177\uFF0C\u8BFB\u53D6S.M.A.R.T.\u4FE1\u606F\uFF0C\u663E\u793A\u786C\u76D8\u6E29\u5EA6\u3001\u901A\u7535\u65F6\u95F4\u3001\u5065\u5EB7\u72B6\u6001\u3002",
-          "relativePath": "\u5DE5\u5177\\\u786C\u76D8\u5DE5\u5177\\CrystalDiskInfo\\DiskInfo64S.exe"
+          "description": "CrystalDiskInfo硬盘健康检测工具，读取S.M.A.R.T.信息，显示硬盘温度、通电时间、健康状态。",
+          "relativePath": "工具\\硬盘工具\\CrystalDiskInfo\\DiskInfo64S.exe"
         },
         {
           "name": "CrystalDiskMark",
-          "description": "CrystalDiskMark\u786C\u76D8\u8BFB\u5199\u901F\u5EA6\u6D4B\u8BD5\u5DE5\u5177\uFF0C\u652F\u6301\u987A\u5E8F/\u968F\u673A\u8BFB\u5199\u6D4B\u8BD5\uFF0C\u652F\u6301NVMe/SATA/USB\u8BBE\u5907\u3002",
-          "relativePath": "\u5DE5\u5177\\\u786C\u76D8\u5DE5\u5177\\CrystalDiskMark\\DiskMark64S.exe"
+          "description": "CrystalDiskMark硬盘读写速度测试工具，支持顺序/随机读写测试，支持NVMe/SATA/USB设备。",
+          "relativePath": "工具\\硬盘工具\\CrystalDiskMark\\DiskMark64S.exe"
         },
         {
           "name": "AS SSD Benchmark",
-          "description": "AS SSD Benchmark\u56FA\u6001\u786C\u76D8\u6027\u80FD\u6D4B\u8BD5\u5DE5\u5177\uFF0C\u6D4B\u8BD5\u987A\u5E8F/4K\u8BFB\u5199\u3001\u8BBF\u95EE\u65F6\u95F4\u3001\u7EFC\u5408\u8BC4\u5206\u3002",
-          "relativePath": "\u5DE5\u5177\\\u786C\u76D8\u5DE5\u5177\\ASSSDBenchmark\\ASSSDBenchmark.exe"
+          "description": "AS SSD Benchmark固态硬盘性能测试工具，测试顺序/4K读写、访问时间、综合评分。",
+          "relativePath": "工具\\硬盘工具\\ASSSDBenchmark\\ASSSDBenchmark.exe"
         },
         {
           "name": "HDTune",
-          "description": "HDTune\u786C\u76D8\u7EFC\u5408\u5DE5\u5177\uFF0C\u652F\u6301\u57FA\u51C6\u6D4B\u8BD5\u3001\u9519\u8BEF\u626B\u63CF\u3001\u5065\u5EB7\u68C0\u6D4B\u3001\u5B89\u5168\u64E6\u9664\u7B49\u529F\u80FD\u3002",
-          "relativePath": "\u5DE5\u5177\\\u786C\u76D8\u5DE5\u5177\\HDTune\\HDTune.exe"
+          "description": "HDTune硬盘综合工具，支持基准测试、错误扫描、健康检测、安全擦除等功能。",
+          "relativePath": "工具\\硬盘工具\\HDTune\\HDTune.exe"
         },
         {
           "name": "SpaceSniffer",
-          "description": "SpaceSniffer\u78C1\u76D8\u7A7A\u95F4\u53EF\u89C6\u5316\u5206\u6790\u5DE5\u5177\uFF0C\u4EE5\u6811\u72B6\u56FE\u65B9\u5F0F\u76F4\u89C2\u663E\u793A\u6587\u4EF6\u5939\u5360\u7528\u7A7A\u95F4\u5927\u5C0F\u3002",
-          "relativePath": "\u5DE5\u5177\\\u786C\u76D8\u5DE5\u5177\\SpaceSniffer\\SpaceSniffer.exe"
+          "description": "SpaceSniffer磁盘空间可视化分析工具，以树状图方式直观显示文件夹占用空间大小。",
+          "relativePath": "工具\\硬盘工具\\SpaceSniffer\\SpaceSniffer.exe"
         },
         {
           "name": "WizTree",
-          "description": "WizTree\u8D85\u9AD8\u901F\u78C1\u76D8\u7A7A\u95F4\u5206\u6790\u5DE5\u5177\uFF0C\u76F4\u63A5\u8BFB\u53D6MFT\u8868\uFF0C\u6BD4\u540C\u7C7B\u5DE5\u5177\u5FEB100\u500D\u4EE5\u4E0A\u3002",
-          "relativePath": "\u5DE5\u5177\\\u786C\u76D8\u5DE5\u5177\\WizTree\\WizTree.exe"
+          "description": "WizTree超高速磁盘空间分析工具，直接读取MFT表，比同类工具快100倍以上。",
+          "relativePath": "工具\\硬盘工具\\WizTree\\WizTree.exe"
         },
         {
           "name": "Defraggler",
-          "description": "Defraggler\u78C1\u76D8\u788E\u7247\u6574\u7406\u5DE5\u5177\uFF0C\u652F\u6301\u6574\u7406\u6574\u4E2A\u78C1\u76D8\u6216\u6307\u5B9A\u6587\u4EF6/\u6587\u4EF6\u5939\uFF0C\u652F\u6301SSD\u4F18\u5316\u3002",
-          "relativePath": "\u5DE5\u5177\\\u786C\u76D8\u5DE5\u5177\\Defraggler\\Defraggler.exe"
+          "description": "Defraggler磁盘碎片整理工具，支持整理整个磁盘或指定文件/文件夹，支持SSD优化。",
+          "relativePath": "工具\\硬盘工具\\Defraggler\\Defraggler.exe"
         },
         {
           "name": "FinalData",
-          "description": "FinalData\u6570\u636E\u6062\u590D\u5DE5\u5177\uFF0C\u652F\u6301\u6062\u590D\u8BEF\u5220\u9664\u6587\u4EF6\u3001\u683C\u5F0F\u5316\u6062\u590D\u3001\u5206\u533A\u4E22\u5931\u6062\u590D\u3002",
-          "relativePath": "\u5DE5\u5177\\\u786C\u76D8\u5DE5\u5177\\finaldata\\FINALDATA.exe"
+          "description": "FinalData数据恢复工具，支持恢复误删除文件、格式化恢复、分区丢失恢复。",
+          "relativePath": "工具\\硬盘工具\\finaldata\\FINALDATA.exe"
         },
         {
-          "name": "\u9B54\u65B9\u6570\u636E\u6062\u590D",
-          "description": "\u9B54\u65B9\u6570\u636E\u6062\u590D\u5DE5\u5177\uFF0C\u652F\u6301\u6062\u590D\u8BEF\u5220\u9664\u3001\u8BEF\u683C\u5F0F\u5316\u3001\u5206\u533A\u4E22\u5931\u7684\u6570\u636E\uFF0C\u64CD\u4F5C\u7B80\u5355\u3002",
-          "relativePath": "\u5DE5\u5177\\\u786C\u76D8\u5DE5\u5177\\\u9B54\u65B9\u6570\u636E\u6062\u590D\\\u9B54\u65B9\u6570\u636E\u6062\u590D.exe"
+          "name": "魔方数据恢复",
+          "description": "魔方数据恢复工具，支持恢复误删除、误格式化、分区丢失的数据，操作简单。",
+          "relativePath": "工具\\硬盘工具\\魔方数据恢复\\魔方数据恢复.exe"
         },
         {
           "name": "TxBENCH",
-          "description": "TxBENCH\u56FA\u6001\u786C\u76D8\u57FA\u51C6\u6D4B\u8BD5\u5DE5\u5177\uFF0C\u652F\u6301\u591A\u79CD\u6D4B\u8BD5\u6A21\u5F0F\uFF0C\u53EF\u6D4B\u8BD5NVMe/SATA SSD\u6027\u80FD\u3002",
-          "relativePath": "\u5DE5\u5177\\\u786C\u76D8\u5DE5\u5177\\TxBENCH\\TxBENCH.exe"
+          "description": "TxBENCH固态硬盘基准测试工具，支持多种测试模式，可测试NVMe/SATA SSD性能。",
+          "relativePath": "工具\\硬盘工具\\TxBENCH\\TxBENCH.exe"
         },
         {
           "name": "SSDZ",
-          "description": "SSDZ\u56FA\u6001\u786C\u76D8\u68C0\u6D4B\u5DE5\u5177\uFF0C\u663E\u793ASSD\u578B\u53F7\u3001\u56FA\u4EF6\u7248\u672C\u3001\u901A\u7535\u65F6\u95F4\u3001\u5199\u5165\u91CF\u7B49\u4FE1\u606F\u3002",
-          "relativePath": "\u5DE5\u5177\\\u786C\u76D8\u5DE5\u5177\\SSDZ\\SSDZ.exe"
+          "description": "SSDZ固态硬盘检测工具，显示SSD型号、固件版本、通电时间、写入量等信息。",
+          "relativePath": "工具\\硬盘工具\\SSDZ\\SSDZ.exe"
         }
       ]
     },
     {
-      "name": "\u70E4\u9E21\u5DE5\u5177",
-      "icon": "\uE9D5",
-      "description": "\u538B\u529B\u6D4B\u8BD5\u4E0E\u70E4\u673A",
+      "name": "烤鸡工具",
+      "icon": "",
+      "description": "压力测试与烤机",
       "tools": [
         {
           "name": "FurMark",
-          "description": "FurMark GPU\u538B\u529B\u6D4B\u8BD5\u5DE5\u5177\uFF0C\u901A\u8FC7OpenGL\u9AD8\u8D1F\u8F7D\u6E32\u67D3\u6D4B\u8BD5\u663E\u5361\u7A33\u5B9A\u6027\u548C\u6563\u70ED\u6027\u80FD\uFF0C\u4FD7\u79F0\u70E4\u673A\u3002",
-          "relativePath": "\u5DE5\u5177\\\u70E4\u9E21\u5DE5\u5177\\furmark.exe"
+          "description": "FurMark GPU压力测试工具，通过OpenGL高负载渲染测试显卡稳定性和散热性能，俗称烤机。",
+          "relativePath": "工具\\烤鸡工具\\furmark.exe"
         },
         {
           "name": "FurMark GUI",
-          "description": "FurMark GUI\u7248GPU\u70E4\u673A\u5DE5\u5177\uFF0C\u652F\u6301\u81EA\u5B9A\u4E49\u5206\u8FA8\u7387\u3001\u6297\u952F\u9F7F\u3001\u8FD0\u884C\u65F6\u95F4\u7B49\u53C2\u6570\u3002",
-          "relativePath": "\u5DE5\u5177\\\u70E4\u9E21\u5DE5\u5177\\FurMark_GUI.exe"
+          "description": "FurMark GUI版GPU烤机工具，支持自定义分辨率、抗锯齿、运行时间等参数。",
+          "relativePath": "工具\\烤鸡工具\\FurMark_GUI.exe"
         }
       ]
     },
     {
-      "name": "\u5916\u8BBE\u5DE5\u5177",
-      "icon": "\uE765",
-      "description": "\u9F20\u6807\u952E\u76D8\u6D4B\u8BD5",
+      "name": "外设工具",
+      "icon": "",
+      "description": "鼠标键盘测试",
       "tools": [
         {
-          "name": "\u9F20\u6807\u6D4B\u8BD5",
-          "description": "AresonMouseTest\u9F20\u6807\u6027\u80FD\u6D4B\u8BD5\u5DE5\u5177\uFF0C\u6D4B\u8BD5\u9F20\u6807\u56DE\u62A5\u7387\u3001\u6309\u952E\u54CD\u5E94\u3001DPI\u7CBE\u5EA6\u3001\u4E22\u5E27\u60C5\u51B5\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5916\u8BBE\u5DE5\u5177\\AresonMouseTest\\\u9F20\u6807\u6D4B\u8BD5\u8F6F\u4EF6AresonMouseTestProgram.exe"
+          "name": "鼠标测试",
+          "description": "AresonMouseTest鼠标性能测试工具，测试鼠标回报率、按键响应、DPI精度、丢帧情况。",
+          "relativePath": "工具\\外设工具\\AresonMouseTest\\鼠标测试软件AresonMouseTestProgram.exe"
         },
         {
-          "name": "\u952E\u76D8\u6D4B\u8BD5",
-          "description": "Keyboard Test Utility\u952E\u76D8\u6309\u952E\u68C0\u6D4B\u5DE5\u5177\uFF0C\u5B9E\u65F6\u663E\u793A\u6309\u952E\u72B6\u6001\uFF0C\u68C0\u6D4B\u6309\u952E\u51B2\u7A81\u548C\u5931\u7075\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5916\u8BBE\u5DE5\u5177\\Keyboard Test Utility\\Keyboard Test Utility.exe"
+          "name": "键盘测试",
+          "description": "Keyboard Test Utility键盘按键检测工具，实时显示按键状态，检测按键冲突和失灵。",
+          "relativePath": "工具\\外设工具\\Keyboard Test Utility\\Keyboard Test Utility.exe"
         },
         {
           "name": "KeyTweak",
-          "description": "KeyTweak\u952E\u76D8\u6309\u952E\u6620\u5C04\u5DE5\u5177\uFF0C\u652F\u6301\u7981\u7528\u3001\u91CD\u6620\u5C04\u952E\u76D8\u6309\u952E\uFF0C\u4FEE\u6539\u952E\u76D8\u5E03\u5C40\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5916\u8BBE\u5DE5\u5177\\KeyTweak\\KeyTweak.exe"
+          "description": "KeyTweak键盘按键映射工具，支持禁用、重映射键盘按键，修改键盘布局。",
+          "relativePath": "工具\\外设工具\\KeyTweak\\KeyTweak.exe"
         },
         {
           "name": "MouseTester",
-          "description": "MouseTester\u9F20\u6807\u56DE\u62A5\u7387\u6D4B\u8BD5\u5DE5\u5177\uFF0C\u7CBE\u786E\u6D4B\u91CF\u9F20\u6807USB\u56DE\u62A5\u7387\u548C\u79FB\u52A8\u8F68\u8FF9\u5E73\u6ED1\u5EA6\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5916\u8BBE\u5DE5\u5177\\MouseTester\\MouseTester.exe"
+          "description": "MouseTester鼠标回报率测试工具，精确测量鼠标USB回报率和移动轨迹平滑度。",
+          "relativePath": "工具\\外设工具\\MouseTester\\MouseTester.exe"
         },
         {
-          "name": "\u5728\u7EBF\u5916\u8BBE\u6D4B\u8BD5",
-          "description": "\u5728\u7EBF\u5916\u8BBE\u6D4B\u8BD5\u4E2D\u5FC3\uFF0C\u901A\u8FC7\u6D4F\u89C8\u5668\u6D4B\u8BD5\u952E\u76D8\u6309\u952E\u3001\u9F20\u6807\u70B9\u51FB\u3001\u9F20\u6807\u56DE\u62A5\u7387\u7B49\u5916\u8BBE\u6027\u80FD\u3002",
-          "relativePath": "\u5DE5\u5177\\\u5916\u8BBE\u5DE5\u5177\\\u5728\u7EBF\u5916\u8BBE\u6D4B\u8BD5\u4E2D\u5FC3\\\u5728\u7EBF\u5916\u8BBE\u6D4B\u8BD5\u4E2D\u5FC3.bat"
+          "name": "在线外设测试",
+          "description": "在线外设测试中心，通过浏览器测试键盘按键、鼠标点击、鼠标回报率等外设性能。",
+          "relativePath": "工具\\外设工具\\在线外设测试中心\\在线外设测试中心.bat"
         }
       ]
     },
     {
-      "name": "\u663E\u793A\u5668\u5DE5\u5177",
-      "icon": "\uEB9F",
-      "description": "\u5C4F\u5E55\u68C0\u6D4B\u4E0E\u6821\u51C6",
+      "name": "显示器工具",
+      "icon": "",
+      "description": "屏幕检测与校准",
       "tools": [
         {
-          "name": "\u8272\u57DF\u68C0\u6D4B",
-          "description": "MonitorInfo\u663E\u793A\u5668\u8272\u57DF\u68C0\u6D4B\u5DE5\u5177\uFF0C\u8BFB\u53D6\u663E\u793A\u5668EDID\u4FE1\u606F\uFF0C\u663E\u793A\u8272\u57DF\u3001\u5206\u8FA8\u7387\u3001\u5237\u65B0\u7387\u7B49\u53C2\u6570\u3002",
-          "relativePath": "\u5DE5\u5177\\\u663E\u793A\u5668\u5DE5\u5177\\\u8272\u57DF\u68C0\u6D4B\\monitorinfo.exe"
+          "name": "色域检测",
+          "description": "MonitorInfo显示器色域检测工具，读取显示器EDID信息，显示色域、分辨率、刷新率等参数。",
+          "relativePath": "工具\\显示器工具\\色域检测\\monitorinfo.exe"
         },
         {
-          "name": "UFO\u663E\u793A\u5668\u6D4B\u8BD5",
-          "description": "UFO Test\u5728\u7EBF\u663E\u793A\u5668\u5237\u65B0\u7387\u6D4B\u8BD5\u5DE5\u5177\uFF0C\u901A\u8FC7\u6D4F\u89C8\u5668\u6D4B\u8BD5\u663E\u793A\u5668\u5B9E\u9645\u5237\u65B0\u7387\u548C\u5E27\u7387\u8868\u73B0\u3002",
-          "relativePath": "\u5DE5\u5177\\\u663E\u793A\u5668\u5DE5\u5177\\UFO\u6D4B\u8BD5\\Start.bat"
+          "name": "UFO显示器测试",
+          "description": "UFO Test在线显示器刷新率测试工具，通过浏览器测试显示器实际刷新率和帧率表现。",
+          "relativePath": "工具\\显示器工具\\UFO测试\\Start.bat"
         },
         {
-          "name": "\u5728\u7EBF\u5C4F\u5E55\u6D4B\u8BD5",
-          "description": "\u5728\u7EBF\u5C4F\u5E55\u68C0\u6D4B\u5DE5\u5177\uFF0C\u901A\u8FC7\u6D4F\u89C8\u5668\u68C0\u6D4B\u663E\u793A\u5668\u574F\u70B9\u3001\u4EAE\u70B9\u3001\u8272\u5F69\u5747\u5300\u6027\u3001\u54CD\u5E94\u901F\u5EA6\u3002",
-          "relativePath": "\u5DE5\u5177\\\u663E\u793A\u5668\u5DE5\u5177\\\u5728\u7EBF\u5C4F\u5E55\u6D4B\u8BD5\\\u5728\u7EBF\u5C4F\u5E55\u6D4B\u8BD5.bat"
+          "name": "在线屏幕测试",
+          "description": "在线屏幕检测工具，通过浏览器检测显示器坏点、亮点、色彩均匀性、响应速度。",
+          "relativePath": "工具\\显示器工具\\在线屏幕测试\\在线屏幕测试.bat"
         }
       ]
     },
     {
-      "name": "\u7EFC\u5408\u68C0\u6D4B",
-      "icon": "\uE9F5",
-      "description": "\u786C\u4EF6\u7EFC\u5408\u4FE1\u606F",
+      "name": "综合检测",
+      "icon": "",
+      "description": "硬件综合信息",
       "tools": [
         {
           "name": "AIDA64",
-          "description": "AIDA64\u786C\u4EF6\u7EFC\u5408\u68C0\u6D4B\u5DE5\u5177\uFF0C\u652F\u6301CPU/\u5185\u5B58/\u663E\u5361/\u786C\u76D8\u5168\u9762\u68C0\u6D4B\u548C\u538B\u529B\u6D4B\u8BD5\uFF0C\u786C\u4EF6\u4FE1\u606F\u6700\u5168\u3002",
-          "relativePath": "\u5DE5\u5177\\\u7EFC\u5408\u68C0\u6D4B\\AIDA64\\aida64.exe"
+          "description": "AIDA64硬件综合检测工具，支持CPU/内存/显卡/硬盘全面检测和压力测试，硬件信息最全。",
+          "relativePath": "工具\\综合检测\\AIDA64\\aida64.exe"
         },
         {
           "name": "HWiNFO",
-          "description": "HWiNFO\u786C\u4EF6\u4FE1\u606F\u76D1\u63A7\u5DE5\u5177\uFF0C\u5B9E\u65F6\u663E\u793ACPU/GPU\u6E29\u5EA6\u3001\u9891\u7387\u3001\u7535\u538B\u3001\u529F\u8017\u7B49\u4F20\u611F\u5668\u6570\u636E\u3002",
-          "relativePath": "\u5DE5\u5177\\\u7EFC\u5408\u68C0\u6D4B\\hwinfo\\HWiNFO64.exe"
+          "description": "HWiNFO硬件信息监控工具，实时显示CPU/GPU温度、频率、电压、功耗等传感器数据。",
+          "relativePath": "工具\\综合检测\\hwinfo\\HWiNFO64.exe"
         },
         {
           "name": "HWMonitor",
-          "description": "HWMonitor\u786C\u4EF6\u6E29\u5EA6\u76D1\u63A7\u5DE5\u5177\uFF0C\u663E\u793ACPU/GPU/\u786C\u76D8\u6E29\u5EA6\u3001\u98CE\u6247\u8F6C\u901F\u3001\u7535\u538B\u7B49\u4F20\u611F\u5668\u6570\u636E\u3002",
-          "relativePath": "\u5DE5\u5177\\\u7EFC\u5408\u68C0\u6D4B\\HWMonitor\\HWMonitor_x64.exe"
+          "description": "HWMonitor硬件温度监控工具，显示CPU/GPU/硬盘温度、风扇转速、电压等传感器数据。",
+          "relativePath": "工具\\综合检测\\HWMonitor\\HWMonitor_x64.exe"
         },
         {
           "name": "Speccy",
-          "description": "Speccy\u7CFB\u7EDF\u4FE1\u606F\u67E5\u770B\u5DE5\u5177\uFF0C\u663E\u793A\u64CD\u4F5C\u7CFB\u7EDF\u3001CPU\u3001\u5185\u5B58\u3001\u4E3B\u677F\u3001\u663E\u5361\u3001\u786C\u76D8\u7B49\u8BE6\u7EC6\u786C\u4EF6\u4FE1\u606F\u3002",
-          "relativePath": "\u5DE5\u5177\\\u7EFC\u5408\u68C0\u6D4B\\speccy\\Speccy64.exe"
+          "description": "Speccy系统信息查看工具，显示操作系统、CPU、内存、主板、显卡、硬盘等详细硬件信息。",
+          "relativePath": "工具\\综合检测\\speccy\\Speccy64.exe"
         }
       ]
     },
     {
-      "name": "\u7CFB\u7EDF\u5DE5\u5177",
-      "icon": "\uE713",
-      "description": "\u7CFB\u7EDF\u7EF4\u62A4\u4E0E\u4F18\u5316",
+      "name": "系统工具",
+      "icon": "",
+      "description": "系统维护与优化",
       "tools": [
         {
-          "name": "Dism\u002B\u002B",
-          "description": "Dism\u002B\u002B\u7CFB\u7EDF\u4F18\u5316\u6E05\u7406\u5DE5\u5177\uFF0C\u652F\u6301\u7CFB\u7EDF\u7CBE\u7B80\u3001\u66F4\u65B0\u6E05\u7406\u3001\u9A71\u52A8\u7BA1\u7406\u3001\u542F\u52A8\u9879\u7BA1\u7406\u3001\u7CFB\u7EDF\u5907\u4EFD\u3002",
-          "relativePath": "\u5DE5\u5177\\\u7CFB\u7EDF\u5DE5\u5177\\Dism\u002B\u002B\\Dism\u002B\u002Bx64.exe"
+          "name": "Dism++",
+          "description": "Dism++系统优化清理工具，支持系统精简、更新清理、驱动管理、启动项管理、系统备份。",
+          "relativePath": "工具\\系统工具\\Dism++\\Dism++x64.exe"
         },
         {
           "name": "DirectX Repair",
-          "description": "DirectX Repair DirectX\u7EC4\u4EF6\u4FEE\u590D\u5DE5\u5177\uFF0C\u4FEE\u590D\u7F3A\u5931\u7684DLL\u6587\u4EF6\uFF0C\u89E3\u51B3\u6E38\u620F\u65E0\u6CD5\u8FD0\u884C\u7684\u95EE\u9898\u3002",
-          "relativePath": "\u5DE5\u5177\\\u7CFB\u7EDF\u5DE5\u5177\\DirectX_Repair\\DirectX Repair.exe"
+          "description": "DirectX Repair DirectX组件修复工具，修复缺失的DLL文件，解决游戏无法运行的问题。",
+          "relativePath": "工具\\系统工具\\DirectX_Repair\\DirectX Repair.exe"
         },
         {
           "name": "Process Explorer",
-          "description": "Process Explorer\u9AD8\u7EA7\u8FDB\u7A0B\u7BA1\u7406\u5DE5\u5177\uFF0C\u663E\u793A\u8FDB\u7A0B\u6811\u3001DLL\u4F9D\u8D56\u3001\u53E5\u67C4\u4FE1\u606F\uFF0C\u6BD4\u4EFB\u52A1\u7BA1\u7406\u5668\u66F4\u5F3A\u5927\u3002",
-          "relativePath": "\u5DE5\u5177\\\u7CFB\u7EDF\u5DE5\u5177\\procexp\\procexp64.exe"
+          "description": "Process Explorer高级进程管理工具，显示进程树、DLL依赖、句柄信息，比任务管理器更强大。",
+          "relativePath": "工具\\系统工具\\procexp\\procexp64.exe"
         },
         {
           "name": "WinDbg",
-          "description": "WinDbg Windows\u8C03\u8BD5\u5DE5\u5177\uFF0C\u7528\u4E8E\u5206\u6790\u84DD\u5C4Fdump\u6587\u4EF6\u3001\u8C03\u8BD5\u9A71\u52A8\u7A0B\u5E8F\u548C\u5E94\u7528\u7A0B\u5E8F\u5D29\u6E83\u3002",
-          "relativePath": "\u5DE5\u5177\\\u7CFB\u7EDF\u5DE5\u5177\\WinDbg\\windbg.exe"
+          "description": "WinDbg Windows调试工具，用于分析蓝屏dump文件、调试驱动程序和应用程序崩溃。",
+          "relativePath": "工具\\系统工具\\WinDbg\\windbg.exe"
         },
         {
           "name": "Everything",
-          "description": "Everything\u6781\u901F\u6587\u4EF6\u641C\u7D22\u5DE5\u5177\uFF0C\u57FA\u4E8ENTFS\u7D22\u5F15\uFF0C\u6BEB\u79D2\u7EA7\u641C\u7D22\u5168\u76D8\u6587\u4EF6\uFF0C\u652F\u6301\u6B63\u5219\u8868\u8FBE\u5F0F\u3002",
-          "relativePath": "\u5DE5\u5177\\\u7CFB\u7EDF\u5DE5\u5177\\Everything\\everything.exe"
+          "description": "Everything极速文件搜索工具，基于NTFS索引，毫秒级搜索全盘文件，支持正则表达式。",
+          "relativePath": "工具\\系统工具\\Everything\\everything.exe"
         },
         {
           "name": "FanControl",
-          "description": "FanControl\u5F00\u6E90\u98CE\u6247\u63A7\u5236\u5DE5\u5177\uFF0C\u652F\u6301\u6839\u636ECPU/GPU\u6E29\u5EA6\u81EA\u5B9A\u4E49\u98CE\u6247\u8F6C\u901F\u66F2\u7EBF\u3002",
-          "relativePath": "\u5DE5\u5177\\\u7CFB\u7EDF\u5DE5\u5177\\FanControl\\FanControl.exe"
+          "description": "FanControl开源风扇控制工具，支持根据CPU/GPU温度自定义风扇转速曲线。",
+          "relativePath": "工具\\系统工具\\FanControl\\FanControl.exe"
         },
         {
           "name": "Rufus",
-          "description": "Rufus USB\u542F\u52A8\u76D8\u5236\u4F5C\u5DE5\u5177\uFF0C\u652F\u6301Windows/Linux\u542F\u52A8\u76D8\uFF0C\u652F\u6301UEFI/Legacy\uFF0C\u901F\u5EA6\u6781\u5FEB\u3002",
-          "relativePath": "\u5DE5\u5177\\\u7CFB\u7EDF\u5DE5\u5177\\rufus\\rufus.exe"
+          "description": "Rufus USB启动盘制作工具，支持Windows/Linux启动盘，支持UEFI/Legacy，速度极快。",
+          "relativePath": "工具\\系统工具\\rufus\\rufus.exe"
         },
         {
           "name": "Ventoy",
-          "description": "Ventoy\u591A\u7CFB\u7EDF\u542F\u52A8\u76D8\u5236\u4F5C\u5DE5\u5177\uFF0C\u53EA\u9700\u62F7\u8D1DISO\u6587\u4EF6\u5373\u53EF\u542F\u52A8\uFF0C\u65E0\u9700\u53CD\u590D\u683C\u5F0F\u5316U\u76D8\u3002",
-          "relativePath": "\u5DE5\u5177\\\u7CFB\u7EDF\u5DE5\u5177\\ventoy\\Ventoy2Disk.exe"
+          "description": "Ventoy多系统启动盘制作工具，只需拷贝ISO文件即可启动，无需反复格式化U盘。",
+          "relativePath": "工具\\系统工具\\ventoy\\Ventoy2Disk.exe"
         },
         {
           "name": "UltraISO",
-          "description": "UltraISO ISO\u955C\u50CF\u7F16\u8F91\u5DE5\u5177\uFF0C\u652F\u6301\u5236\u4F5C\u3001\u7F16\u8F91\u3001\u8F6C\u6362ISO\u6587\u4EF6\uFF0C\u652F\u6301\u76F4\u63A5\u63D0\u53D6\u5F15\u5BFC\u4FE1\u606F\u3002",
-          "relativePath": "\u5DE5\u5177\\\u7CFB\u7EDF\u5DE5\u5177\\ULTRAISO\\ULTRAISO.exe"
+          "description": "UltraISO ISO镜像编辑工具，支持制作、编辑、转换ISO文件，支持直接提取引导信息。",
+          "relativePath": "工具\\系统工具\\ULTRAISO\\ULTRAISO.exe"
         },
         {
           "name": "BlueScreenView",
-          "description": "BlueScreenView\u84DD\u5C4F\u65E5\u5FD7\u5206\u6790\u5DE5\u5177\uFF0C\u81EA\u52A8\u8BFB\u53D6\u84DD\u5C4Fdump\u6587\u4EF6\uFF0C\u663E\u793A\u5BFC\u81F4\u84DD\u5C4F\u7684\u9A71\u52A8\u6587\u4EF6\u3002",
-          "relativePath": "\u5DE5\u5177\\\u7CFB\u7EDF\u5DE5\u5177\\bluescreenview\\BlueScreenViewx64.exe"
+          "description": "BlueScreenView蓝屏日志分析工具，自动读取蓝屏dump文件，显示导致蓝屏的驱动文件。",
+          "relativePath": "工具\\系统工具\\bluescreenview\\BlueScreenViewx64.exe"
         },
         {
           "name": "BatteryInfo",
-          "description": "BatteryInfoView\u7B14\u8BB0\u672C\u7535\u6C60\u4FE1\u606F\u67E5\u770B\u5DE5\u5177\uFF0C\u663E\u793A\u7535\u6C60\u5BB9\u91CF\u3001\u5065\u5EB7\u5EA6\u3001\u5145\u653E\u7535\u6B21\u6570\u3001\u5236\u9020\u5546\u4FE1\u606F\u3002",
-          "relativePath": "\u5DE5\u5177\\\u7CFB\u7EDF\u5DE5\u5177\\BatteryInfoView\\BatteryInfoView.exe"
+          "description": "BatteryInfoView笔记本电池信息查看工具，显示电池容量、健康度、充放电次数、制造商信息。",
+          "relativePath": "工具\\系统工具\\BatteryInfoView\\BatteryInfoView.exe"
         },
         {
           "name": "next.itellyou",
-          "description": "next.itellyou Windows\u539F\u7248\u955C\u50CF\u4E0B\u8F7D\u7AD9\uFF0C\u63D0\u4F9BWindows 7~11\u5404\u7248\u672C\u5B98\u65B9ISO\u955C\u50CF\u4E0B\u8F7D\u3002",
-          "relativePath": "\u5DE5\u5177\\\u7CFB\u7EDF\u5DE5\u5177\\next_itellyou\\Start.bat"
+          "description": "next.itellyou Windows原版镜像下载站，提供Windows 7~11各版本官方ISO镜像下载。",
+          "relativePath": "工具\\系统工具\\next_itellyou\\Start.bat"
         }
       ]
     },
     {
-      "name": "\u6E38\u620F\u5E73\u53F0",
-      "icon": "\uE7FC",
-      "description": "\u6E38\u620F\u542F\u52A8\u5668",
+      "name": "游戏平台",
+      "icon": "",
+      "description": "游戏启动器",
       "tools": [
         {
-          "name": "Steam \u4E0B\u8F7D",
-          "description": "Steam\u6E38\u620F\u5E73\u53F0\u4E0B\u8F7D\u9875\u9762\uFF0C\u5168\u7403\u6700\u5927\u7684PC\u6E38\u620F\u5E73\u53F0\uFF0C\u652F\u6301\u6E38\u620F\u8D2D\u4E70\u3001\u4E0B\u8F7D\u3001\u793E\u533A\u529F\u80FD\u3002",
-          "relativePath": "\u5DE5\u5177\\\u6E38\u620F\u5E73\u53F0\\Steam\\\u4E0B\u8F7DSteam.bat"
+          "name": "Steam 下载",
+          "description": "Steam游戏平台下载页面，全球最大的PC游戏平台，支持游戏购买、下载、社区功能。",
+          "relativePath": "工具\\游戏平台\\Steam\\下载Steam.bat"
         },
         {
-          "name": "Epic Games\u4E0B\u8F7D",
-          "description": "Epic Games\u6E38\u620F\u5E73\u53F0\uFF0C\u6BCF\u5468\u514D\u8D39\u6E38\u620F\u9886\u53D6\uFF0C\u652F\u6301\u865A\u5E7B\u5F15\u64CE\u6E38\u620F\u5E93\u548C\u793E\u4EA4\u529F\u80FD\u3002",
-          "relativePath": "\u5DE5\u5177\\\u6E38\u620F\u5E73\u53F0\\epic\\Start.bat"
+          "name": "Epic Games下载",
+          "description": "Epic Games游戏平台，每周免费游戏领取，支持虚幻引擎游戏库和社交功能。",
+          "relativePath": "工具\\游戏平台\\epic\\Start.bat"
         },
         {
-          "name": "EA App\u4E0B\u8F7D",
-          "description": "EA App(EA\u684C\u9762\u5E94\u7528)\uFF0CEA\u65D7\u4E0B\u6E38\u620F\u5E73\u53F0\uFF0C\u7BA1\u7406EA\u6E38\u620F\u5E93\u3001\u8BA2\u9605EA Play\u670D\u52A1\u3002",
-          "relativePath": "\u5DE5\u5177\\\u6E38\u620F\u5E73\u53F0\\eaapp\\Start.bat"
+          "name": "EA App下载",
+          "description": "EA App(EA桌面应用)，EA旗下游戏平台，管理EA游戏库、订阅EA Play服务。",
+          "relativePath": "工具\\游戏平台\\eaapp\\Start.bat"
         },
         {
-          "name": "\u6218\u7F51\u4E0B\u8F7D",
-          "description": "\u66B4\u96EA\u6218\u7F51\u5BA2\u6237\u7AEF\uFF0C\u4E0B\u8F7D\u548C\u7BA1\u7406\u66B4\u96EA\u65D7\u4E0B\u6E38\u620F\uFF0C\u5305\u62EC\u9B54\u517D\u4E16\u754C\u3001\u5B88\u671B\u5148\u950B\u3001\u6697\u9ED1\u7834\u574F\u795E\u7B49\u3002",
-          "relativePath": "\u5DE5\u5177\\\u6E38\u620F\u5E73\u53F0\\battle\\Start.bat"
+          "name": "战网下载",
+          "description": "暴雪战网客户端，下载和管理暴雪旗下游戏，包括魔兽世界、守望先锋、暗黑破坏神等。",
+          "relativePath": "工具\\游戏平台\\battle\\Start.bat"
         }
       ]
     }

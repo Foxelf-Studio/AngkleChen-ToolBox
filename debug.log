@@ -27,3 +27,131 @@
 [2026-07-12 11:09:11.805] OnCategoryChanged: cat=全部工具, newIndex=0, oldIndex=1, _suppressAnim=False
 [2026-07-12 11:09:12.093] ApplyFilter: 开始, _activeCategory=all, AllTools.Length=89
 [2026-07-12 11:09:12.097] ApplyFilter: 完成, 显示 85 个工具
+[2026-07-12 11:25:49.886] 加载配置: 16 个分类
+[2026-07-12 11:25:49.906] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = all, Name = 全部工具, IconGlyph = , Subtitle = 浏览所有工具 }
+[2026-07-12 11:25:49.907] OnCategoryChanged: cat=全部工具, newIndex=0, oldIndex=0, _suppressAnim=True
+[2026-07-12 11:25:49.908] ApplyFilter: 开始, _activeCategory=all, AllTools.Length=89
+[2026-07-12 11:25:49.915] ApplyFilter: 完成, 显示 85 个工具
+[2026-07-12 11:25:50.444] 批量缓存图标: 0 个
+[2026-07-12 11:25:52.451] === 开始检查更新 ===
+[2026-07-12 11:25:52.452] 当前版本: 1.1.0
+[2026-07-12 11:25:52.452] 正在获取最新 Release...
+[2026-07-12 11:25:52.454] 请求 URL: https://api.github.com/repos/Foxelf-Studio/AngkleChen-ToolBox/releases?per_page=1
+[2026-07-12 11:25:52.454] 发送 HTTP 请求...
+[2026-07-12 11:25:54.329] HTTP 响应状态: OK
+[2026-07-12 11:25:54.329] 读取响应内容...
+[2026-07-12 11:25:54.331] 响应内容长度: 5099 字节
+[2026-07-12 11:25:54.331] 解析 JSON...
+[2026-07-12 11:25:54.339] 解析成功，共 1 个 Release
+[2026-07-12 11:25:54.343] 获取到 Release: tag=v1.2.0, name=v1.2.0 - 更新测试
+[2026-07-12 11:25:54.344] 最新版本: 1.2.0
+[2026-07-12 11:25:54.345] 版本比较结果: -1 (当前=1.1.0, 最新=1.2.0)
+[2026-07-12 11:25:54.345] 发现新版本！
+[2026-07-12 11:25:54.346] === 检查更新完成: HasUpdate=True ===
+[2026-07-12 11:26:23.834] === 开始删除工具: MicrosoftEdgeSetup ===
+[2026-07-12 11:26:23.835] 工具路径: E:\陈叔叔工具箱\工具\实用工具\MicrosoftEdgeSetup.exe
+[2026-07-12 11:26:23.835] 从配置中删除...
+[2026-07-12 11:26:23.842] 保存配置: 16 个分类
+[2026-07-12 11:26:23.843] 删除图标缓存: 工具\实用工具\MicrosoftEdgeSetup.exe
+[2026-07-12 11:26:23.843] 删除工具: MicrosoftEdgeSetup
+[2026-07-12 11:26:23.843] 配置删除结果: True
+[2026-07-12 11:26:23.844] 删除单文件: E:\陈叔叔工具箱\工具\实用工具\MicrosoftEdgeSetup.exe
+[2026-07-12 11:26:23.844] 文件已删除: E:\陈叔叔工具箱\工具\实用工具\MicrosoftEdgeSetup.exe
+[2026-07-12 11:26:23.845] 重新加载配置...
+[2026-07-12 11:26:23.848] 重新加载完成, 工具总数: 88
+[2026-07-12 11:26:23.848] ApplyFilter: 开始, _activeCategory=all, AllTools.Length=88
+[2026-07-12 11:26:23.861] ApplyFilter: 完成, 显示 84 个工具
+[2026-07-12 11:26:23.862] === 删除工具完成: MicrosoftEdgeSetup ===
+[2026-07-12 11:26:23.862] 删除工具: MicrosoftEdgeSetup, 路径: E:\陈叔叔工具箱\工具\实用工具\MicrosoftEdgeSetup.exe
+[2026-07-12 11:26:26.043] === 开始添加工具 ===
+[2026-07-12 11:26:26.044] 可用分类: 娱乐工具, 实用工具, 搞机工具, 文件工具, 清理工具, 依赖, CPU工具, 内存工具, 显卡工具, 硬盘工具, 烤鸡工具, 外设工具, 显示器工具, 综合检测, 系统工具, 游戏平台
+[2026-07-12 11:26:37.819] 用户选择: 名称=MicrosoftEdgeSetup, 分类=实用工具, 路径=E:\陈叔叔工具箱\工具\实用工具\MicrosoftEdgeSetup.exe, 是否文件夹=False
+[2026-07-12 11:26:37.819] 目标路径: E:\陈叔叔工具箱\工具\实用工具\MicrosoftEdgeSetup.exe
+[2026-07-12 11:26:37.820] 目标目录: E:\陈叔叔工具箱\工具\实用工具
+[2026-07-12 11:26:37.820] 源路径是否在工具目录内: True
+[2026-07-12 11:26:37.820] 源路径在工具目录内，跳过复制
+[2026-07-12 11:26:37.821] 相对路径: 工具\实用工具\MicrosoftEdgeSetup.exe
+[2026-07-12 11:26:37.821] 添加到配置: 名称=MicrosoftEdgeSetup, 路径=工具\实用工具\MicrosoftEdgeSetup.exe
+[2026-07-12 11:26:37.826] 保存配置: 16 个分类
+[2026-07-12 11:26:37.856] 缓存图标: 工具\实用工具\MicrosoftEdgeSetup.exe
+[2026-07-12 11:26:37.857] 添加工具: MicrosoftEdgeSetup -> 实用工具
+[2026-07-12 11:26:37.857] 配置添加结果: True
+[2026-07-12 11:26:37.857] 重新加载配置...
+[2026-07-12 11:26:37.859] 重新加载完成, 工具总数: 89
+[2026-07-12 11:26:37.859] ApplyFilter: 开始, _activeCategory=all, AllTools.Length=89
+[2026-07-12 11:26:37.870] ApplyFilter: 完成, 显示 85 个工具
+[2026-07-12 11:26:37.871] === 添加工具完成: MicrosoftEdgeSetup ===
+[2026-07-12 11:26:45.092] 加载配置: 16 个分类
+[2026-07-12 11:26:45.112] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = all, Name = 全部工具, IconGlyph = , Subtitle = 浏览所有工具 }
+[2026-07-12 11:26:45.112] OnCategoryChanged: cat=全部工具, newIndex=0, oldIndex=0, _suppressAnim=True
+[2026-07-12 11:26:45.114] ApplyFilter: 开始, _activeCategory=all, AllTools.Length=89
+[2026-07-12 11:26:45.121] ApplyFilter: 完成, 显示 85 个工具
+[2026-07-12 11:26:45.655] 批量缓存图标: 0 个
+[2026-07-12 11:26:47.431] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = 娱乐工具, Name = 娱乐工具, IconGlyph = , Subtitle = 音乐与视频播放 }
+[2026-07-12 11:26:47.432] OnCategoryChanged: cat=娱乐工具, newIndex=1, oldIndex=0, _suppressAnim=False
+[2026-07-12 11:26:47.672] ApplyFilter: 开始, _activeCategory=娱乐工具, AllTools.Length=89
+[2026-07-12 11:26:47.691] ApplyFilter: 完成, 显示 2 个工具
+[2026-07-12 11:26:47.717] === 开始检查更新 ===
+[2026-07-12 11:26:47.718] 当前版本: 1.1.0
+[2026-07-12 11:26:47.718] 正在获取最新 Release...
+[2026-07-12 11:26:47.720] 请求 URL: https://api.github.com/repos/Foxelf-Studio/AngkleChen-ToolBox/releases?per_page=1
+[2026-07-12 11:26:47.720] 发送 HTTP 请求...
+[2026-07-12 11:26:48.541] HTTP 响应状态: OK
+[2026-07-12 11:26:48.541] 读取响应内容...
+[2026-07-12 11:26:48.542] 响应内容长度: 5099 字节
+[2026-07-12 11:26:48.543] 解析 JSON...
+[2026-07-12 11:26:48.551] 解析成功，共 1 个 Release
+[2026-07-12 11:26:48.575] 获取到 Release: tag=v1.2.0, name=v1.2.0 - 更新测试
+[2026-07-12 11:26:48.576] 最新版本: 1.2.0
+[2026-07-12 11:26:48.577] 版本比较结果: -1 (当前=1.1.0, 最新=1.2.0)
+[2026-07-12 11:26:48.577] 发现新版本！
+[2026-07-12 11:26:48.577] === 检查更新完成: HasUpdate=True ===
+[2026-07-12 11:26:48.780] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = 文件工具, Name = 文件工具, IconGlyph = , Subtitle = 下载·压缩·分区 }
+[2026-07-12 11:26:48.780] OnCategoryChanged: cat=文件工具, newIndex=4, oldIndex=1, _suppressAnim=False
+[2026-07-12 11:26:49.064] ApplyFilter: 开始, _activeCategory=文件工具, AllTools.Length=89
+[2026-07-12 11:26:49.066] ApplyFilter: 完成, 显示 4 个工具
+[2026-07-12 11:26:49.619] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = 搞机工具, Name = 搞机工具, IconGlyph = , Subtitle = 激活·调试·跑分 }
+[2026-07-12 11:26:49.620] OnCategoryChanged: cat=搞机工具, newIndex=3, oldIndex=4, _suppressAnim=False
+[2026-07-12 11:26:49.866] ApplyFilter: 开始, _activeCategory=搞机工具, AllTools.Length=89
+[2026-07-12 11:26:49.869] ApplyFilter: 完成, 显示 4 个工具
+[2026-07-12 11:26:50.863] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = 文件工具, Name = 文件工具, IconGlyph = , Subtitle = 下载·压缩·分区 }
+[2026-07-12 11:26:50.864] OnCategoryChanged: cat=文件工具, newIndex=4, oldIndex=3, _suppressAnim=False
+[2026-07-12 11:26:51.113] ApplyFilter: 开始, _activeCategory=文件工具, AllTools.Length=89
+[2026-07-12 11:26:51.116] ApplyFilter: 完成, 显示 4 个工具
+[2026-07-12 11:26:51.346] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = 清理工具, Name = 清理工具, IconGlyph = , Subtitle = 卸载·清理·拦截 }
+[2026-07-12 11:26:51.346] OnCategoryChanged: cat=清理工具, newIndex=5, oldIndex=4, _suppressAnim=False
+[2026-07-12 11:26:51.638] ApplyFilter: 开始, _activeCategory=清理工具, AllTools.Length=89
+[2026-07-12 11:26:51.640] ApplyFilter: 完成, 显示 4 个工具
+[2026-07-12 11:26:53.250] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = 搞机工具, Name = 搞机工具, IconGlyph = , Subtitle = 激活·调试·跑分 }
+[2026-07-12 11:26:53.250] OnCategoryChanged: cat=搞机工具, newIndex=3, oldIndex=5, _suppressAnim=False
+[2026-07-12 11:26:53.538] ApplyFilter: 开始, _activeCategory=搞机工具, AllTools.Length=89
+[2026-07-12 11:26:53.541] ApplyFilter: 完成, 显示 4 个工具
+[2026-07-12 11:26:53.968] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = 清理工具, Name = 清理工具, IconGlyph = , Subtitle = 卸载·清理·拦截 }
+[2026-07-12 11:26:53.969] OnCategoryChanged: cat=清理工具, newIndex=5, oldIndex=3, _suppressAnim=False
+[2026-07-12 11:26:54.216] ApplyFilter: 开始, _activeCategory=清理工具, AllTools.Length=89
+[2026-07-12 11:26:54.218] ApplyFilter: 完成, 显示 4 个工具
+[2026-07-12 11:26:56.360] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = 实用工具, Name = 实用工具, IconGlyph = , Subtitle = 系统安装与诊断 }
+[2026-07-12 11:26:56.361] OnCategoryChanged: cat=实用工具, newIndex=2, oldIndex=5, _suppressAnim=False
+[2026-07-12 11:26:56.606] ApplyFilter: 开始, _activeCategory=实用工具, AllTools.Length=89
+[2026-07-12 11:26:56.608] ApplyFilter: 完成, 显示 7 个工具
+[2026-07-12 11:40:14.163] 加载配置: 16 个分类
+[2026-07-12 11:40:14.184] OnCategoryChanged: 触发, SelectedItem=CatInfo { Id = all, Name = 全部工具, IconGlyph = , Subtitle = 浏览所有工具 }
+[2026-07-12 11:40:14.185] OnCategoryChanged: cat=全部工具, newIndex=0, oldIndex=0, _suppressAnim=True
+[2026-07-12 11:40:14.186] ApplyFilter: 开始, _activeCategory=all, AllTools.Length=89
+[2026-07-12 11:40:14.195] ApplyFilter: 完成, 显示 85 个工具
+[2026-07-12 11:40:14.759] 批量缓存图标: 0 个
+[2026-07-12 11:40:16.903] === 开始检查更新 ===
+[2026-07-12 11:40:16.904] 当前版本: 1.1.0
+[2026-07-12 11:40:16.904] 正在获取最新 Release...
+[2026-07-12 11:40:16.906] 请求 URL: https://api.github.com/repos/Foxelf-Studio/AngkleChen-ToolBox/releases?per_page=1
+[2026-07-12 11:40:16.906] 发送 HTTP 请求...
+[2026-07-12 11:40:17.679] HTTP 响应状态: OK
+[2026-07-12 11:40:17.679] 读取响应内容...
+[2026-07-12 11:40:17.681] 响应内容长度: 5099 字节
+[2026-07-12 11:40:17.681] 解析 JSON...
+[2026-07-12 11:40:17.689] 解析成功，共 1 个 Release
+[2026-07-12 11:40:17.699] 获取到 Release: tag=v1.2.0, name=v1.2.0 - 更新测试
+[2026-07-12 11:40:17.700] 最新版本: 1.2.0
+[2026-07-12 11:40:17.700] 版本比较结果: -1 (当前=1.1.0, 最新=1.2.0)
+[2026-07-12 11:40:17.700] 发现新版本！
+[2026-07-12 11:40:17.701] === 检查更新完成: HasUpdate=True ===

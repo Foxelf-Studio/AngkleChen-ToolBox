@@ -68,6 +68,8 @@ public class AppConfig
                     var config = JsonSerializer.Deserialize<AppConfig>(json);
                     if (config != null)
                     {
+                        // 修复绝对路径为相对路径
+                        config.FixAbsolutePaths();
                         Logger.Log($"加载配置: {config.Categories.Count} 个分类");
                         return config;
                     }
@@ -83,6 +85,38 @@ public class AppConfig
             defaultConfig.Save();
             Logger.Log("创建默认配置");
             return defaultConfig;
+        }
+    }
+
+    /// <summary>
+    /// 修复配置中的绝对路径为相对路径
+    /// </summary>
+    private void FixAbsolutePaths()
+    {
+        var baseDir = AppDomain.CurrentDomain.BaseDirectory;
+        var fixedCount = 0;
+
+        foreach (var category in Categories)
+        {
+            foreach (var tool in category.Tools)
+            {
+                if (Path.IsPathRooted(tool.RelativePath))
+                {
+                    try
+                    {
+                        tool.RelativePath = Path.GetRelativePath(baseDir, tool.RelativePath);
+                        fixedCount++;
+                        Logger.Log($"修复路径: {tool.Name} -> {tool.RelativePath}");
+                    }
+                    catch { }
+                }
+            }
+        }
+
+        if (fixedCount > 0)
+        {
+            Save();
+            Logger.Log($"修复了 {fixedCount} 个绝对路径");
         }
     }
 
