@@ -22,6 +22,7 @@ Desktop.ini
 # Temporary files
 *.tmp
 ~$*
+debug.log
 
 # 工具文件夹（不包含在仓库中）
 工具/
