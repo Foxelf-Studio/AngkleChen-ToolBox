@@ -41,41 +41,6 @@ public class ReleaseAsset
     public long Size { get; set; }
 }
 
-/// <summary>
-/// 更新清单（manifest.json）
-/// </summary>
-public class UpdateManifest
-{
-    [JsonPropertyName("version")]
-    public string Version { get; set; } = "";
-
-    [JsonPropertyName("releaseDate")]
-    public string ReleaseDate { get; set; } = "";
-
-    [JsonPropertyName("changelog")]
-    public string Changelog { get; set; } = "";
-
-    [JsonPropertyName("minUpgradeVersion")]
-    public string MinUpgradeVersion { get; set; } = "";
-
-    [JsonPropertyName("files")]
-    public Dictionary<string, FileEntry> Files { get; set; } = new();
-}
-
-/// <summary>
-/// 文件条目
-/// </summary>
-public class FileEntry
-{
-    [JsonPropertyName("sha256")]
-    public string Sha256 { get; set; } = "";
-
-    [JsonPropertyName("size")]
-    public long Size { get; set; }
-
-    [JsonPropertyName("url")]
-    public string Url { get; set; } = "";
-}
 
 /// <summary>
 /// 更新检查结果
@@ -89,17 +54,4 @@ public class UpdateCheckResult
     public string LatestVersion { get; set; } = "";
     public string Changelog { get; set; } = "";
     public string ReleaseUrl { get; set; } = "";
-    public UpdateManifest? Manifest { get; set; }
-    public List<ChangedFile> ChangedFiles { get; set; } = new();
-}
-
-/// <summary>
-/// 需要更新的文件
-/// </summary>
-public class ChangedFile
-{
-    public string RelativePath { get; set; } = "";
-    public string DownloadUrl { get; set; } = "";
-    public long Size { get; set; }
-    public string ExpectedSha256 { get; set; } = "";
 }
