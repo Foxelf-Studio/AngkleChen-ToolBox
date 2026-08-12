@@ -7,7 +7,7 @@ using System.Text.Json;
 namespace 陈叔叔工具箱.Helpers;
 
 /// <summary>
-/// 更新检查器 - 通过 GitHub Release 检查和下载更新
+/// 更新检查器 - 通过 GitHub Release 检查更新
 /// </summary>
 public class UpdateChecker
 {
