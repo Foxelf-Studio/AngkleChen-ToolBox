@@ -1,3 +1,4 @@
 {
-  "autoCheckUpdate": true
+  "autoCheckUpdate": true,
+  "enableLog": false
 }
