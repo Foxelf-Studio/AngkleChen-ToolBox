@@ -49,7 +49,7 @@
 
 ## 📥 下载与使用
 
-1. 从 [GitHub Releases](https://github.com/Foxelf-Studio/AngkleChen-ToolBox/releases) 的更新日志最下方找到网盘链接下载压缩包 或 点[这里](https://pan.quark.cn/s/19ab5a5b746a)下载
+1. 从 [GitHub Releases](https://github.com/Foxelf-Studio/AngkleChen-ToolBox/releases) 的更新日志最下方找到网盘链接下载压缩包，或点[这里](https://pan.quark.cn/s/19ab5a5b746a)下载
 2. 解压到任意目录
 3. 双击 `AngkleChenToolBox.exe` 即可启动
 
