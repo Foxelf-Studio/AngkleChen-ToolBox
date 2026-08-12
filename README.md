@@ -19,13 +19,12 @@
 
 ## ✨ 功能特点
 
-- 🚀 **便携免安装** - 单文件运行，U盘随身携带，即开即用
+- 🚀 **便携免安装** - U盘随身携带，即开即用
 - 🎨 **现代化界面** - Win11 风格 Fluent Design UI，深色主题护眼
 - 🔍 **智能搜索** - 快速查找所需工具，支持模糊搜索
 - 📦 **分类管理** - 17 个工具分类，80+ 款工具一目了然
-- 🔄 **在线更新** - 支持 GitHub Release 增量更新，自动检查新版本
+- 🔄 **更新检测** - 自动检查新版本，用户纯手动下载替换
 - 🛠️ **扩展支持** - 可添加自定义工具，灵活扩展功能
-- 🌐 **多语言支持** - 完整中文界面，适合国内用户使用
 
 ## 🗂️ 工具分类
 
@@ -50,10 +49,8 @@
 
 ## 📥 下载与使用
 
-### 便携版（推荐）
-
-1. 从 [GitHub Releases](https://github.com/Foxelf-Studio/AngkleChen-ToolBox/releases) 下载最新版本
-2. 解压到任意目录（或直接运行单文件版本）
+1. 从 [GitHub Releases](https://github.com/Foxelf-Studio/AngkleChen-ToolBox/releases) 的更新日志最下方找到网盘链接下载压缩包
+2. 解压到任意目录
 3. 双击 `AngkleChenToolBox.exe` 即可启动
 
 ### 系统要求
@@ -66,25 +63,19 @@
 
 1. **浏览工具**：在左侧导航栏选择工具分类
 2. **搜索工具**：使用顶部搜索框快速查找
-3. **查看详情**：悬停或点击工具卡片查看详细描述
+3. **查看详情**：点击工具卡片查看详细描述
 4. **启动工具**：双击工具卡片即可启动对应程序
 5. **添加工具**：点击标题栏 "+" 按钮添加自定义工具
 
-## 🔄 更新机制
+## 🔄 更新
 
-程序支持通过 GitHub Release 进行智能更新：
-
-1. **自动检查**：启动时自动检查新版本（可在设置中关闭）
-2. **增量更新**：只下载变化的文件，节省带宽和时间
-3. **版本对比**：显示当前版本与最新版本的差异
-4. **一键更新**：下载完成后自动替换旧版本
+若有更新，自行前往[GitHub Releases](https://github.com/Foxelf-Studio/AngkleChen-ToolBox/releases)下载最新程序替换。
 
 ## 🛠️ 开发技术
 
 - **框架**：.NET 10.0 + WPF
 - **语言**：C# 12
 - **UI 风格**：Win11 Fluent Design
-- **更新机制**：GitHub API + 文件级增量更新
 - **图标提取**：Windows Shell API + 缓存机制
 - **配置管理**：JSON 配置文件 + 动态加载
 
@@ -141,9 +132,10 @@
 
 ### 添加自定义工具
 
-1. 将工具文件放入 `工具/` 目录对应分类文件夹
-2. 在 `config.json` 中添加工具配置
-3. 重启程序即可看到新工具
+1. 程序标题栏上点击“+”号
+2. 填写相关信息
+3. 程序自动在 `config.json` 中添加工具配置
+4. 重启程序即可看到新工具
 
 ## 🔧 开发与构建
 
@@ -168,31 +160,6 @@ dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=
 # 输出文件位于 publish/ 目录
 ```
 
-### 发布版本
-
-1. 更新 `旧电脑拯救工具箱.csproj` 中的版本号
-2. 运行发布脚本生成安装包
-3. 创建 GitHub Release 并上传文件
-
-## 📋 更新日志
-
-### v2.0.0 (2026-07-31)
-- 🎨 全新 UI 设计，采用 Win11 Fluent Design 风格
-- 🔍 新增智能搜索功能
-- 📦 优化工具分类，新增多个工具类别
-- 🔄 改进更新机制，支持增量更新
-- 🛠️ 新增自定义工具添加功能
-- 📊 优化工具图标缓存机制
-
-### v1.2.0
-- 修复单文件应用路径问题
-- 优化配置文件路径处理
-- 改进工具启动逻辑
-
-### v1.1.0
-- 新增扩展工具支持
-- 优化界面响应速度
-- 修复若干已知问题
 
 ## 🤝 贡献指南
 
@@ -226,6 +193,7 @@ dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=
 - **GitHub**：[Foxelf-Studio/AngkleChen-ToolBox](https://github.com/Foxelf-Studio/AngkleChen-ToolBox)
 - **Issues**：[提交问题](https://github.com/Foxelf-Studio/AngkleChen-ToolBox/issues)
 - **Discussions**：[参与讨论](https://github.com/Foxelf-Studio/AngkleChen-ToolBox/discussions)
+- **邮箱** SeenyDafa@gmail.com
 
 ---
 
