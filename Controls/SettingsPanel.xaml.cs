@@ -38,9 +38,17 @@ public partial class SettingsPanel : UserControl
             {
                 var json = File.ReadAllText(configPath);
                 var settings = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, bool>>(json);
-                if (settings != null && settings.TryGetValue("autoCheckUpdate", out var autoCheck))
+                if (settings != null)
                 {
-                    ToggleAutoCheck.IsChecked = autoCheck;
+                    if (settings.TryGetValue("autoCheckUpdate", out var autoCheck))
+                    {
+                        ToggleAutoCheck.IsChecked = autoCheck;
+                    }
+                    if (settings.TryGetValue("enableLog", out var enableLog))
+                    {
+                        ToggleLogEnabled.IsChecked = enableLog;
+                        Logger.IsEnabled = enableLog;
+                    }
                 }
             }
             catch { }
@@ -52,7 +60,8 @@ public partial class SettingsPanel : UserControl
         var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.json");
         var settings = new Dictionary<string, bool>
         {
-            ["autoCheckUpdate"] = ToggleAutoCheck.IsChecked == true
+            ["autoCheckUpdate"] = ToggleAutoCheck.IsChecked == true,
+            ["enableLog"] = ToggleLogEnabled.IsChecked == true
         };
         var json = System.Text.Json.JsonSerializer.Serialize(settings, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
         File.WriteAllText(configPath, json);
@@ -122,6 +131,12 @@ public partial class SettingsPanel : UserControl
 
     private void OnAutoCheckChanged(object sender, RoutedEventArgs e)
     {
+        SaveSettings();
+    }
+
+    private void OnLogEnabledChanged(object sender, RoutedEventArgs e)
+    {
+        Logger.IsEnabled = ToggleLogEnabled.IsChecked == true;
         SaveSettings();
     }
 

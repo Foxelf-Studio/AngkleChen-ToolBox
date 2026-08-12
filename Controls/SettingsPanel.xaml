@@ -176,6 +176,7 @@
                         BorderThickness="1"
                         Padding="16,12">
                     <StackPanel>
+                        <!-- 启动时检查更新 -->
                         <Grid Height="40">
                             <StackPanel Orientation="Horizontal"
                                         VerticalAlignment="Center">
@@ -199,6 +200,38 @@
                                           Unchecked="OnAutoCheckChanged"
                                           Style="{StaticResource Win11Toggle}" />
                         </Grid>
+
+                        <!-- 开启日志记录 -->
+                        <StackPanel Margin="0,8,0,0">
+                            <Grid>
+                                <StackPanel Orientation="Horizontal"
+                                            VerticalAlignment="Center">
+                                    <TextBlock Text="&#xE7F4;"
+                                               FontFamily="Segoe MDL2 Assets"
+                                               FontSize="16"
+                                               Foreground="#aaaaaa"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,10,0" />
+                                    <TextBlock Text="开启日志记录"
+                                               FontFamily="Microsoft YaHei"
+                                               FontSize="14"
+                                               Foreground="#ffffff"
+                                               VerticalAlignment="Center" />
+                                </StackPanel>
+                                <ToggleButton x:Name="ToggleLogEnabled"
+                                              HorizontalAlignment="Right"
+                                              VerticalAlignment="Center"
+                                              IsChecked="False"
+                                              Checked="OnLogEnabledChanged"
+                                              Unchecked="OnLogEnabledChanged"
+                                              Style="{StaticResource Win11Toggle}" />
+                            </Grid>
+                            <TextBlock Text="开启后将输出 debug.log 日志文件"
+                                       FontFamily="Microsoft YaHei"
+                                       FontSize="11"
+                                       Foreground="#777777"
+                                       Margin="26,4,0,0" />
+                        </StackPanel>
                     </StackPanel>
                 </Border>
 
