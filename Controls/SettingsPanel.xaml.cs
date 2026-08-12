@@ -28,10 +28,12 @@ public partial class SettingsPanel : UserControl
         LoadSettings();
     }
 
+    private static readonly string AppDirectory = Path.GetDirectoryName(Environment.ProcessPath) ?? AppDomain.CurrentDomain.BaseDirectory;
+
     private void LoadSettings()
     {
         // 从配置文件加载设置（简单实现，可扩展）
-        var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.json");
+        var configPath = Path.Combine(AppDirectory, "settings.json");
         if (File.Exists(configPath))
         {
             try
@@ -57,14 +59,18 @@ public partial class SettingsPanel : UserControl
 
     private void SaveSettings()
     {
-        var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.json");
-        var settings = new Dictionary<string, bool>
+        try
         {
-            ["autoCheckUpdate"] = ToggleAutoCheck.IsChecked == true,
-            ["enableLog"] = ToggleLogEnabled.IsChecked == true
-        };
-        var json = System.Text.Json.JsonSerializer.Serialize(settings, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText(configPath, json);
+            var configPath = Path.Combine(AppDirectory, "settings.json");
+            var settings = new Dictionary<string, bool>
+            {
+                ["autoCheckUpdate"] = ToggleAutoCheck.IsChecked == true,
+                ["enableLog"] = ToggleLogEnabled.IsChecked == true
+            };
+            var json = System.Text.Json.JsonSerializer.Serialize(settings, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(configPath, json);
+        }
+        catch { }
     }
 
     private string? _releaseUrl;
