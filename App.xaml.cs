@@ -8,7 +8,11 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
-        // Win11 暗色模式
-        Current.Resources.MergedDictionaries.Clear();
+
+        // 兜底：未捕获异常写入日志，避免闪退后无任何线索
+        DispatcherUnhandledException += (_, args) =>
+        {
+            Helpers.Logger.Log($"未处理异常: {args.Exception}");
+        };
     }
 }

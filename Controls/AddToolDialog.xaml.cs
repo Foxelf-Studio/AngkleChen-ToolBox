@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using Microsoft.Win32;
+using 陈叔叔工具箱.Helpers;
 
 namespace 陈叔叔工具箱.Controls;
 
@@ -20,6 +21,15 @@ public partial class AddToolDialog : Window
     public string? ToolDescription { get; private set; }
     public string? CategoryName { get; private set; }
     public string? SourcePath { get; private set; }
+
+    /// <summary>新建分类时选择的图标（Segoe MDL2 字形），选已有分类时无意义</summary>
+    public string CategoryIcon { get; private set; } = AppConfig.DefaultCategoryIcon;
+
+    private void OnCategoryIconChecked(object sender, RoutedEventArgs e)
+    {
+        if (sender is RadioButton { Content: string glyph } && !string.IsNullOrEmpty(glyph))
+            CategoryIcon = glyph;
+    }
 
     public AddToolDialog(string toolboxRoot, string[] existingCategories)
     {

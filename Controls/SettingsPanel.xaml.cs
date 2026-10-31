@@ -13,11 +13,15 @@ public partial class SettingsPanel : UserControl
 
     public event EventHandler? CloseRequested;
 
+    /// <summary>回收站操作改变了工具清单，通知主窗口刷新</summary>
+    public event EventHandler? ToolsChanged;
+
+    private AppConfig? _config;
+
     public SettingsPanel()
     {
         InitializeComponent();
 
-        // TODO: 替换为实际的 GitHub 用户名
         _checker = new UpdateChecker("Foxelf-Studio", "AngkleChen-ToolBox");
 
         // 显示当前版本
@@ -28,7 +32,66 @@ public partial class SettingsPanel : UserControl
         LoadSettings();
     }
 
-    private static readonly string AppDirectory = Path.GetDirectoryName(Environment.ProcessPath) ?? AppDomain.CurrentDomain.BaseDirectory;
+    /// <summary>
+    /// 绑定主窗口的配置实例（避免多处 AppConfig 各写各的）
+    /// </summary>
+    public void Bind(AppConfig config)
+    {
+        _config = config;
+        RefreshTrash();
+    }
+
+    public void RefreshTrash()
+    {
+        var count = _config?.Trash.Count ?? 0;
+
+        if (count == 0)
+        {
+            TxtTrashStatus.Text = "回收站为空";
+            BtnRestoreLast.IsEnabled = false;
+            BtnEmptyTrash.IsEnabled = false;
+            return;
+        }
+
+        TxtTrashStatus.Text = $"共 {count} 项 · 最近：{_config!.Trash[0].Name}";
+        BtnRestoreLast.IsEnabled = true;
+        BtnEmptyTrash.IsEnabled = true;
+    }
+
+    private void OnRestoreLastClick(object sender, RoutedEventArgs e)
+    {
+        if (_config == null || _config.Trash.Count == 0) return;
+
+        var entry = _config.Trash[0];
+        if (_config.RestoreFromTrash(entry.Id))
+        {
+            RefreshTrash();
+            ToolsChanged?.Invoke(this, EventArgs.Empty);
+            TxtTrashStatus.Text = $"已恢复：{entry.Name}";
+        }
+        else
+        {
+            TxtTrashStatus.Text = "恢复失败，文件可能被占用";
+        }
+    }
+
+    private void OnEmptyTrashClick(object sender, RoutedEventArgs e)
+    {
+        if (_config == null || _config.Trash.Count == 0) return;
+
+        var result = CustomMessageBox.Show(
+            $"回收站中有 {_config.Trash.Count} 项，清空后无法恢复。\n\n确定要清空吗？",
+            "清空回收站",
+            MessageBoxButton.YesNo);
+
+        if (result != MessageBoxResult.Yes) return;
+
+        _config.EmptyTrash();
+        RefreshTrash();
+        ToolsChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    private static string AppDirectory => AppPaths.Root;
 
     private void LoadSettings()
     {

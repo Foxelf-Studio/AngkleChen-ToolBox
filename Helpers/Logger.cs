@@ -7,7 +7,7 @@ namespace 陈叔叔工具箱.Helpers;
 /// </summary>
 public static class Logger
 {
-    private static readonly string LogPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "debug.log");
+    private static string LogPath => AppPaths.Log;
     private static readonly object _lock = new();
 
     /// <summary>

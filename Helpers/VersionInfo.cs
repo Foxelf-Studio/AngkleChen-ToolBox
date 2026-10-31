@@ -3,6 +3,16 @@ using System.Text.Json.Serialization;
 namespace 陈叔叔工具箱.Helpers;
 
 /// <summary>
+/// 版本号统一出口（版本号散落在多处写死默认值是常见事故源）
+/// </summary>
+public static class VersionInfo
+{
+    /// <summary>当前程序版本，形如 2.1.0</summary>
+    public static string Current { get; } =
+        typeof(VersionInfo).Assembly.GetName().Version?.ToString(3) ?? "0.0.0";
+}
+
+/// <summary>
 /// GitHub Release 信息
 /// </summary>
 public class ReleaseInfo

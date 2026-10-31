@@ -17,6 +17,14 @@ public static class SmoothScrollBehavior
     public static bool GetIsEnabled(DependencyObject obj) => (bool)obj.GetValue(IsEnabledProperty);
     public static void SetIsEnabled(DependencyObject obj, bool value) => obj.SetValue(IsEnabledProperty, value);
 
+    /// <summary>滚轮灵敏度倍数（卡片区 0.5，导航栏 0.15）</summary>
+    public static readonly DependencyProperty MultiplierProperty =
+        DependencyProperty.RegisterAttached("Multiplier", typeof(double),
+            typeof(SmoothScrollBehavior), new PropertyMetadata(0.5));
+
+    public static double GetMultiplier(DependencyObject obj) => (double)obj.GetValue(MultiplierProperty);
+    public static void SetMultiplier(DependencyObject obj, double value) => obj.SetValue(MultiplierProperty, value);
+
     private class ScrollState
     {
         public double Velocity;        // 当前速度（像素/帧）
@@ -30,8 +38,6 @@ public static class SmoothScrollBehavior
     // 惯性参数
     private const double Friction = 0.85;
     private const double MinVelocity = 0.5;
-    private const double WheelMultiplierSV = 0.5;    // ScrollViewer 倍数（卡片页）
-    private const double WheelMultiplierLB = 0.15;   // ListBox 倍数（导航栏）
     private const double MaxVelocity = 120;
 
     private static void OnIsEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -39,15 +45,23 @@ public static class SmoothScrollBehavior
         if ((bool)e.NewValue)
         {
             if (d is ScrollViewer sv)
-                Bind(sv, WheelMultiplierSV);
+            {
+                Bind(sv, d);
+            }
             else if (d is ListBox lb)
+            {
                 lb.Loaded += (s, _) => lb.Dispatcher.BeginInvoke(
-                    new Action(() => { var sv = FindChild<ScrollViewer>(lb); if (sv != null) Bind(sv, WheelMultiplierLB); }),
+                    new Action(() =>
+                    {
+                        var inner = FindChild<ScrollViewer>(lb);
+                        if (inner != null) Bind(inner, d);
+                    }),
                     System.Windows.Threading.DispatcherPriority.Loaded);
+            }
         }
     }
 
-    private static void Bind(ScrollViewer sv, double multiplier)
+    private static void Bind(ScrollViewer sv, DependencyObject owner)
     {
         if (_states.ContainsKey(sv)) return;
         var state = new ScrollState();
@@ -56,7 +70,7 @@ public static class SmoothScrollBehavior
         sv.PreviewMouseWheel += (_, args) =>
         {
             args.Handled = true;
-            var delta = -args.Delta * multiplier;
+            var delta = -args.Delta * GetMultiplier(owner);
             var now = DateTime.Now;
             var elapsed = (now - state.LastWheelTime).TotalMilliseconds;
             state.LastWheelTime = now;

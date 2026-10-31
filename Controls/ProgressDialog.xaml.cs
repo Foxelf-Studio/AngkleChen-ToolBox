@@ -51,7 +51,15 @@ public partial class ProgressDialog : Window
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"复制失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            // 与全局风格保持一致，不用系统原生弹窗
+            var failed = new CustomMessageBox(
+                $"复制失败：{ex.Message}\n\n可能原因：文件正在被占用、目标磁盘空间不足，或没有写入权限。",
+                "复制失败")
+            {
+                Owner = this
+            };
+            failed.ShowDialog();
+
             DialogResult = false;
             Close();
         }

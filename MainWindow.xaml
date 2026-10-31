@@ -4,7 +4,7 @@
         xmlns:controls="clr-namespace:陈叔叔工具箱.Controls"
         xmlns:helpers="clr-namespace:陈叔叔工具箱.Helpers"
         Title="陈叔叔工具箱"
-        Icon="logo.png"
+        Icon="Assets/logo.ico"
         Width="1260" Height="780"
         MinWidth="960" MinHeight="580"
         Background="#1f1f1f"
@@ -40,7 +40,7 @@
                 <StackPanel Orientation="Horizontal"
                             VerticalAlignment="Center"
                             Margin="14,0,0,0">
-                    <Image Source="logo.png"
+                    <Image Source="Assets/logo-48.png"
                            Width="16" Height="16"
                            VerticalAlignment="Center" />
                     <TextBlock Text="陈叔叔工具箱"
@@ -108,7 +108,7 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0" Margin="14,24,14,0">
-                    <Image Source="logo.png"
+                    <Image Source="Assets/logo-96.png"
                            Width="52" Height="52"
                            HorizontalAlignment="Left" />
                     <TextBlock Text="陈叔叔工具箱"
@@ -136,7 +136,8 @@
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
                          ScrollViewer.CanContentScroll="False"
-                         helpers:SmoothScrollBehavior.IsEnabled="True">
+                         helpers:SmoothScrollBehavior.IsEnabled="True"
+                         helpers:SmoothScrollBehavior.Multiplier="0.15">
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
                             <Setter Property="Height" Value="40" />
@@ -328,63 +329,140 @@
                     </Grid>
                 </Border>
 
-                <Border Grid.Row="3" Background="#2b2b2b"
-                        CornerRadius="8" Height="42"
-                        BorderBrush="#1effffff" BorderThickness="1"
-                        Margin="0,0,0,12">
-                    <Grid>
-                        <TextBlock Text=""
-                                   FontFamily="Segoe MDL2 Assets"
-                                   FontSize="16" Foreground="#aaaaaa"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center"
-                                   Margin="14,0,0,0" />
-                        <TextBox x:Name="SearchBox"
-                                 Background="Transparent"
-                                 BorderThickness="0"
-                                 Foreground="#ffffff"
-                                 CaretBrush="#ffffff"
-                                 FontFamily="Microsoft YaHei" FontSize="14"
-                                 VerticalContentAlignment="Center"
-                                 Margin="38,0,12,0"
-                                 TextChanged="OnSearchTextChanged" />
-                    </Grid>
-                </Border>
+                <StackPanel Grid.Row="3" Margin="0,0,0,12">
+                    <Border Background="#2b2b2b"
+                        CornerRadius="8" Height="42"
+                        BorderBrush="#1effffff" BorderThickness="1">
+                    <Grid>
+                        <TextBlock Text=""
+                                   FontFamily="Segoe MDL2 Assets"
+                                   FontSize="16" Foreground="#aaaaaa"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Margin="14,0,0,0" />
+                        <TextBox x:Name="SearchBox"
+                                 Background="Transparent"
+                                 BorderThickness="0"
+                                 Foreground="#ffffff"
+                                 CaretBrush="#ffffff"
+                                 FontFamily="Microsoft YaHei" FontSize="14"
+                                 VerticalContentAlignment="Center"
+                                 Margin="38,0,12,0"
+                                 TextChanged="OnSearchTextChanged" />
+                        <TextBlock x:Name="SearchPlaceholder"
+                                   Text="搜索工具名称、描述或分类…"
+                                   FontFamily="Microsoft YaHei" FontSize="14"
+                                   Foreground="#666666"
+                                   VerticalAlignment="Center"
+                                   Margin="41,0,12,0"
+                                   IsHitTestVisible="False" />
+                    </Grid>
+                    </Border>
+
 
-                <ScrollViewer Grid.Row="4"
-                              x:Name="CardScrollViewer"
-                              CanContentScroll="False"
-                              HorizontalScrollBarVisibility="Disabled"
-                              VerticalScrollBarVisibility="Auto"
-                              PanningMode="VerticalOnly"
-                              RenderOptions.BitmapScalingMode="LowQuality"
-                              helpers:SmoothScrollBehavior.IsEnabled="True">
-                    <ItemsControl x:Name="CardItems">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <controls:ToolCard x:Name="ToolCardCtrl"
-                                                   DataContext="{Binding}"
-                                                   ClickCommand="{Binding DataContext.LaunchCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                   SelectCommand="{Binding DataContext.SelectCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                   DeleteCommand="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                   Margin="5" />
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </ScrollViewer>
+                    <!-- 警告条：配置缺失 / 损坏等"用户必须知道"的问题放这儿，不再塞进状态栏小字 -->
+                    <Border x:Name="WarningBar"
+                            Background="#29ff5a5f"
+                            BorderBrush="#5cff5a5f" BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="14,11,16,11"
+                            Margin="0,10,0,0"
+                            Visibility="{Binding WarningVisible}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0"
+                                       Text="&#xE7BA;"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       FontSize="16"
+                                       Foreground="#ff7a7e"
+                                       VerticalAlignment="Top"
+                                       Margin="0,1,11,0" />
+
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding WarningText}"
+                                       FontFamily="Microsoft YaHei"
+                                       FontSize="12.5"
+                                       LineHeight="19"
+                                       Foreground="#ffc2c4"
+                                       TextWrapping="Wrap"
+                                       VerticalAlignment="Center" />
+                        </Grid>
+                    </Border>
+                </StackPanel>
+
+                <ListBox Grid.Row="4"
+                         x:Name="CardItems"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         Padding="0"
+                         SelectionMode="Single"
+                         IsTabStop="False"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         ScrollViewer.CanContentScroll="True"
+                         ScrollViewer.PanningMode="VerticalOnly"
+                         VirtualizingPanel.IsVirtualizing="True"
+                         VirtualizingPanel.VirtualizationMode="Standard"
+                         AllowDrop="True"
+                         DragOver="OnCardDragOver"
+                         Drop="OnCardDrop"
+                         helpers:SmoothScrollBehavior.IsEnabled="True"
+                         helpers:SmoothScrollBehavior.Multiplier="0.5">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <controls:VirtualizingWrapPanel />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Padding" Value="0" />
+                            <Setter Property="Margin" Value="0" />
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                            <Setter Property="HorizontalContentAlignment" Value="Left" />
+                            <Setter Property="VerticalContentAlignment" Value="Top" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <ContentPresenter />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <controls:ToolCard x:Name="ToolCardCtrl"
+                                               DataContext="{Binding}"
+                                               ClickCommand="{Binding DataContext.LaunchCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                               SelectCommand="{Binding DataContext.SelectCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                               EditCommand="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                               DeleteCommand="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                               Margin="5" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
 
                 <!-- 状态栏 -->
-                <TextBlock Grid.Row="5"
-                           Text="{Binding StatusTip}"
-                           FontFamily="Microsoft YaHei" FontSize="11"
-                           Foreground="#777777"
-                           Margin="0,6,0,0"
-                           HorizontalAlignment="Left" />
+                <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,6,0,0">
+                    <TextBlock Text="{Binding StatusTip}"
+                               FontFamily="Microsoft YaHei" FontSize="11"
+                               Foreground="#777777"
+                               VerticalAlignment="Center" />
+                    <Button x:Name="BtnUndoDelete"
+                            Content="撤销"
+                            Visibility="Collapsed"
+                            Margin="6,0,0,0"
+                            VerticalAlignment="Center"
+                            ToolTip="把刚删除的工具从回收站恢复"
+                            Click="OnUndoDelete"
+                            Style="{StaticResource InlineLinkButton}" />
+                </StackPanel>
 
                 <!-- 更新提示气泡 -->
                 <Border x:Name="UpdateToastPanel"
@@ -434,6 +512,7 @@
 
                         <!-- 描述 -->
                         <TextBlock Grid.Row="1"
+                                   x:Name="TxtToastMessage"
                                    Text="有新的更新可用"
                                    FontFamily="Microsoft YaHei"
                                    FontSize="11"
@@ -469,6 +548,7 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Stretch"
                                     Width="400"
+                                    ToolsChanged="OnSettingsToolsChanged"
                                     CloseRequested="OnSettingsCloseRequested" />
         </Border>
     </Grid>

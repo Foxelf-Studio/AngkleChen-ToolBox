@@ -6,5 +6,8 @@ public record ToolInfo(
     string Icon,
     string Description,
     string RelativePath,
-    string Detail = ""
+    string Detail = "",
+    int Order = 0,
+    string Id = "",
+    string CategoryId = ""
 );

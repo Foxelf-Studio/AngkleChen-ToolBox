@@ -30,10 +30,33 @@ debug.log
 Result/
 发布/
 
+# 运行时生成的图标缓存（程序启动时自动重建，不进仓库）
+IconCache/
+test/
+
+# 工具箱自带回收站（用户删除的工具暂存，不进仓库）
+回收站/
+
+# 配置的运行时备份与损坏留档（File.Replace 生成的 .bak / 解析失败时的 .broken-时间戳）
+config.json.bak
+config.json.bak*
+config.json.broken-*
+
+# 临时验证环境（拷一份 exe 出来做冒烟测试，不属于项目内容）
+.verify/
+.smoketest/
+.icontest/
+
+# 验证过程产生的临时截图（正式截图不带下划线前缀）
+docs/images/_*.png
+
 # 编译输出
 陈叔叔工具箱.exe
+AngkleChenToolBox.exe
 *.7z
 *.exe
 
-# Claude
+# AI 工具本地配置（UI 规范已迁移到 docs/UI-GUIDELINES.md）
 .claude/
+.cursor/
+.workbuddy/

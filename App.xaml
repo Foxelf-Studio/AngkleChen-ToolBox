@@ -18,6 +18,12 @@
             <Setter Property="Background" Value="Transparent" />
         </Style>
 
+        <!-- 输入框光标：WPF 默认是纯黑，在暗色输入框里几乎看不见 -->
+        <Style TargetType="TextBox">
+            <Setter Property="CaretBrush" Value="#ffffff" />
+            <Setter Property="SelectionBrush" Value="#5A60CDFF" />
+        </Style>
+
         <Style TargetType="ScrollBar">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Width" Value="3" />
@@ -318,6 +324,33 @@
                                     </Storyboard>
                                 </BeginStoryboard>
                             </EventTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 状态栏内联文字按钮 -->
+        <Style x:Key="InlineLinkButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="#60cdff" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Padding" Value="8,2" />
+            <Setter Property="FontFamily" Value="Microsoft YaHei" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bg" Background="{TemplateBinding Background}"
+                                CornerRadius="4" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bg" Property="Background" Value="#1a60cdff" />
+                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>

@@ -10,6 +10,7 @@ using System.Windows.Media.Animation;
 using 陈叔叔工具箱.Controls;
 using 陈叔叔工具箱.Helpers;
 using 陈叔叔工具箱.Models;
+using 陈叔叔工具箱.Services;
 using CatInfo = 陈叔叔工具箱.Models.CatInfo;
 
 using DoubleAnimation = System.Windows.Media.Animation.DoubleAnimation;
@@ -22,148 +23,20 @@ namespace 陈叔叔工具箱;
 
 public partial class MainWindow : Window, INotifyPropertyChanged
 {
-    // ── 工具箱根目录 ──────────────────────────────
-    // 使用 exe 所在目录，而不是 BaseDirectory（单文件应用可能返回临时目录）
-    private static readonly string ToolboxRoot = Path.GetDirectoryName(Environment.ProcessPath) ?? AppDomain.CurrentDomain.BaseDirectory;
+    // ── 工具箱根目录（统一由 AppPaths 提供）──────────
+    private static readonly string ToolboxRoot = AppPaths.Root;
 
     // ── 配置管理器 ────────────────────────────────
     private AppConfig _config = null!;
 
 
     // Segoe MDL2 Assets — Windows 内置官方图标字体
-    private CatInfo[] Categories =
-    [
-        new("all",   "全部工具",   "", "浏览所有便携工具"),
-        new("娱乐工具",   "娱乐工具",   "", "音乐与视频播放"),
-        new("实用工具",   "实用工具",   "", "系统安装与诊断"),
-        new("搞机工具",   "搞机工具",   "", "激活·调试·跑分"),
-        new("文件工具",   "文件工具",   "", "下载·压缩·分区"),
-        new("清理工具",   "清理工具",   "", "卸载·清理·拦截"),
-        new("依赖",   "依赖",   "", "运行库与框架"),
-        new("CPU工具",  "CPU工具",   "", "处理器检测与测试"),
-        new("内存工具",  "内存工具",   "", "内存检测与管理"),
-
-        new("显卡工具",  "显卡工具",   "", "GPU检测与驱动"),
-        new("硬盘工具",  "硬盘工具",   "", "磁盘检测与恢复"),
-        new("烤鸡工具",  "烤鸡工具",   "", "压力测试与烤机"),
-        new("外设工具",  "外设工具",   "", "鼠标键盘测试"),
-        new("显示器工具", "显示器工具",  "", "屏幕检测与校准"),
-        new("综合检测",  "综合检测",   "", "硬件综合信息"),
-        new("系统工具",  "系统工具",   "", "系统维护与优化"),
-        new("游戏平台",  "游戏平台",   "", "游戏启动器"),
-    ];
+    // 分类同样来自 config.json，运行时由 LoadFromConfig() 填充
+    private CatInfo[] Categories = [];
 
     // ── 工具数据 ──────────────────────────────────
-    private ToolInfo[] AllTools =
-    [
-        new("酷我音乐",      "娱乐工具", " ", "酷我音乐PC版，支持在线听歌、歌词显示、音效调节、本地音乐管理，支持无损音质下载。",     @"工具\娱乐工具\KwMusic\KwMusic.exe"),
-        new("PiliPlus",     "娱乐工具", " ", "第三方哔哩哔哩客户端，支持弹幕播放、视频下载、多清晰度切换，基于Flutter开发。",         @"工具\娱乐工具\PiliPlus-Win\piliplus.exe"),
-        new("洛雪音乐",     "娱乐工具", " ", "洛雪音乐桌面版，开源免费音乐播放器，支持多平台音源、无损音质、歌词显示、歌单导入。", @"工具\娱乐工具\洛雪音乐\lx-music-desktop.exe"),
-        new("Edge 浏览器",   "实用工具", " ", "微软Edge浏览器在线安装程序，基于Chromium内核，支持扩展插件、集锦、沉浸式阅读器等功能。",     @"工具\实用工具\edge\MicrosoftEdgeSetup.exe"),
-        new("Office Tool Plus","实用工具"," ","微软Office部署工具，支持Office 2016-2024及Microsoft 365的在线/离线安装、激活、更新管理。",    @"工具\实用工具\Office Tool x64\Office Tool Plus.exe"),
-        new("Office Tool (32位)","实用工具"," ","Office Tool Plus 32位版本，适用于32位Windows系统，功能与64位版本相同。", @"工具\实用工具\Office Tool x32\Office Tool Plus.exe"),
-        new("PCR532 读卡器", "实用工具", " ", "基于PN532芯片的NFC读卡器工具，支持IC卡读写、UID读取、门禁卡模拟、Mifare Classic破解。",       @"工具\实用工具\pcr532\PN532CardReader.exe"),
-        new("Intel 核显驱动", "实用工具", " ", "Intel核芯显卡驱动离线安装包，支持HD/UHD/Iris系列核显，适用于Windows 10/11系统。",    @"工具\实用工具\核显驱动\Intelhxqdwin10.exe"),
-        new("WPS 2019",      "实用工具", " ", "WPS Office 2019专业版安装程序，兼容微软Office格式，支持文字、表格、演示三大组件。",         @"工具\实用工具\wps2019\W.P.S.10314.12012.2019.exe"),
-        new("网卡驱动",      "实用工具", " ", "360驱动大师网卡版，内置万能网卡驱动，解决重装系统后无法联网的问题，支持有线/无线网卡。",      @"工具\实用工具\网卡驱动\gwwk__360DrvMgrInstaller_net.exe"),
-        new("自动更新时间",  "实用工具", " ", "Seewo网络时间同步工具，通过NTP服务器校准系统时间，适用于教育一体机等设备。",         @"工具\实用工具\自动更新系统时间\SeewoOpt.exe"),
-        new("HEU KMS 激活",  "搞机工具", " ", "HEU KMS Activator，支持Windows Vista~11及Office 2010~2024的KMS激活，无需联网，操作简单。",  @"工具\搞机工具\HEU激活工具\HEU_KMS_Activator_v63.3.0.exe"),
-        new("沧水 KMS",     "搞机工具", " ", "沧水KMS激活批处理脚本，通过KMS服务器激活Windows和Office，支持多种版本。",           @"工具\搞机工具\沧水KMS\KMS-Cangshui.net.bat"),
-        new("安卓手表 ADB",  "搞机工具", " ", "安卓手表ADB调试工具，支持安装应用、传输文件、修改系统设置，适用于各类安卓智能手表。",    @"工具\搞机工具\安卓手表adb实用工具箱\安卓手表ADB实用工具箱 66.0.0.exe"),
-        new("鲁大师",       "搞机工具", " ", "鲁大师硬件检测工具，支持CPU/显卡/内存/硬盘性能跑分，温度监控，驱动管理。",         @"工具\搞机工具\鲁大师\ludashisetup.exe"),
-
-        new("图压",         "文件工具", " ", "图压图片压缩工具，支持JPG/PNG/GIF/WebP批量压缩，保持画质的同时大幅减小文件体积。",       @"工具\文件工具\图压\图压.exe"),
-        new("磁盘精灵",     "文件工具", " ", "DiskGenius专业版，支持磁盘分区管理、数据恢复、备份还原、分区迁移、坏道检测修复。",    @"工具\文件工具\磁盘精灵\DiskGenius-Pro-v6.0.0.1631-x64-Chs.exe"),
-        new("迅雷",         "文件工具", " ", "迅雷极速版，支持BT/磁力链接/HTTP多线程下载，P2P加速，离线下载，边下边播。",           @"工具\文件工具\迅雷\program\thunder.exe"),
-        new("格式转换",     "文件工具", " ", "格式工厂等在线格式转换工具集合，支持视频、音频、图片、文档等格式互相转换。",        @"工具\文件工具\格式转换工具"),
-        new("HiBit Uninstaller","清理工具"," ","HiBit Uninstaller，支持强制卸载、批量卸载、注册表清理、垃圾文件清理、启动项管理。",   @"工具\清理工具\hibit\HiBitUninstaller.exe"),
-        new("IObit Uninstaller","清理工具"," ","IObit Uninstaller专业版便携版，支持强制卸载、软件健康检测、安装监视、浏览器插件清理。",       @"工具\清理工具\IOBit\IObitUninstaller-Pro-14.4.0.3-Portable.exe"),
-        new("Geek Uninstaller","清理工具"," ","Geek Uninstaller轻量级卸载工具，支持强制卸载、清理残留、管理Windows Store应用。",      @"工具\清理工具\Geek Uninstaller\Geek Uninstaller.exe"),
-        new("SoftCnKiller", "清理工具", " ", "SoftCnKiller，专治国内流氓软件，支持查杀恶意程序、拦截弹窗广告、修复浏览器劫持。", @"工具\清理工具\SoftCnKiller2.85\SoftCnKiller.exe"),
-        new(".NET Framework 4.7", "依赖", " ", ".NET Framework 4.7.2离线安装包，许多软件和游戏的运行依赖，支持Windows 7/8/10。",        @"工具\依赖\.net\NDP472-KB4054530-x86-x64-AllOS-ENU.exe"),
-        new("VC++ 运行库",   "依赖", " ", "Microsoft Visual C++ 2005-2022运行库合集，许多软件和游戏的必要依赖组件。",    @"工具\依赖\vc\vc_redist.x86.exe"),
-
-        // CPU工具
-        new("CPU-Z",          "CPU工具", " ", "CPU-Z处理器检测工具，显示CPU型号、核心数、频率、缓存、主板、内存等详细硬件信息。",       @"工具\CPU工具\CPUZ\cpuz_x64.exe"),
-        new("Core Temp",      "CPU工具", " ", "Core Temp轻量级CPU温度监控工具，实时显示各核心温度、频率、负载，支持高温报警。",        @"工具\CPU工具\CoreTemp\Core Temp x64.exe"),
-        new("ThrottleStop",   "CPU工具", " ", "ThrottleStop CPU降压工具，支持调整CPU电压、频率、功耗限制，降低温度延长续航。",        @"工具\CPU工具\ThrottleStop\ThrottleStop.exe"),
-        new("Prime95",        "CPU工具", " ", "Prime95 CPU压力测试工具，通过梅森素数计算对CPU进行极限拷机，检测稳定性。",       @"工具\CPU工具\Prime95\prime95.exe"),
-        new("SuperPI",        "CPU工具", " ", "SuperPI圆周率计算测试，通过计算PI值测试CPU单核性能和稳定性，经典跑分工具。",      @"工具\CPU工具\superpi\Superpi.exe"),
-        new("wPrime",         "CPU工具", " ", "wPrime多线程CPU基准测试工具，通过计算平方根值测试CPU多核性能。",       @"工具\CPU工具\wPrime\wPrime.exe"),
-        new("LinX",           "CPU工具", " ", "LinX基于Intel Linpack的CPU压力测试工具，比Prime95更严格，能快速发现CPU不稳定问题。",     @"工具\CPU工具\LinX\LinX.exe"),
-
-        // 内存工具
-        new("MemTest",        "内存工具", " ", "MemTest内存错误检测工具，通过反复读写测试内存条是否存在坏块，建议运行至少1轮。",       @"工具\内存工具\memtest\memtest.exe"),
-        new("MemTest64",      "内存工具", " ", "MemTest64 64位内存测试工具，可在Windows下直接测试内存，无需进入DOS环境。",       @"工具\内存工具\memtest64\MemTest64.exe"),
-        new("Thaiphoon",      "内存工具", " ", "Thaiphoon Burner内存颗粒信息读取工具，显示内存厂商、颗粒型号、时序参数、XMP信息。",       @"工具\内存工具\Thaiphoon\Thaiphoon.exe"),
-        new("TM5",            "内存工具", " ", "TM5内存稳定性测试工具，配合自定义配置文件可精确检测内存超频后的稳定性。",      @"工具\内存工具\tm5\TM5.exe"),
-        new("ZenTimings",     "内存工具", " ", "ZenTimings AMD平台内存时序查看工具，显示频率、时序、电压、Gear Down Mode等参数。",     @"工具\内存工具\ZenTimings\ZenTimings.exe"),
-        new("魔方内存盘",     "内存工具", " ", "魔方内存盘，将内存虚拟为硬盘分区，读写速度极快，适合存放临时文件和缓存。",       @"工具\内存工具\魔方内存盘\ramdisk.exe"),
-
-        // 显卡工具
-        new("GPU-Z",          "显卡工具", " ", "GPU-Z显卡信息检测工具，显示GPU型号、显存、频率、温度、功耗等详细参数。",        @"工具\显卡工具\GPUZ\GPU-Z.exe"),
-        new("DDU",            "显卡工具", " ", "DDU(Display Driver Uninstaller)显卡驱动彻底卸载工具，支持NVIDIA/AMD/Intel驱动清理。",       @"工具\显卡工具\DDU\Display Driver Uninstaller.exe"),
-        new("nvidiaInspector","显卡工具", " ", "nvidiaInspector NVIDIA显卡参数调节工具，支持调整频率、电压、功耗限制、风扇曲线。",     @"工具\显卡工具\nvidiaInspector\nvidiaInspector.exe"),
-        new("DXVAChecker",    "显卡工具", " ", "DXVAChecker视频硬件加速能力检测工具，显示GPU支持的解码格式和编码能力。",    @"工具\显卡工具\dxvachecker\DXVAChecker.exe"),
-        new("AMD驱动下载",   "显卡工具", " ", "AMD显卡驱动官方下载页面，提供Radeon系列显卡最新驱动程序下载。", @"工具\显卡工具\AMD显卡驱动下载\Start.bat"),
-        new("Nvidia驱动下载","显卡工具", " ", "NVIDIA显卡驱动官方下载页面，提供GeForce系列显卡最新Game Ready驱动下载。", @"工具\显卡工具\Nvidia显卡驱动下载\Start.bat"),
-        new("MSI Afterburner","显卡工具", " ", "MSI Afterburner显卡超频工具下载页面，支持NVIDIA/AMD显卡频率调节、监控、录像。", @"工具\显卡工具\MSIAfterburnerSetup\start.bat"),
-
-        // 硬盘工具
-        new("CrystalDiskInfo","硬盘工具", " ", "CrystalDiskInfo硬盘健康检测工具，读取S.M.A.R.T.信息，显示硬盘温度、通电时间、健康状态。",       @"工具\硬盘工具\CrystalDiskInfo\DiskInfo64S.exe"),
-        new("CrystalDiskMark","硬盘工具", " ", "CrystalDiskMark硬盘读写速度测试工具，支持顺序/随机读写测试，支持NVMe/SATA/USB设备。",    @"工具\硬盘工具\CrystalDiskMark\DiskMark64S.exe"),
-        new("AS SSD Benchmark","硬盘工具", " ", "AS SSD Benchmark固态硬盘性能测试工具，测试顺序/4K读写、访问时间、综合评分。",       @"工具\硬盘工具\ASSSDBenchmark\ASSSDBenchmark.exe"),
-        new("HDTune",         "硬盘工具", " ", "HDTune硬盘综合工具，支持基准测试、错误扫描、健康检测、安全擦除等功能。",       @"工具\硬盘工具\HDTune\HDTune.exe"),
-        new("SpaceSniffer",   "硬盘工具", " ", "SpaceSniffer磁盘空间可视化分析工具，以树状图方式直观显示文件夹占用空间大小。",     @"工具\硬盘工具\SpaceSniffer\SpaceSniffer.exe"),
-        new("WizTree",        "硬盘工具", " ", "WizTree超高速磁盘空间分析工具，直接读取MFT表，比同类工具快100倍以上。",       @"工具\硬盘工具\WizTree\WizTree.exe"),
-        new("Defraggler",     "硬盘工具", " ", "Defraggler磁盘碎片整理工具，支持整理整个磁盘或指定文件/文件夹，支持SSD优化。",       @"工具\硬盘工具\Defraggler\Defraggler.exe"),
-        new("FinalData",      "硬盘工具", " ", "FinalData数据恢复工具，支持恢复误删除文件、格式化恢复、分区丢失恢复。",       @"工具\硬盘工具\finaldata\FINALDATA.exe"),
-        new("魔方数据恢复",   "硬盘工具", " ", "魔方数据恢复工具，支持恢复误删除、误格式化、分区丢失的数据，操作简单。",       @"工具\硬盘工具\魔方数据恢复\魔方数据恢复.exe"),
-        new("TxBENCH",        "硬盘工具", " ", "TxBENCH固态硬盘基准测试工具，支持多种测试模式，可测试NVMe/SATA SSD性能。",        @"工具\硬盘工具\TxBENCH\TxBENCH.exe"),
-        new("SSDZ",           "硬盘工具", " ", "SSDZ固态硬盘检测工具，显示SSD型号、固件版本、通电时间、写入量等信息。",    @"工具\硬盘工具\SSDZ\SSDZ.exe"),
-
-        // 烤鸡工具
-        new("FurMark",        "烤鸡工具", " ", "FurMark GPU压力测试工具，通过OpenGL高负载渲染测试显卡稳定性和散热性能，俗称烤机。",        @"工具\烤鸡工具\furmark.exe"),
-        new("FurMark GUI",    "烤鸡工具", " ", "FurMark GUI版GPU烤机工具，支持自定义分辨率、抗锯齿、运行时间等参数。",        @"工具\烤鸡工具\FurMark_GUI.exe"),
-
-        // 外设工具
-        new("鼠标测试",       "外设工具", " ", "AresonMouseTest鼠标性能测试工具，测试鼠标回报率、按键响应、DPI精度、丢帧情况。",       @"工具\外设工具\AresonMouseTest\鼠标测试软件AresonMouseTestProgram.exe"),
-        new("键盘测试",       "外设工具", " ", "Keyboard Test Utility键盘按键检测工具，实时显示按键状态，检测按键冲突和失灵。",       @"工具\外设工具\Keyboard Test Utility\Keyboard Test Utility.exe"),
-        new("KeyTweak",       "外设工具", " ", "KeyTweak键盘按键映射工具，支持禁用、重映射键盘按键，修改键盘布局。",       @"工具\外设工具\KeyTweak\KeyTweak.exe"),
-        new("MouseTester",    "外设工具", " ", "MouseTester鼠标回报率测试工具，精确测量鼠标USB回报率和移动轨迹平滑度。",     @"工具\外设工具\MouseTester\MouseTester.exe"),
-        new("在线外设测试", "外设工具", " ", "在线外设测试中心，通过浏览器测试键盘按键、鼠标点击、鼠标回报率等外设性能。", @"工具\外设工具\在线外设测试中心\在线外设测试中心.bat"),
-
-        // 显示器工具
-        new("色域检测",       "显示器工具"," ", "MonitorInfo显示器色域检测工具，读取显示器EDID信息，显示色域、分辨率、刷新率等参数。",    @"工具\显示器工具\色域检测\monitorinfo.exe"),
-        new("UFO显示器测试", "显示器工具"," ", "UFO Test在线显示器刷新率测试工具，通过浏览器测试显示器实际刷新率和帧率表现。", @"工具\显示器工具\UFO测试\Start.bat"),
-        new("在线屏幕测试", "显示器工具"," ", "在线屏幕检测工具，通过浏览器检测显示器坏点、亮点、色彩均匀性、响应速度。",   @"工具\显示器工具\在线屏幕测试\在线屏幕测试.bat"),
-
-        // 综合检测
-        new("AIDA64",         "综合检测", " ", "AIDA64硬件综合检测工具，支持CPU/内存/显卡/硬盘全面检测和压力测试，硬件信息最全。",       @"工具\综合检测\AIDA64\aida64.exe"),
-        new("HWiNFO",         "综合检测", " ", "HWiNFO硬件信息监控工具，实时显示CPU/GPU温度、频率、电压、功耗等传感器数据。",       @"工具\综合检测\hwinfo\HWiNFO64.exe"),
-        new("HWMonitor",      "综合检测", " ", "HWMonitor硬件温度监控工具，显示CPU/GPU/硬盘温度、风扇转速、电压等传感器数据。",       @"工具\综合检测\HWMonitor\HWMonitor_x64.exe"),
-        new("Speccy",         "综合检测", " ", "Speccy系统信息查看工具，显示操作系统、CPU、内存、主板、显卡、硬盘等详细硬件信息。",       @"工具\综合检测\speccy\Speccy64.exe"),
-
-        // 系统工具
-        new("Dism++",         "系统工具", " ", "Dism++系统优化清理工具，支持系统精简、更新清理、驱动管理、启动项管理、系统备份。",       @"工具\系统工具\Dism++\Dism++x64.exe"),
-        new("DirectX Repair", "系统工具", " ", "DirectX Repair DirectX组件修复工具，修复缺失的DLL文件，解决游戏无法运行的问题。",       @"工具\系统工具\DirectX_Repair\DirectX Repair.exe"),
-        new("Process Explorer","系统工具", " ", "Process Explorer高级进程管理工具，显示进程树、DLL依赖、句柄信息，比任务管理器更强大。",     @"工具\系统工具\procexp\procexp64.exe"),
-        new("WinDbg",         "系统工具", " ", "WinDbg Windows调试工具，用于分析蓝屏dump文件、调试驱动程序和应用程序崩溃。",     @"工具\系统工具\WinDbg\windbg.exe"),
-        new("Everything",     "系统工具", " ", "Everything极速文件搜索工具，基于NTFS索引，毫秒级搜索全盘文件，支持正则表达式。",       @"工具\系统工具\Everything\everything.exe"),
-        new("FanControl",     "系统工具", " ", "FanControl开源风扇控制工具，支持根据CPU/GPU温度自定义风扇转速曲线。",       @"工具\系统工具\FanControl\FanControl.exe"),
-        new("Rufus",          "系统工具", " ", "Rufus USB启动盘制作工具，支持Windows/Linux启动盘，支持UEFI/Legacy，速度极快。",      @"工具\系统工具\rufus\rufus.exe"),
-        new("Ventoy",         "系统工具", " ", "Ventoy多系统启动盘制作工具，只需拷贝ISO文件即可启动，无需反复格式化U盘。",       @"工具\系统工具\ventoy\Ventoy2Disk.exe"),
-        new("UltraISO",       "系统工具", " ", "UltraISO ISO镜像编辑工具，支持制作、编辑、转换ISO文件，支持直接提取引导信息。",       @"工具\系统工具\ULTRAISO\ULTRAISO.exe"),
-        new("BlueScreenView", "系统工具", " ", "BlueScreenView蓝屏日志分析工具，自动读取蓝屏dump文件，显示导致蓝屏的驱动文件。",      @"工具\系统工具\bluescreenview\BlueScreenViewx64.exe"),
-        new("BatteryInfo",    "系统工具", " ", "BatteryInfoView笔记本电池信息查看工具，显示电池容量、健康度、充放电次数、制造商信息。",       @"工具\系统工具\BatteryInfoView\BatteryInfoView.exe"),
-        new("next.itellyou","系统工具", " ", "next.itellyou Windows原版镜像下载站，提供Windows 7~11各版本官方ISO镜像下载。", @"工具\系统工具\next_itellyou\Start.bat"),
-
-        // 游戏平台
-        new("Steam 下载",     "游戏平台", " ", "Steam游戏平台下载页面，全球最大的PC游戏平台，支持游戏购买、下载、社区功能。",     @"工具\游戏平台\Steam\下载Steam.bat"),
-        new("Epic Games下载", "游戏平台", " ", "Epic Games游戏平台，每周免费游戏领取，支持虚幻引擎游戏库和社交功能。",      @"工具\游戏平台\epic\Start.bat"),
-        new("EA App下载",     "游戏平台", " ", "EA App(EA桌面应用)，EA旗下游戏平台，管理EA游戏库、订阅EA Play服务。",        @"工具\游戏平台\eaapp\Start.bat"),
-        new("战网下载",       "游戏平台", " ", "暴雪战网客户端，下载和管理暴雪旗下游戏，包括魔兽世界、守望先锋、暗黑破坏神等。",         @"工具\游戏平台\battle\Start.bat"),
-    ];
+    // 全部来自 config.json（唯一数据源），此字段只作运行时缓存，代码里不再维护第二份清单
+    private ToolInfo[] AllTools = [];
 
     // ── 属性 ──────────────────────────────────────
     private string _headerTitle = "全部工具";
@@ -175,11 +48,25 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private string _breadcrumb = "陈叔叔工具箱  ›  全部工具";
     public string Breadcrumb { get => _breadcrumb; set { _breadcrumb = value; OnPropChanged(); } }
 
-    private string _statusText = "共 20 款工具  ·  v1.0";
+    private string _statusText = "正在加载…";
     public string StatusText { get => _statusText; set { _statusText = value; OnPropChanged(); } }
 
     private string _statusTip = "";
     public string StatusTip { get => _statusTip; set { _statusTip = value; OnPropChanged(); } }
+
+    // ── 顶部警告条（配置缺失/损坏这类"必须看见"的问题）──
+    private string _warningText = "";
+    public string WarningText { get => _warningText; set { _warningText = value; OnPropChanged(); } }
+
+    private Visibility _warningVisible = Visibility.Collapsed;
+    public Visibility WarningVisible { get => _warningVisible; set { _warningVisible = value; OnPropChanged(); } }
+
+    /// <summary>在搜索框下方显示红色警告条</summary>
+    private void ShowWarning(string text)
+    {
+        WarningText = text;
+        WarningVisible = Visibility.Visible;
+    }
 
     // 选中工具描述面板
     private string _selectedToolName = "";
@@ -209,6 +96,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private int _prevCatIndex;
     private bool _suppressAnim;
 
+    // ── 命令（只创建一次；此前是表达式体属性，每次绑定都 new 一个） ──
+    public ICommand SelectCommand { get; }
+    public ICommand LaunchCommand { get; }
+    public ICommand EditCommand { get; }
+    public ICommand DeleteCommand { get; }
+
     // ── 设置页面 ──────────────────────────────────
     private bool _isSettingsOpen;
 
@@ -216,6 +109,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public MainWindow()
     {
         InitializeComponent();
+
+        SelectCommand = new RelayCommand(OnSelectTool);
+        LaunchCommand = new RelayCommand(OnLaunchTool);
+        EditCommand = new RelayCommand(OnEditTool);
+        DeleteCommand = new RelayCommand(OnDeleteTool);
+
         DataContext = this;
 
         // 初始化图标缓存
@@ -236,8 +135,27 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         // 延迟加载图标和检查更新
         Loaded += (_, _) =>
         {
-            // 后台缓存图标
-            Task.Run(() => _config.CacheAllIcons());
+            // 配置缺失/损坏时如实告知，而不是让用户以为工具"自己变少了"
+            if (_config.RestoredFromTemplate)
+            {
+                ShowWarning(_config.BrokenBackupFile != null
+                    ? $"config.json 无法解析，原文件已备份为程序目录下的 {_config.BrokenBackupFile}，当前显示的是内置清单。备份里保留着你自己加过的工具，可以手工取回。"
+                    : "config.json 缺失，已用内置清单重建。之前自己添加过的工具需要重新加一次。");
+            }
+
+            // 后台刷新图标（源文件被替换时会自动重新提取）
+            _ = RefreshIconsAsync();
+
+            // 预热"文件是否存在"快照，之后搜索不再碰磁盘
+            _ = InvalidateExistsCacheAsync();
+
+            // 启动维护：先找回被移动的工具，再发现未收录的条目
+            _ = StartupMaintenanceAsync();
+
+            // 诊断：开启日志时记录虚拟化实际实例化的卡片数
+            Dispatcher.BeginInvoke(new Action(() =>
+                Logger.Log($"卡片虚拟化：已实例化 {VirtualizingWrapPanel.LastRealizedCount} / {AllTools.Length}")),
+                System.Windows.Threading.DispatcherPriority.Background);
 
             // 延迟2秒检查更新
             var timer = new System.Windows.Threading.DispatcherTimer
@@ -254,7 +172,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     }
 
     // ── 从配置加载数据 ────────────────────────────
-    private void LoadFromConfig()
+    /// <param name="selectCategoryId">刷新后保持选中的分类 id；为空则回到"全部工具"</param>
+    private void LoadFromConfig(string? selectCategoryId = null)
     {
         // 先加载工具（必须在 SelectedIndex 之前，否则触发 OnCategoryChanged 时 AllTools 还是旧的）
         AllTools = _config.GetAllTools().ToArray();
@@ -267,7 +186,15 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         categories.AddRange(_config.GetCategories());
         Categories = categories.ToArray();
         CategoryList.ItemsSource = Categories;
-        CategoryList.SelectedIndex = 0;
+
+        var index = 0;
+        if (!string.IsNullOrEmpty(selectCategoryId))
+        {
+            var target = Array.FindIndex(Categories, c => c.Id == selectCategoryId);
+            if (target >= 0) index = target;
+        }
+
+        CategoryList.SelectedIndex = index;
     }
 
     // ── 导航按钮线性高亮动画 ──────────────────────
@@ -295,9 +222,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     }
 
     // ── 右键菜单：删除分类 ──────────────────────────
-    // ── Win11 风格右键菜单 ──────────────────────────
-    private static Window? _activeMenu;
-    private static bool _isMenuClosing;
+    private static readonly string TrashIcon =
+        "M 3 3 L 5 3 L 5 1 L 11 1 L 11 3 L 13 3 L 13 5 L 3 5 Z M 4 5 L 12 5 L 11 15 L 5 15 Z";
+
+    private static readonly string PencilIcon =
+        "M 3 17.25 V 21 h 3.75 L 17.81 9.94 l -3.75 -3.75 L 3 17.25 Z M 20.71 7.04 c 0.39 -0.39 0.39 -1.02 0 -1.41 l -2.34 -2.34 c -0.39 -0.39 -1.02 -0.39 -1.41 0 l -1.83 1.83 3.75 3.75 1.83 -1.83 Z";
 
     private void NavItem_RightClick(object sender, MouseButtonEventArgs e)
     {
@@ -306,185 +235,46 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if (cat.Id == "all") return; // 不允许删除"全部工具"
 
         e.Handled = true;
-        ShowCategoryMenu(cat, e);
+        Win11ContextMenu.Show(PointToScreen(e.GetPosition(this)),
+            new MenuAction("重命名分类", PencilIcon, () => RenameCategory(cat)),
+            MenuAction.Separator,
+            new MenuAction("删除分类", TrashIcon, () => DeleteCategory(cat), IsDestructive: true));
     }
 
-    private void ShowCategoryMenu(CatInfo cat, MouseButtonEventArgs e)
+    /// <summary>
+    /// 重命名分类：目录跟着改名，分类下所有工具路径同步改写。
+    /// 目录改不动就整体中止，配置不会半改不改。
+    /// </summary>
+    private void RenameCategory(CatInfo cat)
     {
-        // 关闭已有菜单
-        _activeMenu?.Close();
-        _activeMenu = null;
-
-        // 计算位置
-        var screenPos = PointToScreen(e.GetPosition(this));
-
-        // 创建菜单窗口
-        var menu = new Window
+        var dialog = new InputDialog(
+            "重命名分类",
+            "分类名称",
+            cat.Name,
+            $"改完后 工具\\{cat.Name} 文件夹也会一起改名，该分类下的工具路径会自动更新。")
         {
-            WindowStyle = WindowStyle.None,
-            AllowsTransparency = false,
-            Background = new SolidColorBrush(Color.FromRgb(0x2b, 0x2b, 0x2b)),
-            Width = 224,
-            SizeToContent = SizeToContent.Height,
-            ShowInTaskbar = false,
-            Topmost = true,
-            Left = screenPos.X + 8,
-            Top = screenPos.Y - 10,
-            ResizeMode = ResizeMode.NoResize,
+            Owner = this
         };
 
-        // 加载后设置圆角区域
-        menu.Loaded += (_, _) =>
+        if (dialog.ShowDialog() != true) return;
+        if (dialog.Value == cat.Name) return;
+
+        if (!_config.RenameCategory(cat.Id, dialog.Value))
         {
-            var helper = new System.Windows.Interop.WindowInteropHelper(menu);
-            int width = (int)menu.ActualWidth;
-            int height = (int)menu.ActualHeight;
-            var hRgn = CreateRoundRectRgn(0, 0, width + 1, height + 1, 16, 16);
-            SetWindowRgn(helper.Handle, hRgn, true);
-            DeleteObject(hRgn);
-        };
-
-        // 主容器
-        var border = new Border
-        {
-            Background = new SolidColorBrush(Color.FromRgb(0x2b, 0x2b, 0x2b)),
-            CornerRadius = new CornerRadius(8),
-            BorderBrush = new SolidColorBrush(Color.FromArgb(0x33, 0xff, 0xff, 0xff)),
-            BorderThickness = new Thickness(1),
-            Margin = new Thickness(0),
-        };
-
-        var stack = new StackPanel { Margin = new Thickness(4) };
-
-        // 关闭菜单方法
-        void CloseMenuWithAnimation(Action? onClosed = null)
-        {
-            if (_isMenuClosing) return;
-            _isMenuClosing = true;
-
-            var fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(100));
-            fadeOut.Completed += (_, _) =>
-            {
-                menu.Close();
-                _activeMenu = null;
-                _isMenuClosing = false;
-                onClosed?.Invoke();
-            };
-            menu.BeginAnimation(Window.OpacityProperty, fadeOut);
+            CustomMessageBox.Show(
+                "重命名失败。常见原因：\n\n" +
+                "· 已存在同名分类\n" +
+                "· 目标文件夹已存在\n" +
+                "· 文件夹里的程序正在运行，导致目录无法改名",
+                "重命名失败");
+            return;
         }
 
-        // 删除分类菜单项
-        stack.Children.Add(CreateMenuItem(
-            "M 3 3 L 5 3 L 5 1 L 11 1 L 11 3 L 13 3 L 13 5 L 3 5 Z M 4 5 L 12 5 L 11 15 L 5 15 Z",
-            "删除分类", () =>
-        {
-            CloseMenuWithAnimation(() => DeleteCategory(cat));
-        }, isDestructive: true));
-
-        border.Child = stack;
-        menu.Content = border;
-        menu.Opacity = 0;
-
-        // 失去焦点时关闭
-        menu.Deactivated += (_, _) => CloseMenuWithAnimation();
-        menu.Closed += (_, _) =>
-        {
-            if (_activeMenu == menu) _activeMenu = null;
-        };
-
-        menu.Show();
-        _activeMenu = menu;
-
-        // 确保不超出屏幕
-        menu.UpdateLayout();
-        var workArea = SystemParameters.WorkArea;
-        if (menu.Left + menu.Width > workArea.Right)
-            menu.Left = screenPos.X - menu.Width - 8;
-        if (menu.Top + menu.Height > workArea.Bottom)
-            menu.Top = workArea.Bottom - menu.Height - 8;
-
-        // 淡入动画
-        var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(150))
-        {
-            EasingFunction = new PowerEase { EasingMode = EasingMode.EaseOut, Power = 2 }
-        };
-        menu.BeginAnimation(Window.OpacityProperty, fadeIn);
+        LoadFromConfig(cat.Id);
+        _ = InvalidateExistsCacheAsync();
+        ApplyFilter();
+        StatusTip = $"分类已重命名为「{dialog.Value}」";
     }
-
-    private static Border CreateMenuItem(string pathData, string text, Action onClick, bool isDestructive = false)
-    {
-        var bgBrush = new SolidColorBrush(Color.FromRgb(0x2d, 0x2d, 0x2d));
-        var item = new Border
-        {
-            CornerRadius = new CornerRadius(4),
-            Padding = new Thickness(10, 8, 10, 8),
-            Cursor = Cursors.Hand,
-            Background = bgBrush,
-        };
-
-        var grid = new Grid();
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(24) });
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-
-        var iconPath = new System.Windows.Shapes.Path
-        {
-            Data = Geometry.Parse(pathData),
-            Fill = new SolidColorBrush(isDestructive ? Color.FromRgb(0xff, 0x6b, 0x6b) : Color.FromRgb(0xaa, 0xaa, 0xaa)),
-            Width = 14,
-            Height = 14,
-            Stretch = Stretch.Uniform,
-            VerticalAlignment = VerticalAlignment.Center,
-            HorizontalAlignment = HorizontalAlignment.Center,
-        };
-        Grid.SetColumn(iconPath, 0);
-
-        var nameText = new TextBlock
-        {
-            Text = text,
-            FontFamily = new FontFamily("Microsoft YaHei"),
-            FontSize = 12,
-            Foreground = isDestructive ? new SolidColorBrush(Color.FromRgb(0xff, 0x6b, 0x6b)) : Brushes.White,
-            VerticalAlignment = VerticalAlignment.Center,
-            Margin = new Thickness(8, 0, 0, 0),
-        };
-        Grid.SetColumn(nameText, 1);
-
-        grid.Children.Add(iconPath);
-        grid.Children.Add(nameText);
-        item.Child = grid;
-
-        var hoverColor = Color.FromRgb(0x35, 0x35, 0x35);
-        var normalColor = Color.FromRgb(0x2d, 0x2d, 0x2d);
-
-        item.MouseEnter += (_, _) =>
-        {
-            var anim = new ColorAnimation(hoverColor, TimeSpan.FromMilliseconds(150));
-            bgBrush.BeginAnimation(SolidColorBrush.ColorProperty, anim);
-        };
-        item.MouseLeave += (_, _) =>
-        {
-            var anim = new ColorAnimation(normalColor, TimeSpan.FromMilliseconds(150));
-            bgBrush.BeginAnimation(SolidColorBrush.ColorProperty, anim);
-        };
-        item.PreviewMouseLeftButtonDown += (_, e) =>
-        {
-            e.Handled = true;
-            onClick();
-        };
-
-        return item;
-    }
-
-    [System.Runtime.InteropServices.DllImport("gdi32.dll")]
-    private static extern IntPtr CreateRoundRectRgn(int x1, int y1, int x2, int y2, int cx, int cy);
-
-    [System.Runtime.InteropServices.DllImport("user32.dll")]
-    private static extern int SetWindowRgn(IntPtr hWnd, IntPtr hRgn, bool bRedraw);
-
-    [System.Runtime.InteropServices.DllImport("gdi32.dll")]
-    private static extern bool DeleteObject(IntPtr hObject);
-
-
 
     private void DeleteCategory(CatInfo cat)
     {
@@ -497,11 +287,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         string message;
         if (hasTools)
         {
-            message = $"分类 \"{cat.Name}\" 包含工具文件。\n\n删除此分类将永久删除该分类下的所有工具文件，且无法撤销。\n\n确定要继续吗？";
+            message = $"分类 \"{cat.Name}\" 包含工具文件。\n\n" +
+                      "该分类的文件夹和工具条目会一起移入工具箱回收站，可在「设置 → 回收站」中恢复。\n\n确定要继续吗？";
         }
         else
         {
-            message = $"确定要删除空分类 \"{cat.Name}\" 吗？";
+            message = $"确定要删除空分类 \"{cat.Name}\" 吗？\n\n（会移入回收站，可恢复）";
         }
 
         var result = CustomMessageBox.Show(message, "确认删除", MessageBoxButton.YesNo);
@@ -513,36 +304,23 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
         try
         {
-            // 从配置中删除分类
-            Logger.Log("从配置中删除分类...");
-            var removeResult = _config.RemoveCategory(cat.Name);
-            Logger.Log($"配置删除结果: {removeResult}");
-
-            // 删除目录（如果存在）
-            if (Directory.Exists(categoryDir))
+            if (!_config.MoveCategoryToTrash(cat.Id))
             {
-                Logger.Log($"删除分类目录: {categoryDir}");
-                Directory.Delete(categoryDir, true);
-                Logger.Log("分类目录已删除");
-            }
-            else
-            {
-                Logger.Log("分类目录不存在，跳过删除");
+                Logger.Log("分类移入回收站失败");
+                CustomMessageBox.Show(
+                    $"无法删除分类「{cat.Name}」。\n\n有文件正在被占用，请关闭相关程序后重试。",
+                    "删除失败");
+                return;
             }
 
-            // 重新加载配置
-            Logger.Log("重新加载配置...");
             LoadFromConfig();
             Logger.Log($"重新加载完成, 工具总数: {AllTools.Length}");
 
-            // 如果删除的是当前选中的分类，切换到"全部工具"
             if (_activeCategory == cat.Id)
-            {
-                Logger.Log("删除的是当前选中分类，切换到全部工具");
                 CategoryList.SelectedIndex = 0;
-            }
 
             ApplyFilter();
+            StatusTip = $"已删除分类 {cat.Name}，已移入回收站";
             Logger.Log($"=== 删除分类完成: {cat.Name} ===");
         }
         catch (Exception ex)
@@ -637,145 +415,31 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     // ── 添加工具 ──────────────────────────────────
     private void OnAddTool(object sender, RoutedEventArgs e)
     {
-        Logger.Log("=== 开始添加工具 ===");
-
-        // 获取已有分类列表
         var existingCategories = _config.Categories.Select(c => c.Name).ToArray();
-        Logger.Log($"可用分类: {string.Join(", ", existingCategories)}");
+        var dialog = new AddToolDialog(ToolboxRoot, existingCategories) { Owner = this };
 
-        var dialog = new AddToolDialog(ToolboxRoot, existingCategories)
+        if (dialog.ShowDialog() != true) return;
+
+        var result = ToolImporter.Import(
+            _config,
+            ToolboxRoot,
+            dialog.SourcePath!,
+            dialog.CategoryName!,
+            dialog.ToolName!,
+            dialog.ToolDescription ?? "",
+            dialog.CategoryIcon);
+
+        if (!result.Success)
         {
-            Owner = this
-        };
-
-        if (dialog.ShowDialog() == true)
-        {
-            try
-            {
-                var sourcePath = dialog.SourcePath!;
-                var categoryName = dialog.CategoryName!;
-                var toolName = dialog.ToolName!;
-                var toolDesc = dialog.ToolDescription ?? "";
-                var isFolder = Directory.Exists(sourcePath);
-
-                Logger.Log($"用户选择: 名称={toolName}, 分类={categoryName}, 路径={sourcePath}, 是否文件夹={isFolder}");
-
-                // 计算目标路径
-                var destDir = Path.Combine(ToolboxRoot, "工具", categoryName);
-                string destPath;
-
-                if (isFolder)
-                {
-                    var folderName = Path.GetFileName(sourcePath);
-                    destPath = Path.Combine(destDir, folderName);
-                }
-                else
-                {
-                    var fileName = Path.GetFileName(sourcePath);
-                    destPath = Path.Combine(destDir, fileName);
-                }
-
-                Logger.Log($"目标路径: {destPath}");
-                Logger.Log($"目标目录: {destDir}");
-
-                // 先复制文件到工具目录（确保文件存在后再保存配置）
-                var toolboxToolsDir = Path.Combine(ToolboxRoot, "工具");
-                var isInToolsDir = sourcePath.StartsWith(toolboxToolsDir, StringComparison.OrdinalIgnoreCase);
-                Logger.Log($"源路径是否在工具目录内: {isInToolsDir}");
-
-                if (!isInToolsDir)
-                {
-                    // 确保目标目录存在
-                    if (!Directory.Exists(destDir))
-                    {
-                        Logger.Log($"创建目标目录: {destDir}");
-                        Directory.CreateDirectory(destDir);
-                    }
-
-                    if (isFolder)
-                    {
-                        Logger.Log($"开始复制文件夹: {sourcePath} -> {destPath}");
-                        CopyDirectory(sourcePath, destPath);
-                        Logger.Log($"文件夹复制完成");
-                    }
-                    else
-                    {
-                        Logger.Log($"开始复制文件: {sourcePath} -> {destPath}");
-                        File.Copy(sourcePath, destPath, true);
-                        Logger.Log($"文件复制完成");
-                    }
-
-                    // 验证文件是否存在
-                    var fileExists = File.Exists(destPath);
-                    var dirExists = Directory.Exists(destPath);
-                    Logger.Log($"目标文件/目录是否存在: 文件={fileExists}, 目录={dirExists}");
-                }
-                else
-                {
-                    Logger.Log("源路径在工具目录内，跳过复制");
-                }
-
-                // 计算相对路径
-                var relativePath = Path.GetRelativePath(ToolboxRoot, destPath);
-                Logger.Log($"相对路径: {relativePath}");
-
-                // 创建新工具配置
-                var newTool = new AppConfig.ToolConfig
-                {
-                    Name = toolName,
-                    Description = toolDesc,
-                    RelativePath = relativePath
-                };
-
-                Logger.Log($"添加到配置: 名称={newTool.Name}, 路径={newTool.RelativePath}");
-
-                // 添加到配置（文件复制完成后再保存）
-                var addResult = _config.AddTool(categoryName, newTool);
-                Logger.Log($"配置添加结果: {addResult}");
-
-                // 重新加载配置
-                Logger.Log("重新加载配置...");
-                LoadFromConfig();
-                Logger.Log($"重新加载完成, 工具总数: {AllTools.Length}");
-
-                // 刷新界面
-                ApplyFilter();
-                StatusTip = $"已添加工具: {toolName}";
-                Logger.Log($"=== 添加工具完成: {toolName} ===");
-            }
-            catch (Exception ex)
-            {
-                Logger.Log($"添加工具失败: {ex.Message}");
-                Logger.Log($"异常堆栈: {ex.StackTrace}");
-                CustomMessageBox.Show($"添加工具失败: {ex.Message}", "错误");
-            }
-        }
-        else
-        {
-            Logger.Log("用户取消添加工具");
-        }
-    }
-
-    /// <summary>
-    /// 递归复制目录
-    /// </summary>
-    private static void CopyDirectory(string sourceDir, string destDir)
-    {
-        Directory.CreateDirectory(destDir);
-
-        foreach (var file in Directory.GetFiles(sourceDir))
-        {
-            var fileName = Path.GetFileName(file);
-            var destFile = Path.Combine(destDir, fileName);
-            File.Copy(file, destFile, true);
+            StatusTip = result.Message;
+            CustomMessageBox.Show(result.Message, "提示");
+            return;
         }
 
-        foreach (var dir in Directory.GetDirectories(sourceDir))
-        {
-            var dirName = Path.GetFileName(dir);
-            var destSubDir = Path.Combine(destDir, dirName);
-            CopyDirectory(dir, destSubDir);
-        }
+        LoadFromConfig();
+        _ = InvalidateExistsCacheAsync();
+        ApplyFilter();
+        StatusTip = result.Message;
     }
 
     private void OnClose(object sender, RoutedEventArgs e)
@@ -931,6 +595,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _isSettingsOpen = true;
         SettingsOverlay.Visibility = Visibility.Visible;
 
+        // 绑定同一份配置实例，并刷新回收站数量
+        SettingsPanelCtrl.Bind(_config);
+
         // 初始状态：从右侧偏移，透明
         var tt = new TranslateTransform(300, 0);
         SettingsPanelCtrl.RenderTransform = tt;
@@ -1022,6 +689,13 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         HideSettingsPanel();
     }
 
+    /// <summary>设置面板里恢复了工具 / 清空了回收站，刷新主界面</summary>
+    private void OnSettingsToolsChanged(object? sender, EventArgs e)
+    {
+        LoadFromConfig();
+        ApplyFilter();
+    }
+
     // ── 启动时检查更新 ────────────────────────────
     private string? _releaseUrl;
 
@@ -1045,7 +719,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             if (result.HasUpdate)
             {
                 _releaseUrl = result.ReleaseUrl;
-                ShowUpdateToast();
+                ShowUpdateToast(result.LatestVersion);
             }
         }
         catch
@@ -1054,8 +728,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         }
     }
 
-    private void ShowUpdateToast()
+    private void ShowUpdateToast(string latestVersion)
     {
+        TxtToastMessage.Text = $"发现 v{latestVersion}，点击查看更新";
         UpdateToastPanel.Visibility = Visibility.Visible;
         UpdateToastPanel.Opacity = 0;
 
@@ -1082,170 +757,409 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         UpdateToastPanel.Visibility = Visibility.Collapsed;
     }
 
-    // ── 搜索 ──────────────────────────────────────
+    // ── 搜索（带防抖，避免每个按键都重排一遍列表） ──
+    private System.Windows.Threading.DispatcherTimer? _searchDebounce;
+
     private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
     {
+        SearchPlaceholder.Visibility = string.IsNullOrEmpty(SearchBox.Text)
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+
+        if (_searchDebounce == null)
+        {
+            _searchDebounce = new System.Windows.Threading.DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(120)
+            };
+            _searchDebounce.Tick += (_, _) =>
+            {
+                _searchDebounce!.Stop();
+                ApplyFilter();
+            };
+        }
+
+        _searchDebounce.Stop();
+        _searchDebounce.Start();
+    }
+
+    // ── 文件存在性快照：避免每次过滤都做 N 次同步 IO ──
+    private volatile Dictionary<string, bool>? _existsSnapshot;
+
+    private bool ToolExists(ToolInfo tool)
+    {
+        var snapshot = _existsSnapshot;
+        if (snapshot != null && snapshot.TryGetValue(tool.RelativePath, out var cached))
+            return cached;
+
+        // 快照还没建好时退回实时查询
+        var path = Path.Combine(ToolboxRoot, tool.RelativePath);
+        return File.Exists(path) || Directory.Exists(path);
+    }
+
+    /// <summary>工具增删后重建存在性快照（后台线程算，主线程只换引用）</summary>
+    private async Task InvalidateExistsCacheAsync()
+    {
+        var tools = AllTools;
+        var root = ToolboxRoot;
+
+        var snapshot = await Task.Run(() =>
+        {
+            var map = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
+            foreach (var tool in tools)
+            {
+                var path = Path.Combine(root, tool.RelativePath);
+                map[tool.RelativePath] = File.Exists(path) || Directory.Exists(path);
+            }
+            return map;
+        });
+
+        _existsSnapshot = snapshot;
+        ApplyFilter();   // 快照换新后刷一次，保证界面与磁盘实际状态一致
+    }
+
+    /// <summary>
+    /// 启动时后台刷新图标；有更新就丢掉内存缓存并重刷列表，避免显示旧图标
+    /// </summary>
+    private async Task RefreshIconsAsync()
+    {
+        var refreshed = await Task.Run(() => _config.CacheAllIcons());
+        if (refreshed <= 0) return;
+
+        IconHelper.ClearCache();
         ApplyFilter();
+        Logger.Log($"图标刷新完成: {refreshed} 个，界面已重载");
     }
 
     private void ApplyFilter()
     {
-        Logger.Log($"ApplyFilter: 开始, _activeCategory={_activeCategory}, AllTools.Length={AllTools.Length}");
         var query = SearchBox.Text.Trim();
-        var filtered = AllTools.AsEnumerable();
-
-        // 过滤掉文件不存在的工具
-        filtered = filtered.Where(t =>
-        {
-            var path = System.IO.Path.Combine(ToolboxRoot, t.RelativePath);
-            return System.IO.File.Exists(path) || System.IO.Directory.Exists(path);
-        });
+        var filtered = AllTools.Where(ToolExists);
 
         if (_activeCategory != "all")
-            filtered = filtered.Where(t => t.Category == _activeCategory);
+            filtered = filtered.Where(t => t.CategoryId == _activeCategory);
 
         if (!string.IsNullOrEmpty(query))
         {
-            var q = query.ToLower();
             filtered = filtered.Where(t =>
-                t.Name.ToLower().Contains(q) ||
-                t.Description.ToLower().Contains(q) ||
-                t.Category.ToLower().Contains(q));
+                t.Name.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                t.Description.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                t.Category.Contains(query, StringComparison.OrdinalIgnoreCase));
         }
 
-        // 按照导航栏分类顺序排序
-        var categoryOrder = Categories.Select(c => c.Name).ToList();
-        var list = filtered.OrderBy(t =>
-        {
-            var index = categoryOrder.IndexOf(t.Category);
-            return index == -1 ? 999 : index;
-        }).ThenBy(t => t.Name).ToList();
+        // 按导航栏顺序排序（先建索引字典，避免 OrderBy 里做 O(n*m) 查找）
+        var categoryOrder = new Dictionary<string, int>(StringComparer.Ordinal);
+        for (var i = 0; i < Categories.Length; i++)
+            categoryOrder[Categories[i].Id] = i;
+
+        var list = filtered
+            .OrderBy(t => categoryOrder.TryGetValue(t.CategoryId, out var index) ? index : 999)
+            .ThenBy(t => t.Order)                                   // 手动拖拽调整过的顺序优先
+            .ThenBy(t => t.Name, StringComparer.CurrentCulture)
+            .ToList();
 
         CardItems.ItemsSource = list;
-        StatusText = $"共 {list.Count} 款工具  ·  v{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString(3) ?? "1.1.0"}";
-        Logger.Log($"ApplyFilter: 完成, 显示 {list.Count} 个工具");
+        StatusText = $"共 {list.Count} 款工具  ·  v{VersionInfo.Current}";
     }
 
     // ── 工具选中（单击） ─────────────────────────
-    public ICommand SelectCommand => new RelayCommand(tool =>
+    private void OnSelectTool(object? parameter)
     {
-        if (tool is ToolInfo t)
-        {
-            _selectedTool = t;
-            SelectedToolName = t.Name;
-            SelectedToolDescription = string.IsNullOrEmpty(t.Detail) ? t.Description : t.Detail;
-            SelectedToolCategory = t.Category;
-            SelectedToolIcon = IconHelper.GetIcon(t.RelativePath);
-            DescDetailVisible = "Visible";
-            DescPlaceholderVisible = "Collapsed";
-        }
-    });
+        if (parameter is not ToolInfo tool) return;
+
+        _selectedTool = tool;
+        SelectedToolName = tool.Name;
+        SelectedToolDescription = string.IsNullOrEmpty(tool.Detail) ? tool.Description : tool.Detail;
+        SelectedToolCategory = tool.Category;
+        SelectedToolIcon = IconHelper.GetIcon(tool.RelativePath);
+        DescDetailVisible = "Visible";
+        DescPlaceholderVisible = "Collapsed";
+    }
 
     // ── 工具启动（双击） ──────────────────────────
-    public ICommand LaunchCommand => new RelayCommand(tool =>
+    private void OnLaunchTool(object? parameter)
     {
-        if (tool is ToolInfo t)
+        if (parameter is not ToolInfo tool) return;
+
+        var error = ToolLauncher.Launch(ToolboxRoot, tool);
+        if (error != null)
         {
-            var path = System.IO.Path.Combine(ToolboxRoot, t.RelativePath);
-            if (!System.IO.Path.Exists(path))
-            {
-                CustomMessageBox.Show($"文件不存在:\n{path}", "提示");
-                return;
-            }
-            try
-            {
-                var ext = System.IO.Path.GetExtension(path).ToLower();
-                var workDir = System.IO.Path.GetDirectoryName(path)!;
-
-                var psi = new ProcessStartInfo
-                {
-                    UseShellExecute = true,
-                    WorkingDirectory = workDir,
-                };
-
-                if (ext is ".exe" or ".msi")
-                {
-                    psi.FileName = path;
-                    Process.Start(psi);
-                }
-                else if (ext is ".bat" or ".cmd")
-                {
-                    psi.FileName = "cmd.exe";
-                    psi.Arguments = $"/c \"{path}\"";
-                    Process.Start(psi);
-                }
-                else if (System.IO.Directory.Exists(path))
-                {
-                    Process.Start("explorer.exe", $"\"{path}\"");
-                }
-                else
-                {
-                    psi.FileName = path;
-                    Process.Start(psi);
-                }
-                StatusTip = $"已启动 {t.Name}";
-            }
-            catch (Exception ex)
-            {
-                CustomMessageBox.Show($"启动失败:\n{ex.Message}", "提示");
-            }
+            CustomMessageBox.Show(error, "提示");
+            return;
         }
-    });
 
-    // ── 删除工具 ──────────────────────────────────
-    public ICommand DeleteCommand => new RelayCommand(tool =>
+        StatusTip = $"已启动 {tool.Name}";
+    }
+
+    // ── 编辑工具（改名 / 改描述） ─────────────────
+    private void OnEditTool(object? parameter)
     {
-        if (tool is not ToolInfo t) return;
+        if (parameter is not ToolInfo tool) return;
 
-        Logger.Log($"=== 开始删除工具: {t.Name} ===");
-        var path = Path.Combine(ToolboxRoot, t.RelativePath);
-        Logger.Log($"工具路径: {path}");
+        var dialog = new EditToolDialog(tool) { Owner = this };
+        if (dialog.ShowDialog() != true) return;
+
+        if (!_config.UpdateTool(tool.Id, dialog.ToolName, dialog.ToolDescription))
+        {
+            CustomMessageBox.Show("保存失败：配置里找不到这个工具，或配置文件不可写。", "提示");
+            return;
+        }
+
+        LoadFromConfig();
+        ApplyFilter();
+        StatusTip = $"已更新「{dialog.ToolName}」";
+    }
+
+    // ── 拖拽排序 ──────────────────────────────────
+    /// <summary>只在"单个分类 + 未搜索"时允许拖拽，混合视图里拖动的语义不明确</summary>
+    private bool CanReorder => _activeCategory != "all" && string.IsNullOrWhiteSpace(SearchBox.Text);
+
+    private void OnCardDragOver(object sender, DragEventArgs e)
+    {
+        e.Effects = CanReorder && e.Data.GetDataPresent(typeof(ToolInfo))
+            ? DragDropEffects.Move
+            : DragDropEffects.None;
+        e.Handled = true;
+    }
+
+    private void OnCardDrop(object sender, DragEventArgs e)
+    {
+        if (!CanReorder) return;
+        if (e.Data.GetData(typeof(ToolInfo)) is not ToolInfo dragged) return;
+
+        var point = e.GetPosition(CardItems);
+        var targetCard = HitTestCard(point);
+        if (targetCard?.DataContext is not ToolInfo target) return;
+        if (target.RelativePath.Equals(dragged.RelativePath, StringComparison.OrdinalIgnoreCase)) return;
+
+        // 落在卡片上半部 → 插到它前面；下半部 → 插到它后面
+        var cardTop = targetCard.TranslatePoint(new Point(0, 0), CardItems).Y;
+        var insertAfter = point.Y > cardTop + targetCard.ActualHeight / 2;
+
+        if (!_config.ReorderTool(_activeCategory, dragged.Id, target.Id, insertAfter))
+            return;
+
+        LoadFromConfig();
+        ApplyFilter();
+        StatusTip = $"已把「{dragged.Name}」移到新位置";
+    }
+
+    /// <summary>找出鼠标位置下的卡片</summary>
+    private ToolCard? HitTestCard(Point point)
+    {
+        ToolCard? found = null;
+
+        VisualTreeHelper.HitTest(CardItems, null, result =>
+        {
+            DependencyObject? node = result.VisualHit;
+            while (node != null && node is not ToolCard)
+            {
+                node = node is Visual
+                    ? VisualTreeHelper.GetParent(node)
+                    : LogicalTreeHelper.GetParent(node);
+            }
+
+            if (node is ToolCard card)
+            {
+                found = card;
+                return HitTestResultBehavior.Stop;
+            }
+
+            return HitTestResultBehavior.Continue;
+        }, new PointHitTestParameters(point));
+
+        return found;
+    }
+
+    // ── 扫描未收录的工具 ──────────────────────────
+    /// <summary>
+    /// 启动维护：先找回被移动的工具，再发现未收录的条目。
+    /// 顺序不能反——路径没修的话，被搬走的工具会被当成"新工具"再收一遍，于是同一个程序出现两条记录。
+    /// </summary>
+    private async Task StartupMaintenanceAsync()
+    {
+        await RepairMissingPathsAsync();
+        await ScanUnregisteredAsync();
+    }
+
+    /// <summary>
+    /// 路径失效时在 工具\ 下按「文件名 + 体积」把工具找回来。
+    /// 只有唯一命中才改配置；候选不唯一一律跳过并记日志。
+    /// </summary>
+    private async Task RepairMissingPathsAsync()
+    {
+        RelinkResult result;
 
         try
         {
-            // 从配置中删除
-            Logger.Log("从配置中删除...");
-            var removeResult = _config.RemoveTool(t.RelativePath);
-            Logger.Log($"配置删除结果: {removeResult}");
-
-            // 删除文件/文件夹
-            if (File.Exists(path))
-            {
-                // 单文件：只删除文件本身
-                Logger.Log($"删除单文件: {path}");
-                File.Delete(path);
-                Logger.Log($"文件已删除: {path}");
-            }
-            else if (Directory.Exists(path))
-            {
-                // 文件夹：删除整个文件夹
-                Logger.Log($"删除文件夹: {path}");
-                Directory.Delete(path, true);
-                Logger.Log($"文件夹已删除: {path}");
-            }
-            else
-            {
-                Logger.Log($"路径不存在: {path}");
-            }
-
-            // 重新加载配置
-            Logger.Log("重新加载配置...");
-            LoadFromConfig();
-            Logger.Log($"重新加载完成, 工具总数: {AllTools.Length}");
-
-            // 刷新工具列表
-            ApplyFilter();
-
-            StatusTip = $"已删除 {t.Name}";
-            Logger.Log($"=== 删除工具完成: {t.Name} ===");
-            Logger.Log($"删除工具: {t.Name}, 路径: {path}");
+            result = await Task.Run(() => ToolRelinker.FindRelinks(_config, ToolboxRoot));
         }
         catch (Exception ex)
         {
-            CustomMessageBox.Show($"删除失败: {ex.Message}", "错误");
-            Logger.Log($"删除工具失败: {ex.Message}");
+            Logger.Log($"重新定位失败: {ex.Message}");
+            return;
         }
-    });
+
+        if (result.Ambiguous.Count > 0)
+        {
+            Logger.Log($"重新定位跳过 {result.Ambiguous.Count} 个候选不唯一的工具: " +
+                       string.Join("；", result.Ambiguous));
+        }
+
+        if (result.Hits.Count == 0)
+        {
+            Logger.Log("重新定位: 没有失效路径");
+            return;
+        }
+
+        var fixedCount = 0;
+        var failed = 0;
+        foreach (var hit in result.Hits)
+        {
+            if (_config.RelinkTool(hit.ToolId, hit.NewRelativePath)) fixedCount++;
+            else failed++;
+        }
+
+        var byNameOnly = result.Hits.Count(h => !h.MatchedBySize);
+        Logger.Log($"重新定位: 命中 {result.Hits.Count}，成功 {fixedCount}，失败 {failed}" +
+                   (byNameOnly > 0 ? $"，其中按名字匹配（体积未知）{byNameOnly} 个" : ""));
+
+        if (fixedCount == 0) return;
+
+        LoadFromConfig(_activeCategory);
+        _ = InvalidateExistsCacheAsync();
+        ApplyFilter();
+
+        StatusTip = $"已找回 {fixedCount} 个被移动过位置的工具";
+    }
+
+    /// <summary>
+    /// 启动时扫一遍 工具\，发现配置里没有的条目就问一句要不要收录。只提示，不自动改配置。
+    /// </summary>
+    private async Task ScanUnregisteredAsync()
+    {
+        List<ScanCandidate> found;
+
+        try
+        {
+            found = await Task.Run(() => ToolScanner.ScanUnregistered(_config, ToolboxRoot));
+            Logger.Log($"扫描未收录条目: {found.Count} 个");
+        }
+        catch (Exception ex)
+        {
+            Logger.Log($"扫描未收录条目失败: {ex.Message}");
+            return;
+        }
+
+        if (found.Count == 0) return;
+
+        var preview = string.Join("\n", found.Take(8).Select(f => $"· {f.CategoryName} / {f.ToolName}"));
+        if (found.Count > 8) preview += $"\n· 另有 {found.Count - 8} 个……";
+
+        var answer = CustomMessageBox.Show(
+            $"在 工具\\ 目录里发现 {found.Count} 个未收录的条目：\n\n{preview}\n\n" +
+            "要按目录名把它们加进工具箱吗？描述会写成「自动收录」，之后可右键编辑。",
+            "发现未收录的工具",
+            MessageBoxButton.YesNo);
+
+        if (answer != MessageBoxResult.Yes) return;
+
+        var added = 0;
+        foreach (var candidate in found)
+        {
+            var ok = _config.AddTool(candidate.CategoryName, new AppConfig.ToolConfig
+            {
+                Name = candidate.ToolName,
+                Description = "自动收录，可右键编辑名称与描述。",
+                RelativePath = candidate.RelativePath
+            });
+
+            if (!ok) continue;
+
+            added++;
+            AppConfig.CacheIcon(candidate.RelativePath);
+        }
+
+        if (added == 0) return;
+
+        LoadFromConfig();
+        _ = InvalidateExistsCacheAsync();
+        ApplyFilter();
+        StatusTip = $"已收录 {added} 个工具";
+    }
+
+    // ── 删除工具（移入回收站，可恢复） ─────────────
+    private void OnDeleteTool(object? parameter)
+    {
+        if (parameter is not ToolInfo t) return;
+
+        Logger.Log($"=== 开始删除工具: {t.Name} ===");
+
+        try
+        {
+            // 先搬文件、再改配置；任一环节失败整体回滚，配置保持原样
+            if (!_config.MoveToolToTrash(t.Id))
+            {
+                CustomMessageBox.Show(
+                    $"无法删除「{t.Name}」。\n\n文件可能正在运行，请先关闭该工具后重试。",
+                    "删除失败");
+                return;
+            }
+
+            LoadFromConfig();
+            _ = InvalidateExistsCacheAsync();
+            ApplyFilter();
+
+            _lastDeletedId = _config.Trash.FirstOrDefault()?.Id;
+            ShowUndoBar(t.Name);
+
+            Logger.Log($"=== 删除工具完成: {t.Name} ===");
+        }
+        catch (Exception ex)
+        {
+            Logger.Log($"删除工具失败: {ex.Message}");
+            CustomMessageBox.Show($"删除失败: {ex.Message}", "错误");
+        }
+    }
+
+    private string? _lastDeletedId;
+    private System.Windows.Threading.DispatcherTimer? _undoTimer;
+
+    /// <summary>
+    /// 删除后给出 15 秒撤销窗口，不依赖用户自己去找回收站
+    /// </summary>
+    private void ShowUndoBar(string name)
+    {
+        _undoTimer?.Stop();
+        StatusTip = $"已删除 {name}，文件已移入回收站";
+        BtnUndoDelete.Visibility = Visibility.Visible;
+
+        _undoTimer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(15) };
+        _undoTimer.Tick += (_, _) =>
+        {
+            _undoTimer?.Stop();
+            BtnUndoDelete.Visibility = Visibility.Collapsed;
+        };
+        _undoTimer.Start();
+    }
+
+    private void OnUndoDelete(object sender, RoutedEventArgs e)
+    {
+        _undoTimer?.Stop();
+        BtnUndoDelete.Visibility = Visibility.Collapsed;
+
+        if (_lastDeletedId == null || !_config.RestoreFromTrash(_lastDeletedId))
+        {
+            CustomMessageBox.Show("恢复失败，可稍后在「设置 → 回收站」中重试。", "提示");
+            return;
+        }
+
+        _lastDeletedId = null;
+        LoadFromConfig();
+        _ = InvalidateExistsCacheAsync();
+        ApplyFilter();
+        StatusTip = "已撤销删除";
+    }
 
     // ── INotifyPropertyChanged ────────────────────
     public event PropertyChangedEventHandler? PropertyChanged;

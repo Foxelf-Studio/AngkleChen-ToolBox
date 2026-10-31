@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <!-- 输出名与仓库名、Release 附件名保持一致：AngkleChenToolBox.exe -->
+    <AssemblyName>AngkleChenToolBox</AssemblyName>
+    <!-- 命名空间保留中文，属于内部标识，不影响分发 -->
+    <RootNamespace>陈叔叔工具箱</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <ApplicationIcon>Assets\logo.ico</ApplicationIcon>
+    <Version>2.2.0</Version>
+    <AssemblyVersion>2.2.0</AssemblyVersion>
+    <FileVersion>2.2.0</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- 运行期图标：多尺寸 ico + 两张缩略图（原 1 MB PNG 不再打进程序） -->
+    <Resource Include="Assets\logo.ico" />
+    <Resource Include="Assets\logo-96.png" />
+    <Resource Include="Assets\logo-48.png" />
+    <!-- config.json 是工具清单的唯一来源；嵌入一份作为缺失/损坏时的重建模板 -->
+    <EmbeddedResource Include="config.json" LogicalName="config.json" />
+  </ItemGroup>
+
+</Project>

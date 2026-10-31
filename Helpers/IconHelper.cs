@@ -15,6 +15,12 @@ public static class IconHelper
 
     public static void Init(string root) => _toolboxRoot = root;
 
+    /// <summary>
+    /// 清空内存中的图标缓存。磁盘上的缓存图被重新提取后调用，
+    /// 否则界面会一直显示旧图标直到重启。
+    /// </summary>
+    public static void ClearCache() => _cache.Clear();
+
     public static ImageSource GetIcon(string relativePath)
     {
         var fullPath = Path.Combine(_toolboxRoot, relativePath);

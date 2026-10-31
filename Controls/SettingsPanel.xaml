@@ -61,7 +61,7 @@
                         Padding="16,12">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="/logo.png"
+                            <Image Source="/Assets/logo-96.png"
                                    Width="48" Height="48"
                                    Margin="0,0,12,0"
                                    RenderOptions.BitmapScalingMode="HighQuality" />
@@ -233,6 +233,70 @@
                                        Margin="26,6,0,0" />
                         </StackPanel>
                     </StackPanel>
+                </Border>
+
+                <!-- 回收站分组 -->
+                <TextBlock Text="回收站"
+                           FontFamily="Microsoft YaHei"
+                           FontWeight="SemiBold"
+                           FontSize="13"
+                           Foreground="#777777"
+                           Margin="0,16,0,8" />
+                <Border Background="#252525"
+                        CornerRadius="8"
+                        BorderBrush="#1effffff"
+                        BorderThickness="1"
+                        Padding="16,12">
+                    <Grid>
+                        <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="&#xE74D;"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       FontSize="16"
+                                       Foreground="#aaaaaa"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,10,0" />
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="已删除的工具"
+                                           FontFamily="Microsoft YaHei"
+                                           FontSize="14"
+                                           Foreground="#ffffff" />
+                                <TextBlock x:Name="TxtTrashStatus"
+                                           Text="回收站为空"
+                                           FontFamily="Microsoft YaHei"
+                                           FontSize="11"
+                                           Foreground="#777777"
+                                           Margin="0,2,0,0"
+                                           TextTrimming="CharacterEllipsis"
+                                           MaxWidth="200" />
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center">
+                            <Button x:Name="BtnRestoreLast"
+                                    Content="恢复"
+                                    FontFamily="Microsoft YaHei"
+                                    FontSize="11"
+                                    Foreground="#ffffff"
+                                    Background="#4aa8d8"
+                                    BorderThickness="0"
+                                    Padding="12,4"
+                                    Cursor="Hand"
+                                    IsEnabled="False"
+                                    Click="OnRestoreLastClick"
+                                    Style="{StaticResource AccentButton}" />
+                            <Button x:Name="BtnEmptyTrash"
+                                    Content="清空"
+                                    FontFamily="Microsoft YaHei"
+                                    FontSize="11"
+                                    Foreground="#ff8787"
+                                    Margin="4,0,0,0"
+                                    IsEnabled="False"
+                                    Click="OnEmptyTrashClick"
+                                    Style="{StaticResource InlineLinkButton}" />
+                        </StackPanel>
+                    </Grid>
                 </Border>
 
                 <!-- 链接分组 -->

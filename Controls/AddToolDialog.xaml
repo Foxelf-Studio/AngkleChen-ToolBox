@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="添加工具"
-        Width="500" Height="520"
+        Width="500" Height="640"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
         Background="#1f1f1f"
@@ -59,6 +59,35 @@
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="Bd" Property="Background" Value="#3a3a3a" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 分类图标选择按钮 -->
+        <Style x:Key="IconChoice" TargetType="RadioButton">
+            <Setter Property="Margin" Value="0,0,6,0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Foreground" Value="#aaaaaa" />
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="Bd" Width="34" Height="34" CornerRadius="6"
+                                Background="#1f1f1f" BorderBrush="#1effffff" BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#3effffff" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#60cdff" />
+                                <Setter TargetName="Bd" Property="Background" Value="#3360cdff" />
+                                <Setter Property="Foreground" Value="#ffffff" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -329,12 +358,31 @@
                                 BorderBrush="#3effffff" BorderThickness="1"
                                 Padding="8,6"
                                 Visibility="Collapsed">
-                            <TextBox x:Name="TxtNewCategory"
-                                     FontFamily="Microsoft YaHei"
-                                     FontSize="13"
-                                     Foreground="#ffffff"
-                                     Background="Transparent"
-                                     BorderThickness="0" />
+                            <StackPanel>
+                                <TextBox x:Name="TxtNewCategory"
+                                         FontFamily="Microsoft YaHei"
+                                         FontSize="13"
+                                         Foreground="#ffffff"
+                                         Background="Transparent"
+                                         BorderThickness="0" />
+                                <TextBlock Text="分类图标"
+                                           FontFamily="Microsoft YaHei"
+                                           FontSize="11"
+                                           Foreground="#777777"
+                                           Margin="0,8,0,6" />
+                                <WrapPanel x:Name="IconPicker">
+                                    <RadioButton Style="{StaticResource IconChoice}" Content="&#xE8B7;" ToolTip="文件夹" IsChecked="True" Checked="OnCategoryIconChecked" />
+                                    <RadioButton Style="{StaticResource IconChoice}" Content="&#xE713;" ToolTip="设置" Checked="OnCategoryIconChecked" />
+                                    <RadioButton Style="{StaticResource IconChoice}" Content="&#xE90F;" ToolTip="工具" Checked="OnCategoryIconChecked" />
+                                    <RadioButton Style="{StaticResource IconChoice}" Content="&#xE7FC;" ToolTip="游戏" Checked="OnCategoryIconChecked" />
+                                    <RadioButton Style="{StaticResource IconChoice}" Content="&#xE8D6;" ToolTip="音乐" Checked="OnCategoryIconChecked" />
+                                    <RadioButton Style="{StaticResource IconChoice}" Content="&#xE9F5;" ToolTip="电脑" Checked="OnCategoryIconChecked" />
+                                    <RadioButton Style="{StaticResource IconChoice}" Content="&#xEDA2;" ToolTip="硬盘" Checked="OnCategoryIconChecked" />
+                                    <RadioButton Style="{StaticResource IconChoice}" Content="&#xE8F4;" ToolTip="内存" Checked="OnCategoryIconChecked" />
+                                    <RadioButton Style="{StaticResource IconChoice}" Content="&#xE765;" ToolTip="外设" Checked="OnCategoryIconChecked" />
+                                    <RadioButton Style="{StaticResource IconChoice}" Content="&#xEB9F;" ToolTip="显示" Checked="OnCategoryIconChecked" />
+                                </WrapPanel>
+                            </StackPanel>
                         </Border>
                     </StackPanel>
                 </Border>
