@@ -74,12 +74,14 @@
                             Padding / VerticalContentAlignment / TextControlThemePadding 都改不动，
                             所以高度交给外层容器，TextBox 只负责输入。
                         -->
-                        <Border Grid.Row="1"
+                        <Border x:Name="SearchBorder"
+                                Grid.Row="1"
                                 Height="40"
                                 CornerRadius="8"
                                 Background="{ThemeResource CardBackgroundBrush}"
                                 BorderBrush="{ThemeResource CardBorderBrush}"
                                 BorderThickness="1">
+                            <Grid>
                             <Grid ColumnSpacing="8" Padding="12,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
@@ -112,12 +114,29 @@
                                          PlaceholderText="搜索工具名称、描述或分类…"
                                          FontFamily="Microsoft YaHei"
                                          FontSize="14"
-                                         TextChanged="OnSearchChanged">
+                                         TextChanged="OnSearchChanged"
+                                         GotFocus="OnSearchGotFocus"
+                                         LostFocus="OnSearchLostFocus">
                                     <TextBox.Resources>
                                         <SolidColorBrush x:Key="TextControlElevationBorderFocusedBrush" Color="Transparent" />
                                         <SolidColorBrush x:Key="TextControlElevationBorderBrush" Color="Transparent" />
+                                        <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="Transparent" />
+                                        <Thickness x:Key="TextControlBorderThemeThicknessFocused">0</Thickness>
                                     </TextBox.Resources>
                                 </TextBox>
+                            </Grid>
+
+                            <!--
+                                聚焦框画在外层：TextBox 自己那圈只有 18px 高，
+                                和外层 40px 的搜索框差一半，看起来像没对齐。
+                            -->
+                            <Border x:Name="SearchFocusRing"
+                                    CornerRadius="7"
+                                    Margin="1"
+                                    BorderThickness="1"
+                                    BorderBrush="{ThemeResource AccentColorBrush}"
+                                    IsHitTestVisible="False"
+                                    Visibility="Collapsed" />
                             </Grid>
                         </Border>
 

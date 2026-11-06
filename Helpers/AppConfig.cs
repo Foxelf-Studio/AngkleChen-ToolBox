@@ -1000,7 +1000,13 @@ public class AppConfig
         var tools = new List<ToolInfo>();
         foreach (var category in Categories)
         {
-            foreach (var tool in category.Tools)
+            // 必须按 Order 排：拖拽排序写的就是这个字段，
+            // 直接按数组顺序返回的话，重排结果永远显示不出来（一刷新就回原样）
+            var ordered = category.Tools
+                .OrderBy(t => t.Order)
+                .ThenBy(t => t.Name, StringComparer.CurrentCulture);
+
+            foreach (var tool in ordered)
             {
                 tools.Add(new ToolInfo(
                     Name: tool.Name,

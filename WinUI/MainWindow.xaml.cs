@@ -396,6 +396,13 @@ public sealed partial class MainWindow : Window
 
     private void OnSearchChanged(object sender, TextChangedEventArgs e) => RefreshList();
 
+    // 聚焦框画在外层 40px 的 Border 上，替掉 TextBox 自己那圈 18px 的
+    private void OnSearchGotFocus(object sender, RoutedEventArgs e) =>
+        SearchFocusRing.Visibility = Visibility.Visible;
+
+    private void OnSearchLostFocus(object sender, RoutedEventArgs e) =>
+        SearchFocusRing.Visibility = Visibility.Collapsed;
+
     private void OnToolClick(object sender, ItemClickEventArgs e)
     {
         if (e.ClickedItem is ToolCardVm vm)
@@ -638,31 +645,27 @@ public sealed partial class MainWindow : Window
     /// </summary>
     private void OnDragItemsCompleted(ListViewBase sender, DragItemsCompletedEventArgs args)
     {
-        var canReorder = _activeCategoryId != "all"
-                         && string.IsNullOrWhiteSpace(SearchBox?.Text);
-
-        if (!canReorder)
-        {
-            // 混合视图下 GridView 已经把顺序改了，重刷一次回到配置里的顺序
-            if (!string.IsNullOrWhiteSpace(SearchBox?.Text) || _activeCategoryId == "all")
-                RefreshList();
-            return;
-        }
-
         if (args.Items.Count == 0 || args.Items[0] is not ToolCardVm dragged) return;
 
-        var index = Tools.IndexOf(dragged);
+        // 只在被拖工具自己所属分类内定位置：
+        // 列表按分类分组，跨分类前后挪动没有确定含义
+        var sameCategory = Tools.Where(t => t.CategoryId == dragged.CategoryId).ToList();
+        var index = sameCategory.IndexOf(dragged);
         if (index < 0) return;
 
-        // 用相邻项作为锚点：往前挪就插到前一个之后，往后挪插到后一个之前
         var anchorIndex = index > 0 ? index - 1 : 1;
-        if (anchorIndex < 0 || anchorIndex >= Tools.Count) return;
+        if (anchorIndex < 0 || anchorIndex >= sameCategory.Count) return;
 
-        var anchor = Tools[anchorIndex];
+        var anchor = sameCategory[anchorIndex];
         var insertAfter = index > 0;
 
-        if (_config.ReorderTool(_activeCategoryId, dragged.Id, anchor.Id, insertAfter))
-            StatusTip.Text = $"已调整「{dragged.Name}」的位置";
+        if (_config.ReorderTool(dragged.CategoryId, dragged.Id, anchor.Id, insertAfter))
+        {
+            StatusTip.Text = $"已调整「{dragged.Name}」在「{dragged.Category}」内的位置";
+
+            // 按配置重新排一遍：全部工具视图里卡片会回到自己那一组
+            RefreshList();
+        }
     }
 
 }
@@ -678,6 +681,7 @@ public sealed class ToolCardVm : INotifyPropertyChanged
         Id = tool.Id;
         Name = tool.Name;
         Category = tool.Category;
+        CategoryId = tool.CategoryId;
         Description = tool.Description;
         RelativePath = tool.RelativePath;
     }
@@ -685,6 +689,7 @@ public sealed class ToolCardVm : INotifyPropertyChanged
     public string Id { get; }
     public string Name { get; }
     public string Category { get; }
+    public string CategoryId { get; }
     public string Description { get; }
     public string RelativePath { get; }
 
