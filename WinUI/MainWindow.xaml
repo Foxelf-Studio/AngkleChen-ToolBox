@@ -122,6 +122,10 @@
                                         <SolidColorBrush x:Key="TextControlElevationBorderBrush" Color="Transparent" />
                                         <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="Transparent" />
                                         <Thickness x:Key="TextControlBorderThemeThicknessFocused">0</Thickness>
+                                        <!-- 悬停态也会画一圈内框，同样要压掉 -->
+                                        <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent" />
+                                        <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="Transparent" />
+                                        <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent" />
                                     </TextBox.Resources>
                                 </TextBox>
                             </Grid>
@@ -176,10 +180,12 @@
                                   Grid.Row="3"
                                   SelectionMode="None"
                                   IsItemClickEnabled="True"
+                                  UseSystemFocusVisuals="False"
                                   ItemClick="OnToolClick"
                                   CanDragItems="True"
                                   CanReorderItems="True"
                                   AllowDrop="True"
+                                  DragItemsStarting="OnDragItemsStarting"
                                   DragItemsCompleted="OnDragItemsCompleted">
 
                             <!--
@@ -230,6 +236,7 @@
                                           Height="92"
                                           Margin="0,0,12,12"
                                           Background="Transparent"
+                                          Opacity="{x:Bind CardOpacity, Mode=OneWay}"
                                           DoubleTapped="OnCardDoubleTapped"
                                           PointerEntered="OnCardPointerEntered"
                                           PointerExited="OnCardPointerExited">

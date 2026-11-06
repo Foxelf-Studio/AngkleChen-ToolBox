@@ -434,7 +434,7 @@
           "id": "6f7053e3e019",
           "name": ".NET Framework 4.7",
           "description": ".NET Framework 4.7.2离线安装包，许多软件和游戏的运行依赖，支持Windows 7/8/10。",
-          "relativePath": "工具\\系统维护\\.net\\NDP472-KB4054530-x86-x64-AllOS-ENU.exe",
+          "relativePath": "工具\\系统维护\\NDP472-KB4054530-x86-x64-AllOS-ENU.exe",
           "order": 4,
           "size": 0
         },
@@ -442,7 +442,7 @@
           "id": "402a3fbe13ab",
           "name": "VC++ 运行库",
           "description": "Microsoft Visual C++ 2005-2022运行库合集，许多软件和游戏的必要依赖组件。",
-          "relativePath": "工具\\系统维护\\vc\\vc_redist.x86.exe",
+          "relativePath": "工具\\系统维护\\vc_redist.x86.exe",
           "order": 5,
           "size": 0
         },
@@ -570,7 +570,7 @@
           "id": "ee0ae444d6c1",
           "name": "Edge 浏览器",
           "description": "微软Edge浏览器在线安装程序，基于Chromium内核，支持扩展插件、集锦、沉浸式阅读器等功能。",
-          "relativePath": "工具\\软件与驱动\\edge\\MicrosoftEdgeSetup.exe",
+          "relativePath": "工具\\软件与驱动\\MicrosoftEdgeSetup.exe",
           "order": 0,
           "size": 0
         },

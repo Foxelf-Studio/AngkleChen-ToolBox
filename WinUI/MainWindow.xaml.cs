@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Animation;
 using Windows.Storage.Pickers;
 using 陈叔叔工具箱.Helpers;
 using 陈叔叔工具箱.Models;
@@ -618,12 +619,36 @@ public sealed partial class MainWindow : Window
     // 这一层必须垫在内容下面——放在最上层会把图标和文字整块盖掉，看起来像卡片消失了。
     private void OnCardPointerEntered(object sender, PointerRoutedEventArgs e)
     {
-        if (sender is Grid card && FindHoverLayer(card) is { } layer) layer.Opacity = 1;
+        if (sender is Grid card && FindHoverLayer(card) is { } layer) FadeHover(layer, 1);
     }
 
     private void OnCardPointerExited(object sender, PointerRoutedEventArgs e)
     {
-        if (sender is Grid card && FindHoverLayer(card) is { } layer) layer.Opacity = 0;
+        if (sender is Grid card && FindHoverLayer(card) is { } layer) FadeHover(layer, 0);
+    }
+
+    /// <summary>
+    /// 悬停高光渐变：0.2s 线性。
+    /// 直接赋 Opacity 是硬切，鼠标扫过时很生硬。
+    /// </summary>
+    private static void FadeHover(Border layer, double target)
+    {
+        var animation = new DoubleAnimation
+        {
+            To = target,
+            Duration = new Duration(TimeSpan.FromMilliseconds(200)),
+            EnableDependentAnimation = true
+        };
+
+        Storyboard.SetTarget(animation, layer);
+        Storyboard.SetTargetProperty(animation, "Opacity");
+
+        var storyboard = new Storyboard();
+        storyboard.Children.Add(animation);
+
+        // 播完把基值落定，否则会回落到 XAML 里写的 0
+        storyboard.Completed += (_, _) => layer.Opacity = target;
+        storyboard.Begin();
     }
 
     private static Border? FindHoverLayer(Grid card)
@@ -643,8 +668,17 @@ public sealed partial class MainWindow : Window
     /// 只在「单个分类 + 未搜索」时放行：混合视图里拖动的语义不明确，
     /// 拖完还得猜它属于哪个分类，宁可不给拖。
     /// </summary>
+    private void OnDragItemsStarting(object sender, DragItemsStartingEventArgs args)
+    {
+        if (args.Items.Count > 0 && args.Items[0] is ToolCardVm vm)
+            vm.IsDragging = true;
+    }
+
     private void OnDragItemsCompleted(ListViewBase sender, DragItemsCompletedEventArgs args)
     {
+        // 不论拖成功与否都先清拖拽态，否则卡片会一直半透明
+        foreach (var vm in Tools) vm.IsDragging = false;
+
         if (args.Items.Count == 0 || args.Items[0] is not ToolCardVm dragged) return;
 
         // 只在被拖工具自己所属分类内定位置：
@@ -703,6 +737,22 @@ public sealed class ToolCardVm : INotifyPropertyChanged
             Raise(nameof(Icon));
         }
     }
+
+    private bool _isDragging;
+
+    /// <summary>拖拽中的源卡片压暗，避免和跟随鼠标的预览重复</summary>
+    public bool IsDragging
+    {
+        get => _isDragging;
+        set
+        {
+            if (_isDragging == value) return;
+            _isDragging = value;
+            Raise(nameof(CardOpacity));
+        }
+    }
+
+    public double CardOpacity => _isDragging ? 0.35 : 1.0;
 
     public bool IsSelected
     {
