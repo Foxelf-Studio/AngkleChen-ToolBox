@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--
+        浅色主题：WPF 版没有浅色，这套是按现有深色配色的明度关系推导出来的，
+        保证卡片层级、文字对比与深色版一致。
+    -->
+    <SolidColorBrush x:Key="AppBackgroundBrush" Color="#F3F3F3" />
+    <SolidColorBrush x:Key="SidebarBackgroundBrush" Color="#EAEAEA" />
+    <SolidColorBrush x:Key="CardBackgroundBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="CardBackgroundHoverBrush" Color="#F7F7F7" />
+    <SolidColorBrush x:Key="CardBorderBrush" Color="#14000000" />
+    <SolidColorBrush x:Key="CardBorderHoverBrush" Color="#24000000" />
+
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="#1A1A1A" />
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#444444" />
+    <SolidColorBrush x:Key="TextTertiaryBrush" Color="#6E6E6E" />
+    <SolidColorBrush x:Key="TextHintBrush" Color="#8A8A8A" />
+
+    <SolidColorBrush x:Key="AccentColorBrush" Color="#0F6CBD" />
+
+    <!-- 浅色下红底要压暗一点，否则白底上看不清 -->
+    <SolidColorBrush x:Key="WarningBackgroundBrush" Color="#1FD13438" />
+    <SolidColorBrush x:Key="WarningBorderBrush" Color="#40D13438" />
+    <SolidColorBrush x:Key="WarningIconBrush" Color="#C42B1C" />
+    <SolidColorBrush x:Key="WarningTextBrush" Color="#8E1B14" />
+
+</ResourceDictionary>

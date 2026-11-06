@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>陈叔叔工具箱 · WinUI 3 迁移计划</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --panel:#ffffff; --line:#e3e6eb; --text:#1a1d21; --muted:#5f6672;
+    --faint:#8d95a3; --accent:#0b6bcb; --accent-soft:#e8f1fc;
+    --ok:#137a4b; --ok-soft:#e5f5ec; --warn:#98600a; --warn-soft:#fdf2dd;
+    --wait:#5f6672; --wait-soft:#eef0f3; --risk:#a8272c; --risk-soft:#fbeaea;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:40px 24px 72px;
+    background:var(--bg); color:var(--text);
+    font-family:"Microsoft YaHei","Segoe UI",-apple-system,sans-serif;
+    font-size:14px; line-height:1.7;
+  }
+  .wrap{max-width:1080px;margin:0 auto}
+
+  header{margin-bottom:28px}
+  .kicker{font-size:12px;letter-spacing:.14em;color:var(--faint);text-transform:uppercase;margin-bottom:8px}
+  h1{font-size:30px;line-height:1.3;margin:0 0 10px;font-weight:700;letter-spacing:-.01em}
+  .sub{color:var(--muted);font-size:14px;margin:0}
+  .sub code{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:1px 6px;font-size:12.5px}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:26px 0 34px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .stat .k{font-size:12px;color:var(--faint);margin-bottom:6px}
+  .stat .v{font-size:22px;font-weight:700;letter-spacing:-.02em}
+  .stat .v small{font-size:12px;font-weight:400;color:var(--muted);margin-left:4px}
+
+  h2{font-size:15px;letter-spacing:.06em;color:var(--faint);font-weight:600;text-transform:uppercase;
+     margin:36px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+
+  table{width:100%;border-collapse:collapse;background:var(--panel);
+        border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:13.5px}
+  th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:#fafbfc;font-weight:600;font-size:12.5px;color:var(--muted);white-space:nowrap}
+  tr:last-child td{border-bottom:none}
+  td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+  .dim{color:var(--muted)}
+  .hi{color:var(--risk);font-weight:600}
+
+  .phase{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+         padding:18px 20px;margin-bottom:14px}
+  .phase.now{border-color:#b9d6f5;box-shadow:0 2px 14px rgba(11,107,203,.08)}
+  .phase-head{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .pid{font-family:"Segoe UI",monospace;font-size:12px;font-weight:700;letter-spacing:.08em;
+       color:var(--accent);background:var(--accent-soft);border-radius:5px;padding:2px 8px}
+  .ptitle{font-size:16px;font-weight:700;letter-spacing:-.01em}
+  .pill{font-size:11.5px;padding:2px 9px;border-radius:20px;font-weight:600;margin-left:auto;white-space:nowrap}
+  .pill.now{background:var(--accent-soft);color:var(--accent)}
+  .pill.next{background:var(--wait-soft);color:var(--wait)}
+  .pill.done{background:var(--ok-soft);color:var(--ok)}
+  .desc{color:var(--muted);font-size:13px;margin:6px 0 12px}
+
+  ul.tasks{list-style:none;margin:0;padding:0}
+  ul.tasks li{position:relative;padding-left:24px;margin-bottom:7px;font-size:13.5px}
+  ul.tasks li::before{content:"";position:absolute;left:0;top:6px;width:13px;height:13px;
+    border:1.5px solid #c3c9d2;border-radius:3.5px}
+  ul.tasks li.done::before{background:var(--ok);border-color:var(--ok)}
+  ul.tasks li.done::after{content:"";position:absolute;left:3.5px;top:9px;width:6px;height:3px;
+    border-left:1.8px solid #fff;border-bottom:1.8px solid #fff;transform:rotate(-45deg)}
+  ul.tasks li.done{color:var(--muted)}
+  ul.tasks li code{background:#f2f4f7;border-radius:4px;padding:1px 5px;font-size:12px}
+
+  .meta{display:flex;gap:22px;flex-wrap:wrap;margin-top:12px;padding-top:12px;
+        border-top:1px dashed var(--line);font-size:12.5px;color:var(--muted)}
+  .meta b{color:var(--text);font-weight:600}
+
+  .note{background:#fdf8e9;border:1px solid #f0e2bd;border-radius:10px;padding:14px 16px;
+        font-size:13.5px;color:#5c4a1a;margin-top:14px}
+  .note b{color:#3f320f}
+  footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);
+         font-size:12.5px;color:var(--faint);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  @media (max-width:760px){
+    .stats{grid-template-columns:repeat(2,1fr)}
+    body{padding:24px 14px 48px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Migration Plan</div>
+    <h1>陈叔叔工具箱 · WinUI 3 迁移计划</h1>
+    <p class="sub">从 WPF / .NET 10 迁到 WinUI 3（Windows App SDK 2.6.5），保留全部业务逻辑，重做 UI 层。<br>
+    开发在 <code>winui3</code> 分支，<code>main</code> 保持可发布，随时可回退。</p>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="k">阶段</div><div class="v">6 <small>P0–P5</small></div></div>
+    <div class="stat"><div class="k">总估时</div><div class="v">8–11 <small>天</small></div></div>
+    <div class="stat"><div class="k">业务层复用</div><div class="v">11 / 13 <small>文件</small></div></div>
+    <div class="stat"><div class="k">当前</div><div class="v" style="font-size:17px;color:var(--ok)">P1 待启动</div></div>
+  </div>
+
+  <h2>Spike 实测结论（已完成）</h2>
+  <table>
+    <thead><tr><th style="width:26%">验证项</th><th style="width:30%">结果</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td>编译环境</td><td class="num">可行</td><td class="dim">.NET 10 SDK + NuGet 即可，不需要 Visual Studio、不需要 workload</td></tr>
+      <tr><td>单文件发布</td><td class="num">可行</td><td class="dim">产出 1 个 exe。前提：<code>EnableMsixTooling=true</code>（生成 resources.pri，不等于打 MSIX 包）</td></tr>
+      <tr><td>体积（未压缩）</td><td class="num">WinUI 226 MB <span class="dim">/</span> WPF 134 MB</td><td class="dim">自包含需要带 Windows App SDK 运行时</td></tr>
+      <tr><td>体积（压缩）</td><td class="num hi">WinUI 92 MB / WPF 63 MB</td><td class="dim">已确认接受体积上涨；<code>EnableCompressionInSingleFile=true</code></td></tr>
+      <tr><td>内存占用</td><td class="num">153–162 MB</td><td class="dim">90 个工具，与本机 WPF 版本相当，未变低</td></tr>
+      <tr><td>业务层复用</td><td class="num">11 / 13</td><td class="dim">AppConfig、ToolRelinker、ToolScanner、ToolLauncher、Models 等零改动编译通过</td></tr>
+      <tr><td>主题</td><td class="num">原生</td><td class="dim">Light / Dark / 跟随系统，运行时切换，无需替换资源字典</td></tr>
+      <tr><td>卡片区还原度</td><td class="num">约 90%</td><td class="dim">配色、圆角、字号可 1:1；导航栏 / 标题栏 / 滚动条会变成原生样式</td></tr>
+    </tbody>
+  </table>
+
+  <h2>阶段拆解</h2>
+
+  <div class="phase">
+    <div class="phase-head">
+      <span class="pid">P0</span>
+      <span class="ptitle">地基：拆耦 + 项目骨架</span>
+      <span class="pill done">已完成</span>
+    </div>
+    <p class="desc">把业务层唯一的 UI 耦合点拆开，建 WinUI 项目，验证"能编译、能单文件、能读到真实配置"。</p>
+    <ul class="tasks">
+      <li class="done">拆 <code>IconHelper</code>：提取逻辑下沉为 <code>IconExtractor</code>（Win32，返回 byte[]），WPF 侧只留渲染封装</li>
+      <li class="done">新建 <code>WinUI/AngkleChenToolBox.WinUI.csproj</code>（net10.0-windows10.0.19041.0 / WASDK 2.6.5 / unpackaged / self-contained / 单文件）</li>
+      <li class="done">链接复用业务层 12 个文件 + 嵌入 config.json</li>
+      <li class="done">主题资源字典：Dark / Light 各一套，色值照抄现有</li>
+      <li class="done">主窗口骨架：NavigationView + 卡片网格 + 搜索框</li>
+      <li class="done">单文件发布验证，产出 1 个 exe 并能跑</li>
+    </ul>
+    <div class="meta"><span><b>估时</b> 0.5 天</span><span><b>实测</b> 0 错误 · 单文件 93 MB · 16 分类 90 工具 · 深浅色可切</span></div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head">
+      <span class="pid">P1</span>
+      <span class="ptitle">主窗口：功能对齐</span>
+      <span class="pill next">待开始</span>
+    </div>
+    <p class="desc">把现有主窗口的能力全部搬过来，观感对齐到今天的样子（卡片区）与原生样式（骨架区）。</p>
+    <ul class="tasks">
+      <li>分类导航 + 计数徽标 + 面包屑</li>
+      <li>搜索：实时过滤 + 占位提示 + 空结果态</li>
+      <li>卡片：图标 / 名称 / 描述 / 悬停态 / 缺失隐藏</li>
+      <li>详情栏（选中工具的图标 + 描述 + 双击启动提示）</li>
+      <li>状态栏 + 顶部警告条（配置损坏时红底提示）</li>
+      <li>窗口标题栏方案落地（见待定项）</li>
+    </ul>
+    <div class="meta"><span><b>估时</b> 2–3 天</span><span><b>验收</b> 与现有版本逐项对照，功能无缺失</span></div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head">
+      <span class="pid">P2</span>
+      <span class="ptitle">弹窗与菜单</span>
+      <span class="pill next">待开始</span>
+    </div>
+    <p class="desc">4 个 WPF Window 弹窗改为原生 ContentDialog；自绘右键菜单改 MenuFlyout。</p>
+    <ul class="tasks">
+      <li>添加工具（含分类选择、图标选择、路径冲突提示）</li>
+      <li>编辑工具 / 输入框 / 消息框 / 更新详情</li>
+      <li>右键菜单：启动、编辑、删除、排序、重命名分类</li>
+      <li>设置面板：更新检查、日志开关、回收站</li>
+      <li>回收站列表与撤销删除</li>
+    </ul>
+    <div class="meta"><span><b>估时</b> 2 天</span><span><b>验收</b> 所有弹窗可开关、模态行为正确、Esc 可退出</span></div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head">
+      <span class="pid">P3</span>
+      <span class="ptitle">交互手感</span>
+      <span class="pill next">待开始</span>
+    </div>
+    <p class="desc">这一阶段决定"用起来像不像原来那个程序"，也是最容易被低估的一块。</p>
+    <ul class="tasks">
+      <li>平滑滚动：用 <code>ChangeView</code> / <code>ScrollPresenter</code> 复刻 0.5 倍率缓动</li>
+      <li>拖拽排序：WinUI 的 DragDrop 与 WPF 完全不同，需重写命中判定与插入指示线</li>
+      <li>图标渲染：byte[] → BitmapImage，含首帧占位与异步补齐</li>
+      <li>虚拟化调优：实测实例化数量，必要时换 ItemsRepeater + UniformGridLayout</li>
+      <li>动画：页面切换、选中指示、面板滑入，改用 Composition 或内置转场</li>
+    </ul>
+    <div class="meta"><span><b>估时</b> 1–2 天</span><span><b>验收</b> 滚动与拖拽手感主观不劣于现版本</span></div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head">
+      <span class="pid">P4</span>
+      <span class="ptitle">发布链路</span>
+      <span class="pill next">待开始</span>
+    </div>
+    <p class="desc">核心约束不变：<b>升级只替换一个 exe</b>。这一阶段专门验证它没被破坏。</p>
+    <ul class="tasks">
+      <li>GitHub Actions 改为构建 WinUI 项目（win-x64 + 单文件 + 压缩）</li>
+      <li>实测：旧配置 + 新 exe → 自动迁移，工具数不变</li>
+      <li>实测：换回旧 exe 仍可读新配置（回滚安全）</li>
+      <li>Release 附件名、SHA256 校验块同步</li>
+    </ul>
+    <div class="meta"><span><b>估时</b> 1 天</span><span><b>验收</b> 单文件替换升级/回滚双向通过</span></div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head">
+      <span class="pid">P5</span>
+      <span class="ptitle">回归与切换</span>
+      <span class="pill next">待开始</span>
+    </div>
+    <p class="desc">把可信度挣回来，然后才切 main。</p>
+    <ul class="tasks">
+      <li>105 项断言回归（业务层未改，理论上直接过）</li>
+      <li>实机验证：配置迁移、路径自愈、重命名分类、回收站、图标缓存</li>
+      <li>浅色 / 深色 / 高对比度三态截图确认</li>
+      <li>合并 <code>winui3</code> → <code>main</code>，发布 v3.0.0</li>
+    </ul>
+    <div class="meta"><span><b>估时</b> 1 天</span><span><b>验收</b> 全部断言通过 + 逐屏截图确认</span></div>
+  </div>
+
+  <h2>待你决定</h2>
+  <table>
+    <thead><tr><th style="width:20%">项</th><th style="width:34%">选项 A</th><th>选项 B</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>侧边栏</b></td>
+        <td>用原生 <code>NavigationView</code><br><span class="dim">省 0.5–1 天，像"Windows 设置"</span></td>
+        <td>改写模板保留现在的竖条选中态<br><span class="dim">多花半天到一天</span></td>
+      </tr>
+      <tr>
+        <td><b>标题栏</b></td>
+        <td>系统 caption 按钮<br><span class="dim">最省事，logo / 齿轮要另找位置</span></td>
+        <td><code>ExtendsContentIntoTitleBar</code> 自定义<br><span class="dim">保留 logo + 齿轮，约半天</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>风险登记</h2>
+  <table>
+    <thead><tr><th style="width:30%">风险</th><th style="width:14%">影响</th><th>应对</th></tr></thead>
+    <tbody>
+      <tr><td>平滑滚动需从零重写</td><td class="dim">中</td><td class="dim">WPF 的 Behavior 机制在 WinUI 不存在；P3 单独排期，不行就退回系统默认滚动</td></tr>
+      <tr><td>拖拽排序 API 差异大</td><td class="dim">中</td><td class="dim">WPF 用 DragOver/Drop + 自定义插入线；WinUI 用 DragStarting/Drop 且需 CanDrag 配置，P3 先做最小可用</td></tr>
+      <tr><td>Mica 仅 Win11 可用</td><td class="dim">低</td><td class="dim">README 声明支持 Win10 1809+，Win10 上降级为纯色背景，代码里按版本判断</td></tr>
+      <tr><td>WASDK 版本迭代快</td><td class="dim">中</td><td class="dim">锁 2.6.5，不跟预览版；升级单独排期并回归</td></tr>
+      <tr><td>双项目并存期间 CI 混乱</td><td class="dim">低</td><td class="dim">WinUI 放子目录，根目录 <code>dotnet build</code> 仍只命中 WPF 项目；CI 加独立 job</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    <b>已定：</b>接受体积从 63 MB 涨到 92 MB；卡片区按现版本还原；业务层不重写。
+    <b>未定：</b>侧边栏与标题栏两项，定了才能进 P1。
+  </div>
+
+  <footer>
+    <span>计划生成于 2026-11-06 · 基于 Spike 实测数据</span>
+    <span>Spike 工程：<code>%TEMP%\winui3spike</code></span>
+  </footer>
+
+</div>
+</body>
+</html>

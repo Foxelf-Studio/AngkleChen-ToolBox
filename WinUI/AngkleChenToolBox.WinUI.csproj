@@ -1,0 +1,72 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <!-- 根命名空间用 ASCII：WinUI 的 XAML 编译器对中文命名空间没有 WPF 那样成熟，别赌 -->
+    <RootNamespace>AngkleChen</RootNamespace>
+    <AssemblyName>AngkleChenToolBox</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Platforms>x64</Platforms>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <UseWinUI>true</UseWinUI>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <Version>3.0.0</Version>
+    <AssemblyVersion>3.0.0</AssemblyVersion>
+    <FileVersion>3.0.0</FileVersion>
+    <ApplicationIcon>..\Assets\logo.ico</ApplicationIcon>
+
+    <!--
+      便携免安装：不打包 MSIX。
+      EnableMsixTooling 必须为 true —— 单文件发布需要它生成 resources.pri，
+      和"打成 MSIX 包"是两件事。
+    -->
+    <EnableMsixTooling>true</EnableMsixTooling>
+    <WindowsPackageType>None</WindowsPackageType>
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <SelfContained>true</SelfContained>
+
+    <!-- 单文件：WASDK 1.5+ 起支持，前提是 unpackaged + self-contained 同时成立 -->
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="2.6.5" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2957" />
+    <!-- IconExtractor 里用 System.Drawing 把 HICON 编码成 PNG；WinUI 项目没有 WindowsDesktop 框架，需显式引用 -->
+    <PackageReference Include="System.Drawing.Common" Version="10.0.14" />
+  </ItemGroup>
+
+  <!--
+    业务层：与 UI 无关的 11 个文件直接复用，不复制代码。
+    IconHelper / SmoothScrollBehavior 是 WPF 专属，不在这里引用。
+    等 P5 收尾时可以抽成 AngkleChenToolBox.Core 类库，现在先用 Link 保持单一来源。
+  -->
+  <ItemGroup>
+    <Compile Include="..\Helpers\AppConfig.cs" Link="Business\AppConfig.cs" />
+    <Compile Include="..\Helpers\AppPaths.cs" Link="Business\AppPaths.cs" />
+    <Compile Include="..\Helpers\IconExtractor.cs" Link="Business\IconExtractor.cs" />
+    <Compile Include="..\Helpers\Logger.cs" Link="Business\Logger.cs" />
+    <Compile Include="..\Helpers\ToolRelinker.cs" Link="Business\ToolRelinker.cs" />
+    <Compile Include="..\Helpers\ToolScanner.cs" Link="Business\ToolScanner.cs" />
+    <Compile Include="..\Helpers\UpdateChecker.cs" Link="Business\UpdateChecker.cs" />
+    <Compile Include="..\Helpers\VersionInfo.cs" Link="Business\VersionInfo.cs" />
+    <Compile Include="..\Models\CatInfo.cs" Link="Business\CatInfo.cs" />
+    <Compile Include="..\Models\ToolInfo.cs" Link="Business\ToolInfo.cs" />
+    <Compile Include="..\Services\ToolImporter.cs" Link="Business\ToolImporter.cs" />
+    <Compile Include="..\Services\ToolLauncher.cs" Link="Business\ToolLauncher.cs" />
+  </ItemGroup>
+
+  <!-- 配置缺失/损坏时的内置重建模板，与 WPF 版共用同一份 -->
+  <ItemGroup>
+    <EmbeddedResource Include="..\config.json" LogicalName="config.json" />
+  </ItemGroup>
+
+</Project>

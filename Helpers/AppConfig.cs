@@ -1047,7 +1047,7 @@ public class AppConfig
                 Directory.CreateDirectory(iconDir);
 
             // 提取图标并保存为 PNG
-            var icon = IconHelper.ExtractIconToFile(fullPath);
+            var icon = IconExtractor.ToPngBytes(fullPath);
             if (icon != null)
             {
                 File.WriteAllBytes(iconPath, icon);

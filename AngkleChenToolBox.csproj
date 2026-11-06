@@ -21,6 +21,20 @@
     <FileVersion>2.2.0</FileVersion>
   </PropertyGroup>
 
+  <!--
+    WinUI 3 迁移工程放在 WinUI\ 子目录。
+    SDK 默认会把 **/*.cs 和 **/*.xaml 全部纳入编译，必须显式排除，
+    否则 WPF 项目会去编译 WinUI 的 App.xaml.cs / MainWindow.xaml，直接编译失败。
+  -->
+  <ItemGroup>
+    <Compile Remove="WinUI\**" />
+    <Page Remove="WinUI\**" />
+    <ApplicationDefinition Remove="WinUI\**" />
+    <None Remove="WinUI\**" />
+    <EmbeddedResource Remove="WinUI\**" />
+    <Resource Remove="WinUI\**" />
+  </ItemGroup>
+
   <ItemGroup>
     <!-- 运行期图标：多尺寸 ico + 两张缩略图（原 1 MB PNG 不再打进程序） -->
     <Resource Include="Assets\logo.ico" />

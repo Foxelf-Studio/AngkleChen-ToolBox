@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--
+        深色主题：色值直接沿用 WPF 版，保证迁移后观感一致。
+        背景 #1F1F1F / 卡片 #2D2D2D / 悬停 #353535 / 边框 #1EFFFFFF
+    -->
+    <SolidColorBrush x:Key="AppBackgroundBrush" Color="#1F1F1F" />
+    <SolidColorBrush x:Key="SidebarBackgroundBrush" Color="#181818" />
+    <SolidColorBrush x:Key="CardBackgroundBrush" Color="#2D2D2D" />
+    <SolidColorBrush x:Key="CardBackgroundHoverBrush" Color="#353535" />
+    <SolidColorBrush x:Key="CardBorderBrush" Color="#1EFFFFFF" />
+    <SolidColorBrush x:Key="CardBorderHoverBrush" Color="#2FFFFFFF" />
+
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#CCCCCC" />
+    <SolidColorBrush x:Key="TextTertiaryBrush" Color="#777777" />
+    <SolidColorBrush x:Key="TextHintBrush" Color="#666666" />
+
+    <SolidColorBrush x:Key="AccentColorBrush" Color="#60CDFF" />
+
+    <!-- 警告条：配置缺失/损坏时用 -->
+    <SolidColorBrush x:Key="WarningBackgroundBrush" Color="#29FF5A5F" />
+    <SolidColorBrush x:Key="WarningBorderBrush" Color="#5CFF5A5F" />
+    <SolidColorBrush x:Key="WarningIconBrush" Color="#FF7A7E" />
+    <SolidColorBrush x:Key="WarningTextBrush" Color="#FFC2C4" />
+
+</ResourceDictionary>
