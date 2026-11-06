@@ -1,7 +1,9 @@
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using 陈叔叔工具箱.Helpers;
 
@@ -64,6 +66,7 @@ public sealed partial class MainWindow : Window
 
     private void ShowCategory(string categoryId)
     {
+        ShowTools();
         _activeCategoryId = categoryId;
         RefreshList();
     }
@@ -107,22 +110,63 @@ public sealed partial class MainWindow : Window
 
     private void OnCategoryChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {
+        if (args.IsSettingsSelected)
+        {
+            ShowSettings();
+            return;
+        }
+
         if (args.SelectedItem is NavigationViewItem { Tag: string id })
             ShowCategory(id);
+    }
+
+    /// <summary>
+    /// 齿轮走 NavigationView 的 SettingsItem（左侧导航最底部），
+    /// 点击后内容区整体切成设置页，而不是像原来那样在标题栏挂个按钮弹面板。
+    /// </summary>
+    private void ShowSettings()
+    {
+        ToolsView.Visibility = Visibility.Collapsed;
+        SettingsView.Visibility = Visibility.Visible;
+        StatusTip.Text = "";
+    }
+
+    private void ShowTools()
+    {
+        SettingsView.Visibility = Visibility.Collapsed;
+        ToolsView.Visibility = Visibility.Visible;
     }
 
     private void OnSearchChanged(object sender, TextChangedEventArgs e) => RefreshList();
 
     private void OnToolClick(object sender, ItemClickEventArgs e)
     {
-        if (e.ClickedItem is ToolCardVm vm)
-            StatusTip.Text = $"已选择「{vm.Name}」（启动逻辑将在 P1 接入）";
+        if (e.ClickedItem is not ToolCardVm vm) return;
+
+        // 单选：先清掉上一个
+        foreach (var other in Tools)
+            other.IsSelected = ReferenceEquals(other, vm);
+
+        StatusTip.Text = $"已选择「{vm.Name}」（启动逻辑将在 P1 接入）";
+    }
+
+    // 悬停高亮：最上层那块 Border 自己变不透明即可，不需要动数据模型
+    private void OnCardPointerEntered(object sender, PointerRoutedEventArgs e)
+    {
+        if (sender is Border layer) layer.Opacity = 1;
+    }
+
+    private void OnCardPointerExited(object sender, PointerRoutedEventArgs e)
+    {
+        if (sender is Border layer) layer.Opacity = 0;
     }
 }
 
-/// <summary>卡片绑定的最小视图模型，P1 会补图标、描述、存在性</summary>
-public sealed class ToolCardVm
+/// <summary>卡片绑定的最小视图模型。P1 会补图标、描述、存在性</summary>
+public sealed class ToolCardVm : INotifyPropertyChanged
 {
+    private bool _isSelected;
+
     public ToolCardVm(string name, string category, string id)
     {
         Name = name;
@@ -133,4 +177,22 @@ public sealed class ToolCardVm
     public string Name { get; }
     public string Category { get; }
     public string Id { get; }
+
+    public bool IsSelected
+    {
+        get => _isSelected;
+        set
+        {
+            if (_isSelected == value) return;
+            _isSelected = value;
+            Raise(nameof(IsSelected));
+            Raise(nameof(SelectedVisibility));
+        }
+    }
+
+    public Visibility SelectedVisibility => _isSelected ? Visibility.Visible : Visibility.Collapsed;
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    private void Raise(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 }

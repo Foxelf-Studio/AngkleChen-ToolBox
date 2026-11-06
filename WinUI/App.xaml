@@ -10,7 +10,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <ResourceDictionary.ThemeDictionaries>
-                <ResourceDictionary x:Key="Dark" Source="Themes/Dark.xaml" />
+                <ResourceDictionary x:Key="Default" Source="Themes/Dark.xaml" />
                 <ResourceDictionary x:Key="Light" Source="Themes/Light.xaml" />
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>

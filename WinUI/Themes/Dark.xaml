@@ -11,8 +11,17 @@
     <SolidColorBrush x:Key="SidebarBackgroundBrush" Color="#181818" />
     <SolidColorBrush x:Key="CardBackgroundBrush" Color="#2D2D2D" />
     <SolidColorBrush x:Key="CardBackgroundHoverBrush" Color="#353535" />
+    <SolidColorBrush x:Key="CardBackgroundSelectedBrush" Color="#3C3C3C" />
     <SolidColorBrush x:Key="CardBorderBrush" Color="#1EFFFFFF" />
     <SolidColorBrush x:Key="CardBorderHoverBrush" Color="#2FFFFFFF" />
+    <SolidColorBrush x:Key="CardBorderSelectedBrush" Color="#4D60CDFF" />
+
+    <!--
+        NavigationView 的侧栏背景不认 SidebarBackgroundBrush，
+        必须覆盖这两个系统键，否则侧栏和内容区会是一个颜色。
+    -->
+    <SolidColorBrush x:Key="NavigationViewDefaultPaneBackground" Color="#181818" />
+    <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="#181818" />
 
     <SolidColorBrush x:Key="TextPrimaryBrush" Color="#FFFFFF" />
     <SolidColorBrush x:Key="TextSecondaryBrush" Color="#CCCCCC" />
