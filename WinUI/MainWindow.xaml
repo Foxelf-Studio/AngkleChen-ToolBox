@@ -115,6 +115,27 @@
                                           Background="Transparent"
                                           DoubleTapped="OnCardDoubleTapped">
 
+                                        <Grid.ContextFlyout>
+                                            <MenuFlyout>
+                                                <MenuFlyoutItem Text="启动" Click="OnMenuLaunch">
+                                                    <MenuFlyoutItem.Icon>
+                                                        <FontIcon Glyph="&#xE768;" />
+                                                    </MenuFlyoutItem.Icon>
+                                                </MenuFlyoutItem>
+                                                <MenuFlyoutItem Text="编辑名称与描述" Click="OnMenuEdit">
+                                                    <MenuFlyoutItem.Icon>
+                                                        <FontIcon Glyph="&#xE70F;" />
+                                                    </MenuFlyoutItem.Icon>
+                                                </MenuFlyoutItem>
+                                                <MenuFlyoutSeparator />
+                                                <MenuFlyoutItem Text="移入回收站" Click="OnMenuDelete">
+                                                    <MenuFlyoutItem.Icon>
+                                                        <FontIcon Glyph="&#xE74D;" />
+                                                    </MenuFlyoutItem.Icon>
+                                                </MenuFlyoutItem>
+                                            </MenuFlyout>
+                                        </Grid.ContextFlyout>
+
                                         <Border CornerRadius="8"
                                                 Background="{ThemeResource CardBackgroundBrush}"
                                                 BorderBrush="{ThemeResource CardBorderBrush}"
@@ -293,26 +314,138 @@
                                        FontSize="12" />
                         </StackPanel>
 
-                        <Border Grid.Row="1"
-                                VerticalAlignment="Top"
-                                Padding="20"
-                                CornerRadius="8"
-                                Background="{ThemeResource CardBackgroundBrush}"
-                                BorderBrush="{ThemeResource CardBorderBrush}"
-                                BorderThickness="1">
-                            <StackPanel Spacing="8">
-                                <TextBlock Text="设置页骨架"
-                                           Foreground="{ThemeResource TextSecondaryBrush}"
-                                           FontFamily="Microsoft YaHei"
-                                           FontSize="14"
-                                           FontWeight="SemiBold" />
-                                <TextBlock Text="P2 会把现有的更新开关、日志开关、回收站入口搬到这里。"
-                                           Foreground="{ThemeResource TextTertiaryBrush}"
-                                           FontFamily="Microsoft YaHei"
-                                           FontSize="12"
-                                           TextWrapping="Wrap" />
+                        <ScrollViewer Grid.Row="1">
+                            <StackPanel Spacing="12">
+                                <!-- 常规 -->
+                                <Border Padding="20"
+                                        CornerRadius="8"
+                                        Background="{ThemeResource CardBackgroundBrush}"
+                                        BorderBrush="{ThemeResource CardBorderBrush}"
+                                        BorderThickness="1">
+                                    <StackPanel Spacing="16">
+                                        <TextBlock Text="常规"
+                                                   Foreground="{ThemeResource TextSecondaryBrush}"
+                                                   FontFamily="Microsoft YaHei"
+                                                   FontSize="13"
+                                                   FontWeight="SemiBold" />
+
+                                        <Grid ColumnSpacing="16">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <StackPanel Spacing="2">
+                                                <TextBlock Text="自动检查更新"
+                                                           Foreground="{ThemeResource TextPrimaryBrush}"
+                                                           FontFamily="Microsoft YaHei"
+                                                           FontSize="13" />
+                                                <TextBlock Text="启动后访问 GitHub Release 检查新版本"
+                                                           Foreground="{ThemeResource TextTertiaryBrush}"
+                                                           FontFamily="Microsoft YaHei"
+                                                           FontSize="11" />
+                                            </StackPanel>
+
+                                            <ToggleSwitch x:Name="ToggleAutoCheck"
+                                                          Grid.Column="1"
+                                                          MinWidth="0"
+                                                          Toggled="OnSettingsToggled" />
+                                        </Grid>
+
+                                        <Grid ColumnSpacing="16">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <StackPanel Spacing="2">
+                                                <TextBlock Text="记录调试日志"
+                                                           Foreground="{ThemeResource TextPrimaryBrush}"
+                                                           FontFamily="Microsoft YaHei"
+                                                           FontSize="13" />
+                                                <TextBlock Text="在程序目录写 debug.log，排查问题时再开"
+                                                           Foreground="{ThemeResource TextTertiaryBrush}"
+                                                           FontFamily="Microsoft YaHei"
+                                                           FontSize="11" />
+                                            </StackPanel>
+
+                                            <ToggleSwitch x:Name="ToggleLog"
+                                                          Grid.Column="1"
+                                                          MinWidth="0"
+                                                          Toggled="OnSettingsToggled" />
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- 回收站 -->
+                                <Border Padding="20"
+                                        CornerRadius="8"
+                                        Background="{ThemeResource CardBackgroundBrush}"
+                                        BorderBrush="{ThemeResource CardBorderBrush}"
+                                        BorderThickness="1">
+                                    <StackPanel Spacing="12">
+                                        <Grid>
+                                            <TextBlock Text="回收站"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{ThemeResource TextSecondaryBrush}"
+                                                       FontFamily="Microsoft YaHei"
+                                                       FontSize="13"
+                                                       FontWeight="SemiBold" />
+
+                                            <Button x:Name="BtnEmptyTrash"
+                                                    HorizontalAlignment="Right"
+                                                    Padding="10,4"
+                                                    Content="清空回收站"
+                                                    FontFamily="Microsoft YaHei"
+                                                    FontSize="12"
+                                                    Click="OnEmptyTrash" />
+                                        </Grid>
+
+                                        <TextBlock x:Name="TrashEmptyHint"
+                                                   Text="回收站是空的"
+                                                   Foreground="{ThemeResource TextTertiaryBrush}"
+                                                   FontFamily="Microsoft YaHei"
+                                                   FontSize="12" />
+
+                                        <ItemsControl x:Name="TrashList">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="local:TrashItemVm">
+                                                    <Grid Padding="0,7" ColumnSpacing="12">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <StackPanel Spacing="1">
+                                                            <TextBlock Text="{x:Bind Name}"
+                                                                       Foreground="{ThemeResource TextPrimaryBrush}"
+                                                                       FontFamily="Microsoft YaHei"
+                                                                       FontSize="12.5"
+                                                                       MaxLines="1"
+                                                                       TextTrimming="CharacterEllipsis" />
+                                                            <TextBlock Text="{x:Bind Subtitle}"
+                                                                       Foreground="{ThemeResource TextTertiaryBrush}"
+                                                                       FontFamily="Microsoft YaHei"
+                                                                       FontSize="11"
+                                                                       MaxLines="1"
+                                                                       TextTrimming="CharacterEllipsis" />
+                                                        </StackPanel>
+
+                                                        <Button Grid.Column="1"
+                                                                Padding="10,2"
+                                                                Content="恢复"
+                                                                FontFamily="Microsoft YaHei"
+                                                                FontSize="12"
+                                                                Tag="{x:Bind Id}"
+                                                                Click="OnRestoreTrash" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Border>
                             </StackPanel>
-                        </Border>
+                        </ScrollViewer>
                     </Grid>
                 </Grid>
             </NavigationView.Content>

@@ -95,45 +95,21 @@ public partial class SettingsPanel : UserControl
 
     private void LoadSettings()
     {
-        // 从配置文件加载设置（简单实现，可扩展）
-        var configPath = Path.Combine(AppDirectory, "settings.json");
-        if (File.Exists(configPath))
-        {
-            try
-            {
-                var json = File.ReadAllText(configPath);
-                var settings = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, bool>>(json);
-                if (settings != null)
-                {
-                    if (settings.TryGetValue("autoCheckUpdate", out var autoCheck))
-                    {
-                        ToggleAutoCheck.IsChecked = autoCheck;
-                    }
-                    if (settings.TryGetValue("enableLog", out var enableLog))
-                    {
-                        ToggleLogEnabled.IsChecked = enableLog;
-                        Logger.IsEnabled = enableLog;
-                    }
-                }
-            }
-            catch { }
-        }
+        // 读写收敛到 AppSettings，WinUI 版共用同一份实现
+        var settings = AppSettings.Load();
+
+        ToggleAutoCheck.IsChecked = settings.AutoCheckUpdate;
+        ToggleLogEnabled.IsChecked = settings.EnableLog;
+        Logger.IsEnabled = settings.EnableLog;
     }
 
     private void SaveSettings()
     {
-        try
+        new AppSettings
         {
-            var configPath = Path.Combine(AppDirectory, "settings.json");
-            var settings = new Dictionary<string, bool>
-            {
-                ["autoCheckUpdate"] = ToggleAutoCheck.IsChecked == true,
-                ["enableLog"] = ToggleLogEnabled.IsChecked == true
-            };
-            var json = System.Text.Json.JsonSerializer.Serialize(settings, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(configPath, json);
-        }
-        catch { }
+            AutoCheckUpdate = ToggleAutoCheck.IsChecked == true,
+            EnableLog = ToggleLogEnabled.IsChecked == true
+        }.Save();
     }
 
     private string? _releaseUrl;

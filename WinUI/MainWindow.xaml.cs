@@ -15,9 +15,11 @@ namespace AngkleChen;
 public sealed partial class MainWindow : Window
 {
     private readonly AppConfig _config;
+    private readonly AppSettings _settings;
     private string _activeCategoryId = "all";
     private ToolCardVm? _selected;
     private int _refreshGeneration;
+    private bool _syncingSettings;
 
     public ObservableCollection<ToolCardVm> Tools { get; } = new();
 
@@ -33,6 +35,9 @@ public sealed partial class MainWindow : Window
             SystemBackdrop = new MicaBackdrop();
 
         _config = AppConfig.Load();
+        _settings = AppSettings.Load();
+        Logger.IsEnabled = _settings.EnableLog;
+
         ShowConfigWarning();
 
         // 系统标题栏跟随应用主题：不显式设置的话深色界面会配一条白标题栏
@@ -246,6 +251,77 @@ public sealed partial class MainWindow : Window
         ToolsView.Visibility = Visibility.Collapsed;
         SettingsView.Visibility = Visibility.Visible;
         StatusTip.Text = "";
+
+        SyncSettingsUi();
+        RefreshTrash();
+    }
+
+    // ── 设置页 ──────────────────────────────────────
+    private void SyncSettingsUi()
+    {
+        _syncingSettings = true;
+        ToggleAutoCheck.IsOn = _settings.AutoCheckUpdate;
+        ToggleLog.IsOn = _settings.EnableLog;
+        _syncingSettings = false;
+    }
+
+    private void OnSettingsToggled(object sender, RoutedEventArgs e)
+    {
+        // 同步控件状态时也会触发 Toggled，别把它当成用户操作写盘
+        if (_syncingSettings) return;
+
+        _settings.AutoCheckUpdate = ToggleAutoCheck.IsOn;
+        _settings.EnableLog = ToggleLog.IsOn;
+        _settings.Save();
+
+        Logger.IsEnabled = _settings.EnableLog;
+        StatusTip.Text = "设置已保存";
+    }
+
+    private void RefreshTrash()
+    {
+        var entries = _config.Trash
+            .Select(t => new TrashItemVm(t.Id, t.Name, $"{t.Category} · {t.RelativePath}"))
+            .ToList();
+
+        TrashList.ItemsSource = entries;
+        TrashEmptyHint.Visibility = entries.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+        BtnEmptyTrash.IsEnabled = entries.Count > 0;
+    }
+
+    private void OnRestoreTrash(object sender, RoutedEventArgs e)
+    {
+        if (sender is not FrameworkElement { Tag: string id }) return;
+        if (!_config.RestoreFromTrash(id)) return;
+
+        RefreshTrash();
+        BuildNavigation();
+        RefreshList();
+        StatusTip.Text = "已恢复";
+    }
+
+    private async void OnEmptyTrash(object sender, RoutedEventArgs e)
+    {
+        if (!await ConfirmAsync("清空回收站", "回收站里的文件和记录会被永久删除，无法恢复。")) return;
+
+        _config.EmptyTrash();
+        RefreshTrash();
+        StatusTip.Text = "回收站已清空";
+    }
+
+    private async Task<bool> ConfirmAsync(string title, string message, string primary = "确定")
+    {
+        var dialog = new ContentDialog
+        {
+            Title = title,
+            Content = message,
+            PrimaryButtonText = primary,
+            CloseButtonText = "取消",
+            DefaultButton = ContentDialogButton.Close,
+            XamlRoot = RootGrid.XamlRoot
+        };
+
+        return await dialog.ShowAsync() == ContentDialogResult.Primary;
     }
 
     private void ShowTools()
@@ -264,15 +340,89 @@ public sealed partial class MainWindow : Window
 
     private void OnCardDoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
     {
-        if (sender is not FrameworkElement { DataContext: ToolCardVm vm }) return;
+        if (sender is FrameworkElement { DataContext: ToolCardVm vm })
+            Launch(vm);
+    }
 
-        var tool = _config.GetAllTools().FirstOrDefault(t => t.Id == vm.Id);
+    private ToolInfo? FindTool(ToolCardVm vm) =>
+        _config.GetAllTools().FirstOrDefault(t => t.Id == vm.Id);
+
+    private void Launch(ToolCardVm vm)
+    {
+        var tool = FindTool(vm);
         if (tool == null) return;
 
         var error = ToolLauncher.Launch(AppPaths.Root, tool);
         StatusTip.Text = error != null
             ? error.Replace('\n', ' ')
             : $"已启动 {tool.Name}";
+    }
+
+    // ── 右键菜单 ────────────────────────────────────
+    private static ToolCardVm? VmOf(object sender) =>
+        (sender as FrameworkElement)?.DataContext as ToolCardVm;
+
+    private void OnMenuLaunch(object sender, RoutedEventArgs e)
+    {
+        if (VmOf(sender) is { } vm) Launch(vm);
+    }
+
+    private async void OnMenuEdit(object sender, RoutedEventArgs e)
+    {
+        if (VmOf(sender) is not { } vm) return;
+
+        var nameBox = new TextBox { Text = vm.Name, MaxLength = 60 };
+        var descBox = new TextBox
+        {
+            Text = vm.Description,
+            AcceptsReturn = true,
+            TextWrapping = TextWrapping.Wrap,
+            Height = 96
+        };
+
+        var panel = new StackPanel { Spacing = 6 };
+        panel.Children.Add(new TextBlock { Text = "名称", FontSize = 12 });
+        panel.Children.Add(nameBox);
+        panel.Children.Add(new TextBlock { Text = "描述", FontSize = 12, Margin = new Thickness(0, 8, 0, 0) });
+        panel.Children.Add(descBox);
+
+        var dialog = new ContentDialog
+        {
+            Title = "编辑工具",
+            Content = panel,
+            PrimaryButtonText = "保存",
+            CloseButtonText = "取消",
+            DefaultButton = ContentDialogButton.Primary,
+            XamlRoot = RootGrid.XamlRoot
+        };
+
+        if (await dialog.ShowAsync() != ContentDialogResult.Primary) return;
+
+        var name = nameBox.Text.Trim();
+        if (name.Length == 0)
+        {
+            StatusTip.Text = "名称不能为空";
+            return;
+        }
+
+        if (_config.UpdateTool(vm.Id, name, descBox.Text.Trim()))
+        {
+            RefreshList();
+            StatusTip.Text = $"已更新「{name}」";
+        }
+    }
+
+    private async void OnMenuDelete(object sender, RoutedEventArgs e)
+    {
+        if (VmOf(sender) is not { } vm) return;
+        if (!await ConfirmAsync("移入回收站", $"「{vm.Name}」的文件会被移到 回收站\\ 目录，可以再恢复。", "移入回收站")) return;
+
+        if (_config.MoveToolToTrash(vm.Id))
+        {
+            RefreshList();
+            BuildNavigation();
+            StatusTip.Text = $"已移除 {vm.Name}";
+        }
     }
 
     // 悬停高亮：最上层那块 Border 自己变不透明即可，不需要动数据模型
@@ -335,4 +485,19 @@ public sealed class ToolCardVm : INotifyPropertyChanged
     public event PropertyChangedEventHandler? PropertyChanged;
 
     private void Raise(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+}
+
+/// <summary>回收站条目的展示模型</summary>
+public sealed class TrashItemVm
+{
+    public TrashItemVm(string id, string name, string subtitle)
+    {
+        Id = id;
+        Name = name;
+        Subtitle = subtitle;
+    }
+
+    public string Id { get; }
+    public string Name { get; }
+    public string Subtitle { get; }
 }

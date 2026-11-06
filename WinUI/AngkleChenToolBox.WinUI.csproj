@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="..\Helpers\AppConfig.cs" Link="Business\AppConfig.cs" />
     <Compile Include="..\Helpers\AppPaths.cs" Link="Business\AppPaths.cs" />
+    <Compile Include="..\Helpers\AppSettings.cs" Link="Business\AppSettings.cs" />
     <Compile Include="..\Helpers\IconExtractor.cs" Link="Business\IconExtractor.cs" />
     <Compile Include="..\Helpers\Logger.cs" Link="Business\Logger.cs" />
     <Compile Include="..\Helpers\ToolRelinker.cs" Link="Business\ToolRelinker.cs" />
