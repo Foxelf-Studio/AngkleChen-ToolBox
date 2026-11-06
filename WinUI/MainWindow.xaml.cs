@@ -82,6 +82,9 @@ public sealed partial class MainWindow : Window
         {
             if (Nav.MenuItems.Count > 0 && !ReferenceEquals(Nav.SelectedItem, Nav.MenuItems[0]))
                 Nav.SelectedItem = Nav.MenuItems[0];
+
+            // 别让搜索框在启动时抢焦点：它会画出自己的聚焦下划线
+            ToolGrid.Focus(FocusState.Programmatic);
         });
     }
 
