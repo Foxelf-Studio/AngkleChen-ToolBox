@@ -22,6 +22,17 @@
     -->
     <SolidColorBrush x:Key="NavigationViewDefaultPaneBackground" Color="#181818" />
     <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="#181818" />
+    <!--
+        GridViewItem 自带的悬停/按下底色必须清掉。
+        它按整个条目矩形绘制（包含卡片外围的 margin），
+        表现为光标还没进卡片、旁边就先亮一块矩形，和卡片的悬停高亮叠在一起还会错位。
+    -->
+    <SolidColorBrush x:Key="GridViewItemBackgroundPointerOver" Color="Transparent" />
+    <SolidColorBrush x:Key="GridViewItemBackgroundPressed" Color="Transparent" />
+    <SolidColorBrush x:Key="GridViewItemBackgroundSelected" Color="Transparent" />
+    <SolidColorBrush x:Key="GridViewItemBackgroundSelectedPointerOver" Color="Transparent" />
+    <SolidColorBrush x:Key="GridViewItemBackgroundSelectedPressed" Color="Transparent" />
+
 
     <SolidColorBrush x:Key="TextPrimaryBrush" Color="#FFFFFF" />
     <SolidColorBrush x:Key="TextSecondaryBrush" Color="#CCCCCC" />
