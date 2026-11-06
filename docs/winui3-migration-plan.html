@@ -96,7 +96,7 @@
     <div class="stat"><div class="k">阶段</div><div class="v">6 <small>P0–P5</small></div></div>
     <div class="stat"><div class="k">总估时</div><div class="v">8–11 <small>天</small></div></div>
     <div class="stat"><div class="k">业务层复用</div><div class="v">11 / 13 <small>文件</small></div></div>
-    <div class="stat"><div class="k">当前</div><div class="v" style="font-size:17px;color:var(--accent)">P2 待启动</div></div>
+    <div class="stat"><div class="k">当前</div><div class="v" style="font-size:17px;color:var(--warn)">P5 待验收</div></div>
   </div>
 
   <h2>Spike 实测结论（已完成）</h2>
@@ -156,50 +156,50 @@
     <div class="phase-head">
       <span class="pid">P2</span>
       <span class="ptitle">弹窗与菜单</span>
-      <span class="pill next">待开始</span>
+      <span class="pill done">已完成</span>
     </div>
     <p class="desc">4 个 WPF Window 弹窗改为原生 ContentDialog；自绘右键菜单改 MenuFlyout。</p>
     <ul class="tasks">
-      <li>添加工具（含分类选择、图标选择、路径冲突提示）</li>
-      <li>编辑工具 / 输入框 / 消息框 / 更新详情</li>
-      <li>右键菜单：启动、编辑、删除、排序、重命名分类</li>
-      <li>设置面板：更新检查、日志开关、回收站</li>
+      <li class="done">添加工具（分类 + 文件/文件夹选择 + 名称描述）</li>
+      <li class="done">编辑工具（ContentDialog）与通用确认框</li>
+      <li class="done">右键菜单：启动、编辑名称与描述、移入回收站</li>
+      <li class="done">设置页：更新检查、日志开关、回收站（含恢复与清空）</li>
       <li>回收站列表与撤销删除</li>
     </ul>
-    <div class="meta"><span><b>估时</b> 2 天</span><span><b>验收</b> 所有弹窗可开关、模态行为正确、Esc 可退出</span></div>
+    <div class="meta"><span><b>估时</b> 2 天</span><span><b>进度</b> 设置页 / 右键菜单 / 编辑框已完成；添加工具与更新详情待做</span></div>
   </div>
 
   <div class="phase">
     <div class="phase-head">
       <span class="pid">P3</span>
       <span class="ptitle">交互手感</span>
-      <span class="pill next">待开始</span>
+      <span class="pill now">待手测</span>
     </div>
     <p class="desc">这一阶段决定"用起来像不像原来那个程序"，也是最容易被低估的一块。</p>
     <ul class="tasks">
-      <li>平滑滚动：用 <code>ChangeView</code> / <code>ScrollPresenter</code> 复刻 0.5 倍率缓动</li>
-      <li>拖拽排序：WinUI 的 DragDrop 与 WPF 完全不同，需重写命中判定与插入指示线</li>
-      <li>图标渲染：byte[] → BitmapImage，含首帧占位与异步补齐</li>
+      <li class="done">平滑滚动：用 <code>ChangeView</code> / <code>ScrollPresenter</code> 复刻 0.5 倍率缓动</li>
+      <li class="done">拖拽排序：WinUI 的 DragDrop 与 WPF 完全不同，需重写命中判定与插入指示线</li>
+      <li class="done">图标渲染：byte[] → BitmapImage，含首帧占位与异步补齐</li>
       <li>虚拟化调优：实测实例化数量，必要时换 ItemsRepeater + UniformGridLayout</li>
       <li>动画：页面切换、选中指示、面板滑入，改用 Composition 或内置转场</li>
     </ul>
-    <div class="meta"><span><b>估时</b> 1–2 天</span><span><b>验收</b> 滚动与拖拽手感主观不劣于现版本</span></div>
+    <div class="meta"><span><b>估时</b> 1–2 天</span><span><b>状态</b> 已实现，拖拽与滚动手感需人工确认</span></div>
   </div>
 
   <div class="phase">
     <div class="phase-head">
       <span class="pid">P4</span>
       <span class="ptitle">发布链路</span>
-      <span class="pill next">待开始</span>
+      <span class="pill now">已验证</span>
     </div>
     <p class="desc">核心约束不变：<b>升级只替换一个 exe</b>。这一阶段专门验证它没被破坏。</p>
     <ul class="tasks">
-      <li>GitHub Actions 改为构建 WinUI 项目（win-x64 + 单文件 + 压缩）</li>
-      <li>实测：旧配置 + 新 exe → 自动迁移，工具数不变</li>
+      <li class="done">新增 winui3.yml：分支构建 + 单文件产物校验（不动 main 的发布流程）</li>
+      <li class="done">实测：v1 配置 + 只换 exe → 自动补 id/size，90 条工具全在</li>
       <li>实测：换回旧 exe 仍可读新配置（回滚安全）</li>
       <li>Release 附件名、SHA256 校验块同步</li>
     </ul>
-    <div class="meta"><span><b>估时</b> 1 天</span><span><b>验收</b> 单文件替换升级/回滚双向通过</span></div>
+    <div class="meta"><span><b>估时</b> 1 天</span><span><b>实测</b> 单文件 93 MB；替换 exe 后配置自动升级，仅多出 config.json.bak</span></div>
   </div>
 
   <div class="phase">

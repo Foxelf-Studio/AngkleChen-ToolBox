@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
+using Windows.Storage.Pickers;
 using 陈叔叔工具箱.Helpers;
 using 陈叔叔工具箱.Models;
 using 陈叔叔工具箱.Services;
@@ -73,6 +74,13 @@ public sealed partial class MainWindow : Window
         }
 
         RefreshList();
+        // 首次启动（配置迁移拖慢首帧）时，导航可能在菜单项就绪前就触发了
+        // SelectionChanged，把选中态落到别的分类上。这里在布局完成后兜一次底。
+        DispatcherQueue.TryEnqueue(() =>
+        {
+            if (Nav.MenuItems.Count > 0 && !ReferenceEquals(Nav.SelectedItem, Nav.MenuItems[0]))
+                Nav.SelectedItem = Nav.MenuItems[0];
+        });
     }
 
     /// <summary>配置缺失/损坏时在搜索框下方挂红条，说清后果与出路</summary>
@@ -120,6 +128,7 @@ public sealed partial class MainWindow : Window
         ShowTools();
         _activeCategoryId = categoryId;
         RefreshList();
+
     }
 
     private async void RefreshList()
@@ -425,6 +434,124 @@ public sealed partial class MainWindow : Window
         }
     }
 
+    // ── 添加工具 ────────────────────────────────────
+    private async void OnAddTool(object sender, RoutedEventArgs e)
+    {
+        var categoryBox = new ComboBox
+        {
+            ItemsSource = _config.Categories.Select(c => c.Name).ToList(),
+            SelectedIndex = _config.Categories.Count > 0 ? 0 : -1,
+            HorizontalAlignment = HorizontalAlignment.Stretch
+        };
+
+        var pathBox = new TextBox { IsReadOnly = true, PlaceholderText = "选择 exe 或整个工具文件夹" };
+        var nameBox = new TextBox { PlaceholderText = "留空则用文件名" };
+        var descBox = new TextBox
+        {
+            PlaceholderText = "一句话说明这个工具干什么",
+            AcceptsReturn = true,
+            TextWrapping = TextWrapping.Wrap,
+            Height = 72
+        };
+
+        var browseFile = new Button { Content = "选文件" };
+        var browseFolder = new Button { Content = "选文件夹" };
+
+        var pathRow = new Grid { ColumnSpacing = 8 };
+        pathRow.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+        pathRow.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        pathRow.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        Grid.SetColumn(pathBox, 0);
+        Grid.SetColumn(browseFile, 1);
+        Grid.SetColumn(browseFolder, 2);
+        pathRow.Children.Add(pathBox);
+        pathRow.Children.Add(browseFile);
+        pathRow.Children.Add(browseFolder);
+
+        var panel = new StackPanel { Spacing = 6 };
+        panel.Children.Add(new TextBlock { Text = "分类", FontSize = 12 });
+        panel.Children.Add(categoryBox);
+        panel.Children.Add(new TextBlock { Text = "文件", FontSize = 12, Margin = new Thickness(0, 8, 0, 0) });
+        panel.Children.Add(pathRow);
+        panel.Children.Add(new TextBlock { Text = "名称", FontSize = 12, Margin = new Thickness(0, 8, 0, 0) });
+        panel.Children.Add(nameBox);
+        panel.Children.Add(new TextBlock { Text = "描述", FontSize = 12, Margin = new Thickness(0, 8, 0, 0) });
+        panel.Children.Add(descBox);
+
+        var dialog = new ContentDialog
+        {
+            Title = "添加工具",
+            Content = panel,
+            PrimaryButtonText = "添加",
+            CloseButtonText = "取消",
+            DefaultButton = ContentDialogButton.Primary,
+            XamlRoot = RootGrid.XamlRoot
+        };
+
+        browseFile.Click += async (_, _) =>
+        {
+            var picker = new FileOpenPicker();
+            WinRT.Interop.InitializeWithWindow.Initialize(picker, WinRT.Interop.WindowNative.GetWindowHandle(this));
+            picker.FileTypeFilter.Add(".exe");
+            picker.FileTypeFilter.Add(".bat");
+            picker.FileTypeFilter.Add(".msi");
+            picker.FileTypeFilter.Add(".lnk");
+
+            var file = await picker.PickSingleFileAsync();
+            if (file == null) return;
+
+            pathBox.Text = file.Path;
+            if (nameBox.Text.Length == 0)
+                nameBox.Text = Path.GetFileNameWithoutExtension(file.Name);
+        };
+
+        browseFolder.Click += async (_, _) =>
+        {
+            var picker = new FolderPicker();
+            WinRT.Interop.InitializeWithWindow.Initialize(picker, WinRT.Interop.WindowNative.GetWindowHandle(this));
+            picker.FileTypeFilter.Add("*");
+
+            var folder = await picker.PickSingleFolderAsync();
+            if (folder == null) return;
+
+            pathBox.Text = folder.Path;
+            if (nameBox.Text.Length == 0)
+                nameBox.Text = folder.Name;
+        };
+
+        if (await dialog.ShowAsync() != ContentDialogResult.Primary) return;
+
+        var source = pathBox.Text.Trim();
+        if (source.Length == 0)
+        {
+            StatusTip.Text = "没有选择文件";
+            return;
+        }
+
+        var category = categoryBox.SelectedItem as string;
+        if (string.IsNullOrEmpty(category))
+        {
+            StatusTip.Text = "没有可用的分类";
+            return;
+        }
+
+        var name = nameBox.Text.Trim();
+        if (name.Length == 0) name = Path.GetFileNameWithoutExtension(source);
+
+        var result = await Task.Run(() => ToolImporter.Import(
+            _config, AppPaths.Root, source, category, name, descBox.Text.Trim()));
+
+        if (!result.Success)
+        {
+            StatusTip.Text = result.Message;
+            return;
+        }
+
+        BuildNavigation();
+        RefreshList();
+        StatusTip.Text = $"已添加「{name}」到 {category}";
+    }
+
     // 悬停高亮：最上层那块 Border 自己变不透明即可，不需要动数据模型
     private void OnCardPointerEntered(object sender, PointerRoutedEventArgs e)
     {
@@ -434,6 +561,81 @@ public sealed partial class MainWindow : Window
     private void OnCardPointerExited(object sender, PointerRoutedEventArgs e)
     {
         if (sender is Border layer) layer.Opacity = 0;
+    }
+
+    // ── 拖拽排序 ────────────────────────────────────
+    /// <summary>
+    /// GridView 自带 CanReorderItems 会把排序应用到 ItemsSource 上，
+    /// 但不会写进 config.json，这里补上持久化。
+    ///
+    /// 只在「单个分类 + 未搜索」时放行：混合视图里拖动的语义不明确，
+    /// 拖完还得猜它属于哪个分类，宁可不给拖。
+    /// </summary>
+    private void OnDragItemsCompleted(ListViewBase sender, DragItemsCompletedEventArgs args)
+    {
+        var canReorder = _activeCategoryId != "all"
+                         && string.IsNullOrWhiteSpace(SearchBox?.Text);
+
+        if (!canReorder)
+        {
+            // 混合视图下 GridView 已经把顺序改了，重刷一次回到配置里的顺序
+            if (!string.IsNullOrWhiteSpace(SearchBox?.Text) || _activeCategoryId == "all")
+                RefreshList();
+            return;
+        }
+
+        if (args.Items.Count == 0 || args.Items[0] is not ToolCardVm dragged) return;
+
+        var index = Tools.IndexOf(dragged);
+        if (index < 0) return;
+
+        // 用相邻项作为锚点：往前挪就插到前一个之后，往后挪插到后一个之前
+        var anchorIndex = index > 0 ? index - 1 : 1;
+        if (anchorIndex < 0 || anchorIndex >= Tools.Count) return;
+
+        var anchor = Tools[anchorIndex];
+        var insertAfter = index > 0;
+
+        if (_config.ReorderTool(_activeCategoryId, dragged.Id, anchor.Id, insertAfter))
+            StatusTip.Text = $"已调整「{dragged.Name}」的位置";
+    }
+
+    // ── 平滑滚动 ────────────────────────────────────
+    private const double WheelFactor = 0.5;   // 与 WPF 版一致：一格滚半格
+    private const double WheelStep = 48;
+    private ScrollViewer? _gridScroller;
+
+    private void OnGridPointerWheel(object sender, PointerRoutedEventArgs e)
+    {
+        _gridScroller ??= FindDescendant<ScrollViewer>(ToolGrid);
+        if (_gridScroller == null || _gridScroller.ScrollableHeight <= 0) return;
+
+        var delta = e.GetCurrentPoint(ToolGrid).Properties.MouseWheelDelta;
+        if (delta == 0) return;
+
+        // 交给我们自己做，交给系统的话倍率和缓动都不可控
+        e.Handled = true;
+
+        var step = WheelStep * (delta / 120.0) * WheelFactor;
+        var target = Math.Clamp(_gridScroller.VerticalOffset - step, 0, _gridScroller.ScrollableHeight);
+
+        // disableAnimation:false —— 让 ScrollPresenter 走内建缓动，手感接近 WPF 版
+        _gridScroller.ChangeView(null, target, null, false);
+    }
+
+    private static T? FindDescendant<T>(DependencyObject root) where T : DependencyObject
+    {
+        var count = VisualTreeHelper.GetChildrenCount(root);
+        for (var i = 0; i < count; i++)
+        {
+            var child = VisualTreeHelper.GetChild(root, i);
+            if (child is T match) return match;
+
+            var nested = FindDescendant<T>(child);
+            if (nested != null) return nested;
+        }
+
+        return null;
     }
 }
 

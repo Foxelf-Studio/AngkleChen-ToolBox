@@ -1,0 +1,56 @@
+name: winui3
+
+# 迁移期间专用：只在 winui3 分支跑，验证 WinUI 工程能编译、能出单文件。
+# 不碰 main 的发布流程——main 上现在还是 WPF 版，等合并时再统一切换。
+on:
+  push:
+    branches: [winui3]
+  pull_request:
+    branches: [winui3]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore WinUI/AngkleChenToolBox.WinUI.csproj
+
+      - name: Build
+        run: dotnet build WinUI/AngkleChenToolBox.WinUI.csproj -c Release --no-restore
+
+      # 单文件发布：WASDK 要求 unpackaged + self-contained，且 EnableMsixTooling=true
+      - name: Publish portable
+        run: >
+          dotnet publish WinUI/AngkleChenToolBox.WinUI.csproj
+          -c Release -r win-x64 --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeAllContentForSelfExtract=true
+          -p:EnableCompressionInSingleFile=true
+          -p:DebugType=none -p:DebugSymbols=false
+          -o publish-winui
+
+      - name: Verify single file
+        shell: pwsh
+        run: |
+          $files = Get-ChildItem publish-winui -File
+          $files | Select-Object Name, Length
+          if ($files.Count -ne 1) { throw "单文件发布应只产出 1 个文件，实际 $($files.Count) 个" }
+          if (-not (Test-Path "publish-winui/AngkleChenToolBox.exe")) { throw "未找到发布产物" }
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AngkleChenToolBox-winui3-${{ github.run_number }}
+          path: publish-winui/AngkleChenToolBox.exe
+          retention-days: 7

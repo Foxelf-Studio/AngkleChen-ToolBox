@@ -44,19 +44,36 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <StackPanel Grid.Row="0" Spacing="2">
-                            <TextBlock x:Name="HeaderTitle"
-                                       Text="全部工具"
-                                       Foreground="{ThemeResource TextPrimaryBrush}"
-                                       FontFamily="Microsoft YaHei"
-                                       FontSize="22"
-                                       FontWeight="Bold" />
-                            <TextBlock x:Name="HeaderSubtitle"
-                                       Text=""
-                                       Foreground="{ThemeResource TextTertiaryBrush}"
-                                       FontFamily="Microsoft YaHei"
-                                       FontSize="12" />
-                        </StackPanel>
+                        <Grid Grid.Row="0" ColumnSpacing="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Spacing="2">
+                                <TextBlock x:Name="HeaderTitle"
+                                           Text="全部工具"
+                                           Foreground="{ThemeResource TextPrimaryBrush}"
+                                           FontFamily="Microsoft YaHei"
+                                           FontSize="22"
+                                           FontWeight="Bold" />
+                                <TextBlock x:Name="HeaderSubtitle"
+                                           Text=""
+                                           Foreground="{ThemeResource TextTertiaryBrush}"
+                                           FontFamily="Microsoft YaHei"
+                                           FontSize="12" />
+                            </StackPanel>
+
+                            <Button x:Name="BtnAddTool"
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Click="OnAddTool">
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <FontIcon Glyph="&#xE710;" FontSize="12" />
+                                    <TextBlock Text="添加工具" FontFamily="Microsoft YaHei" FontSize="12.5" />
+                                </StackPanel>
+                            </Button>
+                        </Grid>
 
                         <TextBox x:Name="SearchBox"
                                  Grid.Row="1"
@@ -102,7 +119,12 @@
                                   Grid.Row="3"
                                   SelectionMode="None"
                                   IsItemClickEnabled="True"
-                                  ItemClick="OnToolClick">                            <GridView.ItemsPanel>
+                                  ItemClick="OnToolClick"
+                                  CanDragItems="True"
+                                  CanReorderItems="True"
+                                  AllowDrop="True"
+                                  DragItemsCompleted="OnDragItemsCompleted"
+                                  PointerWheelChanged="OnGridPointerWheel">                            <GridView.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <ItemsWrapGrid Orientation="Horizontal" />
                                 </ItemsPanelTemplate>
