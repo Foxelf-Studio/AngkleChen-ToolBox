@@ -119,7 +119,20 @@
                                   CanDragItems="True"
                                   CanReorderItems="True"
                                   AllowDrop="True"
-                                  DragItemsCompleted="OnDragItemsCompleted">                            <GridView.ItemsPanel>
+                                  DragItemsCompleted="OnDragItemsCompleted">
+
+                            <!--
+                                GridViewItem 的 PointerOver / Pressed 状态应用的是
+                                SystemControlHighlightListLow/MediumBrush（老 UWP 键），
+                                不是 GridViewItemBackgroundPointerOver。
+                                这层底色按「条目矩形」绘制（含卡片外 12px margin）且是直角，
+                                表现为光标还没进卡片就先亮一块方角矩形。
+                                只在本 GridView 内覆盖，避免影响按钮等其它控件的悬停。
+                            -->
+                            <GridView.Resources>
+                                <SolidColorBrush x:Key="SystemControlHighlightListLowBrush" Color="Transparent" />
+                                <SolidColorBrush x:Key="SystemControlHighlightListMediumBrush" Color="Transparent" />
+                            </GridView.Resources>                            <GridView.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <ItemsWrapGrid Orientation="Horizontal" />
                                 </ItemsPanelTemplate>
@@ -161,7 +174,9 @@
                                                 BorderThickness="1" />
 
                                         <!-- 悬停层必须在内容下面：放在上面会整块盖住图标和文字 -->
-                                        <Border CornerRadius="8"
+                                        <!-- 内缩 1px：高光盖上来时不至于把卡片描边吃掉 -->
+                                        <Border CornerRadius="7"
+                                                Margin="1"
                                                 Tag="hover"
                                                 Background="{ThemeResource CardBackgroundHoverBrush}"
                                                 Opacity="0" />
