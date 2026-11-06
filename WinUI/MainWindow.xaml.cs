@@ -30,6 +30,8 @@ public sealed partial class MainWindow : Window
         Title = "陈叔叔工具箱";
 
         AppWindow.Resize(new Windows.Graphics.SizeInt32(1180, 760));
+        CenterOnScreen();
+        ApplyWindowIcon();
 
         // Mica 只在 Win11 可用，Win10 上保持纯色背景（README 声明支持 1809+）
         if (MicaController.IsSupported())
@@ -81,6 +83,56 @@ public sealed partial class MainWindow : Window
             if (Nav.MenuItems.Count > 0 && !ReferenceEquals(Nav.SelectedItem, Nav.MenuItems[0]))
                 Nav.SelectedItem = Nav.MenuItems[0];
         });
+    }
+
+    /// <summary>
+    /// 窗口居中到工作区。之前只设了尺寸没设位置，Windows 会按默认位置放，
+    /// 小屏上可能一半在屏幕外——看起来像窗口被切了一块。
+    /// </summary>
+    private void CenterOnScreen()
+    {
+        try
+        {
+            var area = Microsoft.UI.Windowing.DisplayArea
+                .GetFromWindowId(AppWindow.Id, Microsoft.UI.Windowing.DisplayAreaFallback.Primary)
+                .WorkArea;
+
+            var size = AppWindow.Size;
+            var x = area.X + Math.Max(0, (area.Width - size.Width) / 2);
+            var y = area.Y + Math.Max(0, (area.Height - size.Height) / 2);
+
+            AppWindow.Move(new Windows.Graphics.PointInt32(x, y));
+        }
+        catch
+        {
+            // 定位失败就交给系统
+        }
+    }
+
+    /// <summary>
+    /// 标题栏图标：WinUI 3 不会自动取 exe 里嵌的图标，
+    /// 必须自己把 exe 的关联图标导出成 .ico 再交给 AppWindow。
+    /// </summary>
+    private void ApplyWindowIcon()
+    {
+        try
+        {
+            var exe = Environment.ProcessPath;
+            if (exe == null) return;
+
+            using var icon = System.Drawing.Icon.ExtractAssociatedIcon(exe);
+            if (icon == null) return;
+
+            var temp = Path.Combine(Path.GetTempPath(), "angklechen-window.ico");
+            using (var stream = File.Create(temp))
+                icon.Save(stream);
+
+            AppWindow.SetIcon(temp);
+        }
+        catch
+        {
+            // 设不上就沿用系统默认图标，不影响功能
+        }
     }
 
     /// <summary>配置缺失/损坏时在搜索框下方挂红条，说清后果与出路</summary>
@@ -552,15 +604,25 @@ public sealed partial class MainWindow : Window
         StatusTip.Text = $"已添加「{name}」到 {category}";
     }
 
-    // 悬停高亮：最上层那块 Border 自己变不透明即可，不需要动数据模型
+    // 悬停高亮：把卡片里 Tag=hover 那一层调成不透明。
+    // 这一层必须垫在内容下面——放在最上层会把图标和文字整块盖掉，看起来像卡片消失了。
     private void OnCardPointerEntered(object sender, PointerRoutedEventArgs e)
     {
-        if (sender is Border layer) layer.Opacity = 1;
+        if (sender is Grid card && FindHoverLayer(card) is { } layer) layer.Opacity = 1;
     }
 
     private void OnCardPointerExited(object sender, PointerRoutedEventArgs e)
     {
-        if (sender is Border layer) layer.Opacity = 0;
+        if (sender is Grid card && FindHoverLayer(card) is { } layer) layer.Opacity = 0;
+    }
+
+    private static Border? FindHoverLayer(Grid card)
+    {
+        foreach (var child in card.Children)
+            if (child is Border { Tag: "hover" } layer)
+                return layer;
+
+        return null;
     }
 
     // ── 拖拽排序 ────────────────────────────────────
@@ -600,43 +662,6 @@ public sealed partial class MainWindow : Window
             StatusTip.Text = $"已调整「{dragged.Name}」的位置";
     }
 
-    // ── 平滑滚动 ────────────────────────────────────
-    private const double WheelFactor = 0.5;   // 与 WPF 版一致：一格滚半格
-    private const double WheelStep = 48;
-    private ScrollViewer? _gridScroller;
-
-    private void OnGridPointerWheel(object sender, PointerRoutedEventArgs e)
-    {
-        _gridScroller ??= FindDescendant<ScrollViewer>(ToolGrid);
-        if (_gridScroller == null || _gridScroller.ScrollableHeight <= 0) return;
-
-        var delta = e.GetCurrentPoint(ToolGrid).Properties.MouseWheelDelta;
-        if (delta == 0) return;
-
-        // 交给我们自己做，交给系统的话倍率和缓动都不可控
-        e.Handled = true;
-
-        var step = WheelStep * (delta / 120.0) * WheelFactor;
-        var target = Math.Clamp(_gridScroller.VerticalOffset - step, 0, _gridScroller.ScrollableHeight);
-
-        // disableAnimation:false —— 让 ScrollPresenter 走内建缓动，手感接近 WPF 版
-        _gridScroller.ChangeView(null, target, null, false);
-    }
-
-    private static T? FindDescendant<T>(DependencyObject root) where T : DependencyObject
-    {
-        var count = VisualTreeHelper.GetChildrenCount(root);
-        for (var i = 0; i < count; i++)
-        {
-            var child = VisualTreeHelper.GetChild(root, i);
-            if (child is T match) return match;
-
-            var nested = FindDescendant<T>(child);
-            if (nested != null) return nested;
-        }
-
-        return null;
-    }
 }
 
 /// <summary>卡片绑定的最小视图模型：只暴露界面要用的东西</summary>

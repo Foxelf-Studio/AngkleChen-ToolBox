@@ -23,14 +23,7 @@
                         Background="Transparent"
                         SelectionChanged="OnCategoryChanged">
 
-            <NavigationView.PaneHeader>
-                <TextBlock Text="陈叔叔工具箱"
-                           Margin="4,0,0,12"
-                           Foreground="{ThemeResource TextPrimaryBrush}"
-                           FontFamily="Microsoft YaHei"
-                           FontSize="16"
-                           FontWeight="SemiBold" />
-            </NavigationView.PaneHeader>
+            
 
             <NavigationView.Content>
                 <Grid>
@@ -123,8 +116,7 @@
                                   CanDragItems="True"
                                   CanReorderItems="True"
                                   AllowDrop="True"
-                                  DragItemsCompleted="OnDragItemsCompleted"
-                                  PointerWheelChanged="OnGridPointerWheel">                            <GridView.ItemsPanel>
+                                  DragItemsCompleted="OnDragItemsCompleted">                            <GridView.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <ItemsWrapGrid Orientation="Horizontal" />
                                 </ItemsPanelTemplate>
@@ -135,7 +127,9 @@
                                           Height="92"
                                           Margin="0,0,12,12"
                                           Background="Transparent"
-                                          DoubleTapped="OnCardDoubleTapped">
+                                          DoubleTapped="OnCardDoubleTapped"
+                                          PointerEntered="OnCardPointerEntered"
+                                          PointerExited="OnCardPointerExited">
 
                                         <Grid.ContextFlyout>
                                             <MenuFlyout>
@@ -162,6 +156,12 @@
                                                 Background="{ThemeResource CardBackgroundBrush}"
                                                 BorderBrush="{ThemeResource CardBorderBrush}"
                                                 BorderThickness="1" />
+
+                                        <!-- 悬停层必须在内容下面：放在上面会整块盖住图标和文字 -->
+                                        <Border CornerRadius="8"
+                                                Tag="hover"
+                                                Background="{ThemeResource CardBackgroundHoverBrush}"
+                                                Opacity="0" />
 
                                         <Border CornerRadius="8"
                                                 Background="{ThemeResource CardBackgroundSelectedBrush}"
@@ -209,12 +209,6 @@
                                                            TextTrimming="CharacterEllipsis" />
                                             </StackPanel>
                                         </Grid>
-
-                                        <Border CornerRadius="8"
-                                                Background="{ThemeResource CardBackgroundHoverBrush}"
-                                                Opacity="0"
-                                                PointerEntered="OnCardPointerEntered"
-                                                PointerExited="OnCardPointerExited" />
                                     </Grid>
                                 </DataTemplate>
                             </GridView.ItemTemplate>
