@@ -633,8 +633,17 @@ public sealed partial class MainWindow : Window
         }
         catch (Exception ex)
         {
-            // async void 里漏出去的异常会直接终止进程
-            StatusTip.Text = $"导入失败：{ex.Message}";
+            // async void 里漏出去的异常会直接终止进程；
+            // 同时落一条日志，否则只能看到一句没有上下文的失败提示
+            try
+            {
+                System.IO.File.AppendAllText(
+                    System.IO.Path.Combine(AppPaths.Root, "import.log"),
+                    $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] UI 层导入异常{Environment.NewLine}{ex}{Environment.NewLine}{Environment.NewLine}");
+            }
+            catch { }
+
+            StatusTip.Text = $"导入失败（{ex.GetType().Name}）：{ex.Message}";
             return;
         }
 

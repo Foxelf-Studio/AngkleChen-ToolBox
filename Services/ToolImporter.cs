@@ -25,6 +25,8 @@ public static class ToolImporter
         string description,
         string? categoryIcon = null)
     {
+        toolboxRootForLog = toolboxRoot;
+
         try
         {
             var isFolder = Directory.Exists(sourcePath);
@@ -72,10 +74,32 @@ public static class ToolImporter
         }
         catch (Exception ex)
         {
-            Logger.Log($"导入工具失败: {ex.Message}");
-            return new ImportResult(false, $"添加工具失败：{ex.Message}");
+            // 无论是否开了调试日志，失败都单独落一条：
+            // 导入涉及复制文件 + 写配置，出错原因常常是环境相关的（占用、权限、长路径），
+            // 没有现场信息只能靠猜
+            LogFailure(sourcePath, categoryName, toolName, ex);
+
+            return new ImportResult(false, $"添加工具失败（{ex.GetType().Name}）：{ex.Message}");
         }
     }
+
+    /// <summary>把导入失败写进程序目录的 import.log</summary>
+    private static void LogFailure(string source, string category, string name, Exception ex)
+    {
+        try
+        {
+            var path = System.IO.Path.Combine(toolboxRootForLog ?? AppPaths.Root, "import.log");
+            var text = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] 源={source} 分类={category} 名称={name}" +
+                       $"{Environment.NewLine}{ex}{Environment.NewLine}{Environment.NewLine}";
+            System.IO.File.AppendAllText(path, text);
+        }
+        catch
+        {
+            // 日志写不进去也不能影响主流程
+        }
+    }
+
+    private static string? toolboxRootForLog;
 
     /// <summary>
     /// 递归复制目录（只拷文件，跳过空目录的额外判断）

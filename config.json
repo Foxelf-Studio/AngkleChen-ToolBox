@@ -675,7 +675,7 @@
           "name": "HEU KMS \u6FC0\u6D3B",
           "description": "HEU KMS Activator\uFF0C\u652F\u6301Windows Vista~11\u53CAOffice 2010~2024\u7684KMS\u6FC0\u6D3B\uFF0C\u65E0\u9700\u8054\u7F51\uFF0C\u64CD\u4F5C\u7B80\u5355\u3002",
           "relativePath": "\u5DE5\u5177\\\u88C5\u673A\u4E0E\u6FC0\u6D3B\\HEU\u6FC0\u6D3B\u5DE5\u5177\\HEU_KMS_Activator_v63.3.0.exe",
-          "order": 0,
+          "order": 10,
           "size": 4492800
         },
         {
@@ -683,7 +683,7 @@
           "name": "\u6CA7\u6C34 KMS",
           "description": "\u6CA7\u6C34KMS\u6FC0\u6D3B\u6279\u5904\u7406\u811A\u672C\uFF0C\u901A\u8FC7KMS\u670D\u52A1\u5668\u6FC0\u6D3BWindows\u548COffice\uFF0C\u652F\u6301\u591A\u79CD\u7248\u672C\u3002",
           "relativePath": "\u5DE5\u5177\\\u88C5\u673A\u4E0E\u6FC0\u6D3B\\\u6CA7\u6C34KMS\\KMS-Cangshui.net.bat",
-          "order": 1,
+          "order": 20,
           "size": 41389
         },
         {
@@ -691,7 +691,7 @@
           "name": "\u5B89\u5353\u624B\u8868 ADB",
           "description": "\u5B89\u5353\u624B\u8868ADB\u8C03\u8BD5\u5DE5\u5177\uFF0C\u652F\u6301\u5B89\u88C5\u5E94\u7528\u3001\u4F20\u8F93\u6587\u4EF6\u3001\u4FEE\u6539\u7CFB\u7EDF\u8BBE\u7F6E\uFF0C\u9002\u7528\u4E8E\u5404\u7C7B\u5B89\u5353\u667A\u80FD\u624B\u8868\u3002",
           "relativePath": "\u5DE5\u5177\\\u88C5\u673A\u4E0E\u6FC0\u6D3B\\\u5B89\u5353\u624B\u8868adb\u5B9E\u7528\u5DE5\u5177\u7BB1\\\u5B89\u5353\u624B\u8868ADB\u5B9E\u7528\u5DE5\u5177\u7BB1 66.0.0.exe",
-          "order": 2,
+          "order": 30,
           "size": 61539971
         },
         {
@@ -699,7 +699,7 @@
           "name": "\u9C81\u5927\u5E08",
           "description": "\u9C81\u5927\u5E08\u786C\u4EF6\u68C0\u6D4B\u5DE5\u5177\uFF0C\u652F\u6301CPU/\u663E\u5361/\u5185\u5B58/\u786C\u76D8\u6027\u80FD\u8DD1\u5206\uFF0C\u6E29\u5EA6\u76D1\u63A7\uFF0C\u9A71\u52A8\u7BA1\u7406\u3002",
           "relativePath": "\u5DE5\u5177\\\u88C5\u673A\u4E0E\u6FC0\u6D3B\\\u9C81\u5927\u5E08\\ludashisetup.exe",
-          "order": 3,
+          "order": 40,
           "size": 249231056
         },
         {
@@ -707,7 +707,7 @@
           "name": "Steam \u4E0B\u8F7D",
           "description": "Steam\u6E38\u620F\u5E73\u53F0\u4E0B\u8F7D\u9875\u9762\uFF0C\u5168\u7403\u6700\u5927\u7684PC\u6E38\u620F\u5E73\u53F0\uFF0C\u652F\u6301\u6E38\u620F\u8D2D\u4E70\u3001\u4E0B\u8F7D\u3001\u793E\u533A\u529F\u80FD\u3002",
           "relativePath": "\u5DE5\u5177\\\u88C5\u673A\u4E0E\u6FC0\u6D3B\\Steam\\\u4E0B\u8F7DSteam.bat",
-          "order": 4,
+          "order": 50,
           "size": 58
         },
         {
@@ -715,7 +715,7 @@
           "name": "Epic Games\u4E0B\u8F7D",
           "description": "Epic Games\u6E38\u620F\u5E73\u53F0\uFF0C\u6BCF\u5468\u514D\u8D39\u6E38\u620F\u9886\u53D6\uFF0C\u652F\u6301\u865A\u5E7B\u5F15\u64CE\u6E38\u620F\u5E93\u548C\u793E\u4EA4\u529F\u80FD\u3002",
           "relativePath": "\u5DE5\u5177\\\u88C5\u673A\u4E0E\u6FC0\u6D3B\\epic\\Start.bat",
-          "order": 5,
+          "order": 70,
           "size": 69
         },
         {
@@ -723,7 +723,7 @@
           "name": "EA App\u4E0B\u8F7D",
           "description": "EA App(EA\u684C\u9762\u5E94\u7528)\uFF0CEA\u65D7\u4E0B\u6E38\u620F\u5E73\u53F0\uFF0C\u7BA1\u7406EA\u6E38\u620F\u5E93\u3001\u8BA2\u9605EA Play\u670D\u52A1\u3002",
           "relativePath": "\u5DE5\u5177\\\u88C5\u673A\u4E0E\u6FC0\u6D3B\\eaapp\\Start.bat",
-          "order": 6,
+          "order": 60,
           "size": 63
         },
         {
@@ -731,7 +731,7 @@
           "name": "\u6218\u7F51\u4E0B\u8F7D",
           "description": "\u66B4\u96EA\u6218\u7F51\u5BA2\u6237\u7AEF\uFF0C\u4E0B\u8F7D\u548C\u7BA1\u7406\u66B4\u96EA\u65D7\u4E0B\u6E38\u620F\uFF0C\u5305\u62EC\u9B54\u517D\u4E16\u754C\u3001\u5B88\u671B\u5148\u950B\u3001\u6697\u9ED1\u7834\u574F\u795E\u7B49\u3002",
           "relativePath": "\u5DE5\u5177\\\u88C5\u673A\u4E0E\u6FC0\u6D3B\\battle\\Start.bat",
-          "order": 7,
+          "order": 80,
           "size": 62
         }
       ]
