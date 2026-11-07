@@ -1,4 +1,5 @@
 {
   "autoCheckUpdate": true,
-  "enableLog": true
+  "enableLog": true,
+  "theme": "system"
 }

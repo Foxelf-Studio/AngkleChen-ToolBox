@@ -108,8 +108,16 @@ public sealed partial class MainWindow : Window
             // 别让搜索框在启动时抢焦点：它会画出自己的聚焦下划线
             ToolGrid.Focus(FocusState.Programmatic);
 
-            // 布局稳定后再对齐列宽
-            FitWindowToColumns();
+            // 这一刻 NavigationView 的展开、滚动条都还没落定，ActualWidth 只有 800 出头，
+            // 按它算会少一整列。等布局稳定再算，只算一次。
+            var fitTimer = DispatcherQueue.CreateTimer();
+            fitTimer.Interval = TimeSpan.FromMilliseconds(600);
+            fitTimer.Tick += (_, _) =>
+            {
+                fitTimer.Stop();
+                FitWindowToColumns();
+            };
+            fitTimer.Start();
 
 
         });
@@ -841,7 +849,9 @@ public sealed partial class MainWindow : Window
         if (_windowFitted) return;
 
         var gridWidth = ToolGrid.ActualWidth;
-        if (gridWidth <= 0) return;
+
+        // 宽度过小说明布局尚未完成，此时算出来的列数没有意义
+        if (gridWidth < CardCell) return;
 
         var columns = Math.Max(3, (int)Math.Floor((gridWidth + 0.5) / CardCell));
 
@@ -851,9 +861,10 @@ public sealed partial class MainWindow : Window
 
         _windowFitted = true;
 
+        var size = AppWindow.Size;
+
         if (Math.Abs(delta) < 2) return;
 
-        var size = AppWindow.Size;
         AppWindow.Resize(new Windows.Graphics.SizeInt32(
             size.Width + (int)Math.Round(delta),
             size.Height));
