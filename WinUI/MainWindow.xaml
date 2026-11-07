@@ -209,6 +209,10 @@
                             -->
                             <GridView.ItemContainerStyle>
                                 <Style TargetType="GridViewItem">
+                                    <!-- 容器不画任何聚焦框：白框会套在卡片外面，比卡片大一圈 -->
+                                    <Setter Property="UseSystemFocusVisuals" Value="False" />
+                                    <Setter Property="FocusVisualPrimaryThickness" Value="0" />
+                                    <Setter Property="FocusVisualSecondaryThickness" Value="0" />
                                     <Setter Property="Margin" Value="0" />
                                     <Setter Property="Padding" Value="0" />
                                     <Setter Property="Background" Value="Transparent" />
@@ -231,9 +235,9 @@
                             </GridView.ItemsPanel>
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="local:ToolCardVm">
-                                    <local:CardRoot Width="200"
-                                          Height="92"
-                                          Margin="0,0,12,12"
+                                    <local:CardRoot Width="205"
+                                          Height="140"
+                                          Margin="5"
                                           Background="Transparent"
                                           Opacity="{x:Bind CardOpacity, Mode=OneWay}"
                                           DoubleTapped="OnCardDoubleTapped"
@@ -280,45 +284,43 @@
                                                 BorderThickness="1"
                                                 Visibility="{x:Bind SelectedVisibility, Mode=OneWay}" />
 
-                                        <Grid Padding="14,12" ColumnSpacing="12">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
+                                        <!-- 版式照 WPF 版 ToolCard：图标居中在上、名称在下，整体垂直居中 -->
+                                        <Grid Margin="8,0"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
 
-                                            <Border Grid.Column="0"
-                                                    Width="36"
-                                                    Height="36"
-                                                    CornerRadius="18"
+                                            <Border Grid.Row="0"
+                                                    Width="48"
+                                                    Height="48"
+                                                    CornerRadius="24"
                                                     Background="{ThemeResource CardBackgroundHoverBrush}">
                                                 <Grid>
                                                     <FontIcon Glyph="&#xE90F;"
-                                                              FontSize="16"
+                                                              FontSize="20"
                                                               Foreground="{ThemeResource TextTertiaryBrush}" />
-                                                    <Image Width="32"
-                                                           Height="32"
+                                                    <Image Width="44"
+                                                           Height="44"
                                                            Stretch="Uniform"
                                                            Source="{x:Bind Icon, Mode=OneWay}" />
                                                 </Grid>
                                             </Border>
 
-                                            <StackPanel Grid.Column="1"
-                                                        VerticalAlignment="Center"
-                                                        Spacing="2">
-                                                <TextBlock Text="{x:Bind Name}"
-                                                           Foreground="{ThemeResource TextPrimaryBrush}"
-                                                           FontFamily="Microsoft YaHei"
-                                                           FontSize="13"
-                                                           FontWeight="SemiBold"
-                                                           MaxLines="1"
-                                                           TextTrimming="CharacterEllipsis" />
-                                                <TextBlock Text="{x:Bind Category}"
-                                                           Foreground="{ThemeResource TextTertiaryBrush}"
-                                                           FontFamily="Microsoft YaHei"
-                                                           FontSize="11"
-                                                           MaxLines="1"
-                                                           TextTrimming="CharacterEllipsis" />
-                                            </StackPanel>
+                                            <TextBlock Grid.Row="1"
+                                                       Margin="0,8,0,0"
+                                                       Text="{x:Bind Name}"
+                                                       Foreground="{ThemeResource TextPrimaryBrush}"
+                                                       FontFamily="Microsoft YaHei"
+                                                       FontSize="14"
+                                                       FontWeight="SemiBold"
+                                                       TextWrapping="Wrap"
+                                                       TextAlignment="Center"
+                                                       HorizontalAlignment="Center"
+                                                       MaxLines="2"
+                                                       TextTrimming="CharacterEllipsis" />
                                         </Grid>
                                     </local:CardRoot>
                                 </DataTemplate>
