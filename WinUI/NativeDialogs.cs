@@ -7,9 +7,12 @@ namespace AngkleChen;
 /// 文件 / 文件夹选择框，直接调 Win32 通用对话框（comdlg32 / shell32）。
 ///
 /// 为什么不用 Windows.Storage.Pickers：非打包 + 单文件发布下，
-/// FileOpenPicker 会让进程以 0xc000027b 直接终止，托管层的 try/catch 根本拦不住
-/// （实测崩溃日志落在 CoreMessagingXP.dll）。comdlg32 是纯 Win32，
-/// 没有 WinRT 激活这一层，不存在这个问题。
+/// FileOpenPicker 会让进程以 0xc000027b 直接终止，托管层的 try/catch 拦不住。
+///
+/// 为什么缓冲区用 IntPtr 手工分配而不是 StringBuilder：
+/// StringBuilder 只能作为 P/Invoke 的直接参数，放进结构体字段后
+/// Marshal.SizeOf 会直接抛 ArgumentException（"cannot be marshaled as an
+/// unmanaged structure"）——这正是上一版报错的来源。
 /// </summary>
 internal static class NativeDialogs
 {
@@ -21,67 +24,96 @@ internal static class NativeDialogs
     private const int BifReturnOnlyFsDirs = 0x00000001;
     private const int BifNewDialogStyle = 0x00000040;
 
+    private const int PathCapacity = 4096;
+
     public static string? PickFile(IntPtr owner, string filter)
     {
-        // 用 StringBuilder 而不是 char[]：char[] 要靠 SizeParamIndex 推导长度，
-        // 索引写错会越界写内存（直接崩进程），StringBuilder 按 Capacity 分配最稳
-        var buffer = new StringBuilder(4096);
-        var ofn = new OpenFileName
-        {
-            lStructSize = Marshal.SizeOf<OpenFileName>(),
-            hwndOwner = owner,
-            lpstrFilter = filter,
-            lpstrFile = buffer,
-            nMaxFile = buffer.Capacity,
-            lpstrTitle = "选择工具程序",
-            Flags = OfnExplorer | OfnFileMustExist | OfnPathMustExist | OfnNoChangeDir
-        };
+        var fileBuffer = Marshal.AllocHGlobal(PathCapacity * 2);
 
-        if (!GetOpenFileNameW(ref ofn)) return null;
-
-        var path = buffer.ToString().TrimEnd('\0');
-        return string.IsNullOrWhiteSpace(path) ? null : path;
-    }
-
-    public static string? PickFolder(IntPtr owner, string title)
-    {
-        var display = new StringBuilder(260);
-        var browse = new BrowseInfo
-        {
-            hwndOwner = owner,
-            pszDisplayName = display,
-            lpszTitle = title,
-            ulFlags = BifReturnOnlyFsDirs | BifNewDialogStyle
-        };
-
-        var pidl = SHBrowseForFolderW(ref browse);
-        if (pidl == IntPtr.Zero) return null;
-
-        var pathBuffer = new char[4096];
         try
         {
-            if (!SHGetPathFromIDListW(pidl, pathBuffer)) return null;
+            Zero(fileBuffer, PathCapacity * 2);
 
-            var path = new string(pathBuffer).TrimEnd('\0');
+            var ofn = new OpenFileName
+            {
+                lStructSize = Marshal.SizeOf<OpenFileName>(),
+                hwndOwner = owner,
+                lpstrFilter = filter,
+                lpstrFile = fileBuffer,
+                nMaxFile = PathCapacity,
+                lpstrTitle = "选择工具程序",
+                Flags = OfnExplorer | OfnFileMustExist | OfnPathMustExist | OfnNoChangeDir
+            };
+
+            if (!GetOpenFileNameW(ref ofn)) return null;
+
+            var path = Marshal.PtrToStringUni(fileBuffer);
             return string.IsNullOrWhiteSpace(path) ? null : path;
         }
         finally
         {
-            Marshal.FreeCoTaskMem(pidl);
+            Marshal.FreeHGlobal(fileBuffer);
+        }
+    }
+
+    public static string? PickFolder(IntPtr owner, string title)
+    {
+        var display = Marshal.AllocHGlobal(260 * 2);
+        var pathBuffer = Marshal.AllocHGlobal(PathCapacity * 2);
+
+        try
+        {
+            Zero(display, 260 * 2);
+            Zero(pathBuffer, PathCapacity * 2);
+
+            var browse = new BrowseInfo
+            {
+                hwndOwner = owner,
+                pszDisplayName = display,
+                lpszTitle = title,
+                ulFlags = BifReturnOnlyFsDirs | BifNewDialogStyle
+            };
+
+            var pidl = SHBrowseForFolderW(ref browse);
+            if (pidl == IntPtr.Zero) return null;
+
+            try
+            {
+                if (!SHGetPathFromIDListW(pidl, pathBuffer)) return null;
+
+                var path = Marshal.PtrToStringUni(pathBuffer);
+                return string.IsNullOrWhiteSpace(path) ? null : path;
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(pidl);
+            }
+        }
+        finally
+        {
+            Marshal.FreeHGlobal(display);
+            Marshal.FreeHGlobal(pathBuffer);
         }
     }
 
     /// <summary>把过滤器写成 comdlg32 要求的双 null 结尾格式</summary>
     public static string BuildFilter(params (string Label, string Pattern)[] entries)
     {
-        var parts = new List<string>();
+        var builder = new StringBuilder();
+
         foreach (var (label, pattern) in entries)
         {
-            parts.Add(label);
-            parts.Add(pattern);
+            builder.Append(label).Append('\0').Append(pattern).Append('\0');
         }
 
-        return string.Join('\0', parts) + "\0\0";
+        builder.Append('\0');
+        return builder.ToString();
+    }
+
+    private static void Zero(IntPtr buffer, int bytes)
+    {
+        for (var i = 0; i < bytes; i++)
+            Marshal.WriteByte(buffer, i, 0);
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -94,7 +126,7 @@ internal static class NativeDialogs
         public string? lpstrCustomFilter;
         public int nMaxCustFilter;
         public int nFilterIndex;
-        public StringBuilder? lpstrFile;
+        public IntPtr lpstrFile;
         public int nMaxFile;
         public string? lpstrFileTitle;
         public int nMaxFileTitle;
@@ -117,7 +149,7 @@ internal static class NativeDialogs
     {
         public IntPtr hwndOwner;
         public IntPtr pidlRoot;
-        public StringBuilder? pszDisplayName;
+        public IntPtr pszDisplayName;
         public string? lpszTitle;
         public int ulFlags;
         public IntPtr lpfn;
@@ -132,5 +164,5 @@ internal static class NativeDialogs
     private static extern IntPtr SHBrowseForFolderW(ref BrowseInfo browseInfo);
 
     [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-    private static extern bool SHGetPathFromIDListW(IntPtr pidl, char[] path);
+    private static extern bool SHGetPathFromIDListW(IntPtr pidl, IntPtr path);
 }

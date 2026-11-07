@@ -375,17 +375,23 @@ public sealed partial class MainWindow : Window
 
     private async Task<bool> ConfirmAsync(string title, string message, string primary = "确定")
     {
+        var body = new TextBlock
+        {
+            Text = message,
+            TextWrapping = TextWrapping.Wrap
+        };
+
         var dialog = new ContentDialog
         {
             Title = title,
-            Content = message,
+            Content = body,
             PrimaryButtonText = primary,
             CloseButtonText = "取消",
             DefaultButton = ContentDialogButton.Close,
             XamlRoot = RootGrid.XamlRoot
         };
 
-        FadeInDialog(dialog);
+        FadeInContent(dialog, body);
         return await dialog.ShowAsync() == ContentDialogResult.Primary;
     }
 
@@ -476,7 +482,7 @@ public sealed partial class MainWindow : Window
             XamlRoot = RootGrid.XamlRoot
         };
 
-        FadeInDialog(dialog);
+        FadeInContent(dialog, panel);
         if (await dialog.ShowAsync() != ContentDialogResult.Primary) return;
 
         var name = nameBox.Text.Trim();
@@ -599,7 +605,7 @@ public sealed partial class MainWindow : Window
             }
         };
 
-        FadeInDialog(dialog);
+        FadeInContent(dialog, panel);
         if (await dialog.ShowAsync() != ContentDialogResult.Primary) return;
 
         var source = pathBox.Text.Trim();
@@ -680,13 +686,14 @@ public sealed partial class MainWindow : Window
     }
 
     /// <summary>
-    /// ContentDialog 的打开动画在 WinUI 3 里不稳定（关闭有、打开没有），
-    /// 这里自己补一段 160ms 淡入，保证两种方向观感一致。
-    /// 调用点必须在 ShowAsync 之前。
+    /// 打开弹窗时给内容加一段 160ms 淡入。
+    ///
+    /// 不要动 dialog.Opacity：那会让整块弹窗连同深色遮罩一起参与透明度过渡，
+    /// 关闭时遮罩会闪一下。只动内容，遮罩交回系统处理。
     /// </summary>
-    private static void FadeInDialog(ContentDialog dialog)
+    private static void FadeInContent(ContentDialog dialog, UIElement content)
     {
-        dialog.Opacity = 0;
+        content.Opacity = 0;
 
         dialog.Opened += (_, _) =>
         {
@@ -696,12 +703,12 @@ public sealed partial class MainWindow : Window
                 Duration = new Duration(TimeSpan.FromMilliseconds(160))
             };
 
-            Storyboard.SetTarget(animation, dialog);
+            Storyboard.SetTarget(animation, content);
             Storyboard.SetTargetProperty(animation, "Opacity");
 
             var storyboard = new Storyboard();
             storyboard.Children.Add(animation);
-            storyboard.Completed += (_, _) => dialog.Opacity = 1;
+            storyboard.Completed += (_, _) => content.Opacity = 1;
             storyboard.Begin();
         };
     }
