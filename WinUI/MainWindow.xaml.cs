@@ -727,6 +727,46 @@ public sealed partial class MainWindow : Window
         };
     }
 
+    // ── 滚轮 ────────────────────────────────────────
+    private const double WheelStep = 48;        // 系统一格大约 48px
+    private const double WheelFactor = 2.0;     // 需求：一格走两倍距离
+    private ScrollViewer? _gridScroller;
+
+    private void OnGridPointerWheel(object sender, PointerRoutedEventArgs e)
+    {
+        _gridScroller ??= FindDescendant<ScrollViewer>(ToolGrid);
+        if (_gridScroller == null || _gridScroller.ScrollableHeight <= 0) return;
+
+        var delta = e.GetCurrentPoint(ToolGrid).Properties.MouseWheelDelta;
+        if (delta == 0) return;
+
+        e.Handled = true;
+
+        var target = Math.Clamp(
+            _gridScroller.VerticalOffset - WheelStep * (delta / 120.0) * WheelFactor,
+            0,
+            _gridScroller.ScrollableHeight);
+
+        // 交给我们算距离，动画仍由 ScrollViewer 自己的缓动负责
+        _gridScroller.ChangeView(null, target, null, false);
+    }
+
+    private static T? FindDescendant<T>(DependencyObject root) where T : DependencyObject
+    {
+        var count = VisualTreeHelper.GetChildrenCount(root);
+
+        for (var i = 0; i < count; i++)
+        {
+            var child = VisualTreeHelper.GetChild(root, i);
+            if (child is T match) return match;
+
+            var nested = FindDescendant<T>(child);
+            if (nested != null) return nested;
+        }
+
+        return null;
+    }
+
     private static Border? FindHoverLayer(Grid card)
     {
         foreach (var child in card.Children)
