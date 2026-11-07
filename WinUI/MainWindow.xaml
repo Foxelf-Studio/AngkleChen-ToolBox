@@ -505,6 +505,33 @@
                                                           MinWidth="0"
                                                           Toggled="OnSettingsToggled" />
                                         </Grid>
+
+                                        <Grid ColumnSpacing="16">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <StackPanel Spacing="2">
+                                                <TextBlock Text="外观主题"
+                                                           Foreground="{ThemeResource TextPrimaryBrush}"
+                                                           FontFamily="Microsoft YaHei"
+                                                           FontSize="13" />
+                                                <TextBlock Text="跟随系统时会随 Windows 的浅色/深色设置变化"
+                                                           Foreground="{ThemeResource TextTertiaryBrush}"
+                                                           FontFamily="Microsoft YaHei"
+                                                           FontSize="11" />
+                                            </StackPanel>
+
+                                            <ComboBox x:Name="ThemeBox"
+                                                      Grid.Column="1"
+                                                      MinWidth="132"
+                                                      SelectionChanged="OnThemeChanged">
+                                                <ComboBoxItem Content="跟随系统" Tag="system" />
+                                                <ComboBoxItem Content="浅色" Tag="light" />
+                                                <ComboBoxItem Content="深色" Tag="dark" />
+                                            </ComboBox>
+                                        </Grid>
                                     </StackPanel>
                                 </Border>
 

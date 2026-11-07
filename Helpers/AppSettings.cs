@@ -19,6 +19,9 @@ public sealed class AppSettings
     /// <summary>写 debug.log。默认关闭，排查问题时才开</summary>
     public bool EnableLog { get; set; }
 
+    /// <summary>界面主题：system / light / dark</summary>
+    public string Theme { get; set; } = "system";
+
     public static AppSettings Load()
     {
         var settings = new AppSettings();
@@ -28,14 +31,22 @@ public sealed class AppSettings
             if (!File.Exists(AppPaths.Settings)) return settings;
 
             var json = File.ReadAllText(AppPaths.Settings);
-            var values = JsonSerializer.Deserialize<Dictionary<string, bool>>(json);
+
+            // 用 JsonElement 而不是强类型：旧文件的字段是 bool，
+            // 新加的 theme 是字符串，同一个字典里两种类型都要能读
+            var values = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json);
             if (values == null) return settings;
 
-            if (values.TryGetValue("autoCheckUpdate", out var autoCheck))
-                settings.AutoCheckUpdate = autoCheck;
+            if (values.TryGetValue("autoCheckUpdate", out var autoCheck) &&
+                autoCheck.ValueKind is JsonValueKind.True or JsonValueKind.False)
+                settings.AutoCheckUpdate = autoCheck.GetBoolean();
 
-            if (values.TryGetValue("enableLog", out var enableLog))
-                settings.EnableLog = enableLog;
+            if (values.TryGetValue("enableLog", out var enableLog) &&
+                enableLog.ValueKind is JsonValueKind.True or JsonValueKind.False)
+                settings.EnableLog = enableLog.GetBoolean();
+
+            if (values.TryGetValue("theme", out var theme) && theme.ValueKind == JsonValueKind.String)
+                settings.Theme = theme.GetString() ?? "system";
         }
         catch
         {
@@ -49,10 +60,11 @@ public sealed class AppSettings
     {
         try
         {
-            var values = new Dictionary<string, bool>
+            var values = new Dictionary<string, object>
             {
                 ["autoCheckUpdate"] = AutoCheckUpdate,
-                ["enableLog"] = EnableLog
+                ["enableLog"] = EnableLog,
+                ["theme"] = Theme
             };
 
             File.WriteAllText(AppPaths.Settings, JsonSerializer.Serialize(values, WriteOptions));

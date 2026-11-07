@@ -60,6 +60,9 @@ public sealed partial class MainWindow : Window
         _settings = AppSettings.Load();
         Logger.IsEnabled = _settings.EnableLog;
 
+        // 启动即按保存的主题渲染，避免先闪一下深色再切浅色
+        ApplyTheme();
+
         ShowConfigWarning();
 
         // 系统标题栏跟随应用主题：不显式设置的话深色界面会配一条白标题栏
@@ -350,6 +353,12 @@ public sealed partial class MainWindow : Window
         _syncingSettings = true;
         ToggleAutoCheck.IsOn = _settings.AutoCheckUpdate;
         ToggleLog.IsOn = _settings.EnableLog;
+        ThemeBox.SelectedIndex = _settings.Theme switch
+        {
+            "light" => 1,
+            "dark" => 2,
+            _ => 0
+        };
         _syncingSettings = false;
     }
 
@@ -364,6 +373,31 @@ public sealed partial class MainWindow : Window
 
         Logger.IsEnabled = _settings.EnableLog;
         StatusTip.Text = "设置已保存";
+    }
+
+    private void OnThemeChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_syncingSettings) return;
+
+        _settings.Theme = (ThemeBox.SelectedItem as ComboBoxItem)?.Tag as string ?? "system";
+        _settings.Save();
+
+        ApplyTheme();
+        StatusTip.Text = "主题已切换";
+    }
+
+    /// <summary>
+    /// 把主题套到根视觉上。
+    /// ElementTheme.Default 就是「跟随系统」，由系统按应用级主题决定实际明暗。
+    /// </summary>
+    private void ApplyTheme()
+    {
+        RootGrid.RequestedTheme = _settings.Theme switch
+        {
+            "light" => ElementTheme.Light,
+            "dark" => ElementTheme.Dark,
+            _ => ElementTheme.Default
+        };
     }
 
     private void RefreshTrash()
