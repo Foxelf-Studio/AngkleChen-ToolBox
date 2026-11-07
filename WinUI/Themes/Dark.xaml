@@ -14,7 +14,7 @@
     <SolidColorBrush x:Key="CardBackgroundSelectedBrush" Color="#3C3C3C" />
     <SolidColorBrush x:Key="CardBorderBrush" Color="#1EFFFFFF" />
     <SolidColorBrush x:Key="CardBorderHoverBrush" Color="#2FFFFFFF" />
-    <SolidColorBrush x:Key="CardBorderSelectedBrush" Color="#4D60CDFF" />
+    <SolidColorBrush x:Key="CardBorderSelectedBrush" Color="Transparent" />
 
     <!--
         NavigationView 的侧栏背景不认 SidebarBackgroundBrush，

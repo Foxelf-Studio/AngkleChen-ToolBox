@@ -14,7 +14,7 @@
     <SolidColorBrush x:Key="CardBackgroundSelectedBrush" Color="#E8F1FC" />
     <SolidColorBrush x:Key="CardBorderBrush" Color="#14000000" />
     <SolidColorBrush x:Key="CardBorderHoverBrush" Color="#24000000" />
-    <SolidColorBrush x:Key="CardBorderSelectedBrush" Color="#660F6CBD" />
+    <SolidColorBrush x:Key="CardBorderSelectedBrush" Color="Transparent" />
 
     <SolidColorBrush x:Key="NavigationViewDefaultPaneBackground" Color="#EAEAEA" />
     <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="#EAEAEA" />
