@@ -625,11 +625,16 @@ public sealed partial class MainWindow : Window
         var name = nameBox.Text.Trim();
         if (name.Length == 0) name = Path.GetFileNameWithoutExtension(source);
 
+        // 控件只能在 UI 线程读。之前把 descBox.Text 写进 Task.Run 的 lambda 里，
+        // 后台线程访问 TextBox 会抛 COMException 0x8001010E（RPC_E_WRONG_THREAD），
+        // 表现成「导入失败」但消息是空的
+        var description = descBox.Text.Trim();
+
         ToolImporter.ImportResult result;
         try
         {
             result = await Task.Run(() => ToolImporter.Import(
-                _config, AppPaths.Root, source, category, name, descBox.Text.Trim()));
+                _config, AppPaths.Root, source, category, name, description));
         }
         catch (Exception ex)
         {
