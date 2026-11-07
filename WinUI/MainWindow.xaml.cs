@@ -30,6 +30,24 @@ public sealed partial class MainWindow : Window
         InitializeComponent();
         Title = "陈叔叔工具箱";
 
+        CardRoot.WheelScrolled += OnWheelScrolled;
+
+        // 卡片之间的缝隙命中到面板，同样走我们的滚动
+        ToolGrid.Loaded += (_, _) =>
+        {
+            _gridScroller = FindScrollableScroller();
+
+            if (ToolGrid.ItemsPanelRoot is { } panel && !_panelWheelHooked)
+            {
+                panel.AddHandler(
+                    UIElement.PointerWheelChangedEvent,
+                    new PointerEventHandler(OnPanelPointerWheel),
+                    true);
+
+                _panelWheelHooked = true;
+            }
+        };
+
         AppWindow.Resize(new Windows.Graphics.SizeInt32(1180, 760));
         CenterOnScreen();
         ApplyWindowIcon();
@@ -728,6 +746,123 @@ public sealed partial class MainWindow : Window
             storyboard.Completed += (_, _) => content.Opacity = 1;
             storyboard.Begin();
         };
+    }
+
+    // ── 滚轮（移植自 WPF 版 SmoothScrollBehavior）─────────
+    // 参数与 WPF 版一致：卡片区灵敏度 0.5、每帧摩擦 0.85、
+    // 每格滑行距离 = 120*0.5/(1-0.85) ≈ 400px，末端自然减速
+    private const double ScrollMultiplier = 0.5;
+    private const double ScrollFriction = 0.85;
+    private const double ScrollMinVelocity = 0.5;
+    private const double ScrollMaxVelocity = 120;
+
+    private ScrollViewer? _gridScroller;
+    private double _scrollVelocity;
+    private bool _scrollAnimating;
+    private DateTime _lastWheelAt = DateTime.MinValue;
+
+    /// <summary>卡片与面板共用同一个入口：只有被截获的滚轮才会走到这里</summary>
+    private void OnWheelScrolled(int delta)
+    {
+        _gridScroller ??= FindScrollableScroller();
+        if (_gridScroller == null) return;
+
+        var step = -delta * ScrollMultiplier;
+        var now = DateTime.Now;
+        var elapsed = (now - _lastWheelAt).TotalMilliseconds;
+        _lastWheelAt = now;
+
+        // 触控板会连发小 delta，按 WPF 版的做法叠加速度而不是重置
+        if (elapsed < 50 && Math.Abs(step) < 100)
+            _scrollVelocity += step * 0.3 * 0.6;
+        else
+            _scrollVelocity = step;
+
+        _scrollVelocity = Math.Clamp(_scrollVelocity, -ScrollMaxVelocity, ScrollMaxVelocity);
+
+        if (_scrollAnimating) return;
+
+        _scrollAnimating = true;
+        CompositionTarget.Rendering += OnScrollFrame;
+    }
+
+    private void OnScrollFrame(object? sender, object e)
+    {
+        var scroller = _gridScroller;
+        if (scroller == null)
+        {
+            StopScrollAnimation();
+            return;
+        }
+
+        _scrollVelocity *= ScrollFriction;
+        var target = scroller.VerticalOffset + _scrollVelocity;
+
+        if (target <= 0)
+        {
+            scroller.ChangeView(null, 0, null, true);
+            StopScrollAnimation();
+            return;
+        }
+
+        if (target >= scroller.ScrollableHeight)
+        {
+            scroller.ChangeView(null, scroller.ScrollableHeight, null, true);
+            StopScrollAnimation();
+            return;
+        }
+
+        // disableAnimation：距离由我们自己逐帧给，交给系统补间会互相打架
+        scroller.ChangeView(null, target, null, true);
+
+        if (Math.Abs(_scrollVelocity) < ScrollMinVelocity)
+            StopScrollAnimation();
+    }
+
+    private bool _panelWheelHooked;
+
+    private void OnPanelPointerWheel(object? sender, PointerRoutedEventArgs e)
+    {
+        var delta = e.GetCurrentPoint(ToolGrid).Properties.MouseWheelDelta;
+        if (delta == 0) return;
+
+        e.Handled = true;
+        OnWheelScrolled(delta);
+    }
+
+    private void StopScrollAnimation()
+    {
+        _scrollVelocity = 0;
+
+        if (!_scrollAnimating) return;
+        _scrollAnimating = false;
+        CompositionTarget.Rendering -= OnScrollFrame;
+    }
+
+    private ScrollViewer? FindScrollableScroller()
+    {
+        foreach (var scroller in FindDescendants<ScrollViewer>(ToolGrid))
+        {
+            if (scroller.ScrollableHeight > 0)
+                return scroller;
+        }
+
+        return null;
+    }
+
+    private static IEnumerable<T> FindDescendants<T>(DependencyObject root) where T : DependencyObject
+    {
+        var count = VisualTreeHelper.GetChildrenCount(root);
+
+        for (var i = 0; i < count; i++)
+        {
+            var child = VisualTreeHelper.GetChild(root, i);
+
+            if (child is T match) yield return match;
+
+            foreach (var nested in FindDescendants<T>(child))
+                yield return nested;
+        }
     }
 
     private static Border? FindHoverLayer(Grid card)
