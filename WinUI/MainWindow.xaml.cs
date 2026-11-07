@@ -30,13 +30,6 @@ public sealed partial class MainWindow : Window
         InitializeComponent();
         Title = "陈叔叔工具箱";
 
-        // ItemsPanel 要等模板应用后才存在，Loaded 时挂一次，再兜一次
-        ToolGrid.Loaded += (_, _) =>
-        {
-            InitWheel();
-            DispatcherQueue.TryEnqueue(InitWheel);
-        };
-
         AppWindow.Resize(new Windows.Graphics.SizeInt32(1180, 760));
         CenterOnScreen();
         ApplyWindowIcon();
@@ -735,97 +728,6 @@ public sealed partial class MainWindow : Window
             storyboard.Completed += (_, _) => content.Opacity = 1;
             storyboard.Begin();
         };
-    }
-
-    // ── 滚轮 ────────────────────────────────────────
-    private const double WheelStep = 48;        // 系统一格大约 48px
-    private const double WheelFactor = 2.0;     // 一格走两倍距离
-    private ScrollViewer? _gridScroller;
-    private bool _wheelAttached;
-
-    /// <summary>
-    /// 把滚轮处理器挂到 ItemsPanel 上。
-    ///
-    /// 关键：挂 ToolGrid（ScrollViewer 的祖先）没用，事件从里往外冒泡，
-    /// ScrollViewer 会先滚一次并标记 Handled，我们的处理只能跟在后面补，
-    /// 无论用 ChangeView 还是 ScrollBy 都会被它盖掉——这就是前两版"没区别"的原因。
-    /// ItemsPanel 在 ScrollViewer **内部**，比它更早收到事件，先手拦住即可。
-    /// </summary>
-    private void InitWheel()
-    {
-        _gridScroller = FindScrollableScroller();
-
-        if (_wheelAttached || ToolGrid.ItemsPanelRoot is not { } panel) return;
-
-        panel.AddHandler(
-            UIElement.PointerWheelChangedEvent,
-            new PointerEventHandler(OnGridPointerWheel),
-            true);
-
-        _wheelAttached = true;
-
-        LogWheel($"已挂载: panel={panel.GetType().Name} scroller={( _gridScroller == null ? "无" : "有")}");
-    }
-
-    private void OnGridPointerWheel(object? sender, PointerRoutedEventArgs e)
-    {
-        if (_gridScroller == null) InitWheel();
-        if (_gridScroller == null) return;
-
-        var delta = e.GetCurrentPoint(ToolGrid).Properties.MouseWheelDelta;
-        if (delta == 0) return;
-
-        // 先手拦下，避免原生再滚一次
-        e.Handled = true;
-
-        var step = WheelStep * (delta / 120.0) * WheelFactor;
-        var target = Math.Clamp(_gridScroller.VerticalOffset - step, 0, _gridScroller.ScrollableHeight);
-
-        _gridScroller.ChangeView(null, target, null, false);
-
-        LogWheel($"delta={delta} before={_gridScroller.VerticalOffset:F0} target={target:F0}");
-    }
-
-    private static void LogWheel(string text)
-    {
-        try
-        {
-            System.IO.File.AppendAllText(
-                System.IO.Path.Combine(AppPaths.Root, "wheel.log"),
-                $"[{DateTime.Now:HH:mm:ss}] {text}{Environment.NewLine}");
-        }
-        catch { }
-    }
-
-    /// <summary>
-    /// 找真正能滚的那个 ScrollViewer。
-    /// 视觉树里可能有多个（模板里的占位等），只有 ScrollableHeight > 0 才是目标；
-    /// 缓存错一个，整条滚轮逻辑就静默失效。
-    /// </summary>
-    private ScrollViewer? FindScrollableScroller()
-    {
-        foreach (var scroller in FindDescendants<ScrollViewer>(ToolGrid))
-        {
-            if (scroller.ScrollableHeight > 0)
-                return scroller;
-        }
-
-        return null;
-    }
-
-    private static IEnumerable<T> FindDescendants<T>(DependencyObject root) where T : DependencyObject
-    {
-        var count = VisualTreeHelper.GetChildrenCount(root);
-
-        for (var i = 0; i < count; i++)
-        {
-            var child = VisualTreeHelper.GetChild(root, i);
-
-            if (child is T match) yield return match;
-
-            foreach (var nested in FindDescendants<T>(child))
-                yield return nested;
-        }
     }
 
     private static Border? FindHoverLayer(Grid card)
