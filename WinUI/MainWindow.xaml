@@ -235,9 +235,11 @@
                             </GridView.ItemsPanel>
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="local:ToolCardVm">
+                                    <!-- 左上不留边、右下落 10：左边缘与下方描述栏对齐，
+                                         格距仍是 205+10=215 × 140+10=150，与 WPF 版一致 -->
                                     <local:CardRoot Width="205"
                                           Height="140"
-                                          Margin="5"
+                                          Margin="0,0,10,10"
                                           Background="Transparent"
                                           Opacity="{x:Bind CardOpacity, Mode=OneWay}"
                                           DoubleTapped="OnCardDoubleTapped"

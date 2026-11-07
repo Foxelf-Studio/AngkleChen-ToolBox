@@ -105,6 +105,9 @@ public sealed partial class MainWindow : Window
             // 别让搜索框在启动时抢焦点：它会画出自己的聚焦下划线
             ToolGrid.Focus(FocusState.Programmatic);
 
+            // 布局稳定后再对齐列宽
+            FitWindowToColumns();
+
 
         });
     }
@@ -784,6 +787,42 @@ public sealed partial class MainWindow : Window
 
         _scrollAnimating = true;
         CompositionTarget.Rendering += OnScrollFrame;
+    }
+
+    // ── 窗口宽度自适应 ──────────────────────────────
+    /// <summary>卡片格距，与 XAML 里 205×140 + 10px 间距一致</summary>
+    private const double CardCell = 215;
+
+    /// <summary>卡片之间的间距</summary>
+    private const double CardGap = 10;
+
+    private bool _windowFitted;
+
+    /// <summary>
+    /// 把窗口宽度调成整数列，避免右侧空出一条。
+    /// 只在首次布局后跑一次：调完可能触发滚动条显隐，再算会来回抖。
+    /// </summary>
+    private void FitWindowToColumns()
+    {
+        if (_windowFitted) return;
+
+        var gridWidth = ToolGrid.ActualWidth;
+        if (gridWidth <= 0) return;
+
+        var columns = Math.Max(3, (int)Math.Floor((gridWidth + 0.5) / CardCell));
+
+        // 不要减 CardGap：ItemsWrapGrid 按 (宽度/215) 取整算列数，
+        // 少 10px 就少一整列，右侧反而空得更多。这 10px 与列间距同宽，视觉上是均匀的
+        var delta = columns * CardCell - gridWidth;
+
+        _windowFitted = true;
+
+        if (Math.Abs(delta) < 2) return;
+
+        var size = AppWindow.Size;
+        AppWindow.Resize(new Windows.Graphics.SizeInt32(
+            size.Width + (int)Math.Round(delta),
+            size.Height));
     }
 
     private void OnScrollFrame(object? sender, object e)
