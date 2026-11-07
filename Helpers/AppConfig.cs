@@ -310,7 +310,13 @@ public class AppConfig
         {
             try
             {
-                var json = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+                // UnsafeRelaxedJsonEscaping：默认编码器会把中文转成 \uXXXX，
+                // 配置文件是给人看的，也方便 git diff
+                var json = JsonSerializer.Serialize(this, new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                });
 
                 // 原子写入：先写临时文件再替换，避免写到一半断电把唯一配置写坏
                 var tmp = ConfigPath + ".tmp";
