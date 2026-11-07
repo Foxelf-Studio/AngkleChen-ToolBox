@@ -185,8 +185,7 @@
                                   CanReorderItems="True"
                                   AllowDrop="True"
                                   DragItemsStarting="OnDragItemsStarting"
-                                  DragItemsCompleted="OnDragItemsCompleted"
-                                  PointerWheelChanged="OnGridPointerWheel">
+                                  DragItemsCompleted="OnDragItemsCompleted">
 
                             <!--
                                 GridViewItem 的 PointerOver / Pressed 状态应用的是

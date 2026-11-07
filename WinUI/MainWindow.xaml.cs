@@ -31,6 +31,12 @@ public sealed partial class MainWindow : Window
 
         AppWindow.Resize(new Windows.Graphics.SizeInt32(1180, 760));
         CenterOnScreen();
+
+        // 见 OnGridPointerWheel 的注释：属性挂载收不到已被内部 ScrollViewer 处理的事件
+        ToolGrid.AddHandler(
+            UIElement.PointerWheelChangedEvent,
+            new PointerEventHandler(OnGridPointerWheel),
+            true);
         ApplyWindowIcon();
 
         // Mica 只在 Win11 可用，Win10 上保持纯色背景（README 声明支持 1809+）
@@ -729,13 +735,18 @@ public sealed partial class MainWindow : Window
 
     // ── 滚轮 ────────────────────────────────────────
     private const double WheelStep = 48;        // 系统一格大约 48px
-    private const double WheelFactor = 2.0;     // 需求：一格走两倍距离
+    private const double WheelFactor = 2.0;     // 一格走两倍距离
     private ScrollViewer? _gridScroller;
 
-    private void OnGridPointerWheel(object sender, PointerRoutedEventArgs e)
+    /// <summary>
+    /// 必须在构造函数里用 AddHandler(..., handledEventsToo: true) 挂这个事件。
+    /// GridView 内部的 ScrollViewer 会先把滚轮吃掉并标记 Handled，
+    /// 用 XAML 属性挂的处理器根本收不到——表现就是"改了没区别"。
+    /// </summary>
+    private void OnGridPointerWheel(object? sender, PointerRoutedEventArgs e)
     {
-        _gridScroller ??= FindDescendant<ScrollViewer>(ToolGrid);
-        if (_gridScroller == null || _gridScroller.ScrollableHeight <= 0) return;
+        _gridScroller ??= FindScrollableScroller();
+        if (_gridScroller == null) return;
 
         var delta = e.GetCurrentPoint(ToolGrid).Properties.MouseWheelDelta;
         if (delta == 0) return;
@@ -747,24 +758,38 @@ public sealed partial class MainWindow : Window
             0,
             _gridScroller.ScrollableHeight);
 
-        // 交给我们算距离，动画仍由 ScrollViewer 自己的缓动负责
         _gridScroller.ChangeView(null, target, null, false);
     }
 
-    private static T? FindDescendant<T>(DependencyObject root) where T : DependencyObject
+    /// <summary>
+    /// 找真正能滚的那个 ScrollViewer。
+    /// 视觉树里可能有多个（模板里的占位等），只有 ScrollableHeight > 0 才是目标；
+    /// 缓存错一个，整条滚轮逻辑就静默失效。
+    /// </summary>
+    private ScrollViewer? FindScrollableScroller()
+    {
+        foreach (var scroller in FindDescendants<ScrollViewer>(ToolGrid))
+        {
+            if (scroller.ScrollableHeight > 0)
+                return scroller;
+        }
+
+        return null;
+    }
+
+    private static IEnumerable<T> FindDescendants<T>(DependencyObject root) where T : DependencyObject
     {
         var count = VisualTreeHelper.GetChildrenCount(root);
 
         for (var i = 0; i < count; i++)
         {
             var child = VisualTreeHelper.GetChild(root, i);
-            if (child is T match) return match;
 
-            var nested = FindDescendant<T>(child);
-            if (nested != null) return nested;
+            if (child is T match) yield return match;
+
+            foreach (var nested in FindDescendants<T>(child))
+                yield return nested;
         }
-
-        return null;
     }
 
     private static Border? FindHoverLayer(Grid card)
