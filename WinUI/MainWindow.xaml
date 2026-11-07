@@ -135,8 +135,7 @@
                                 和外层 40px 的搜索框差一半，看起来像没对齐。
                             -->
                             <Border x:Name="SearchFocusRing"
-                                    CornerRadius="7"
-                                    Margin="1"
+                                    CornerRadius="8"
                                     BorderThickness="1"
                                     BorderBrush="{ThemeResource AccentColorBrush}"
                                     IsHitTestVisible="False"
@@ -232,7 +231,7 @@
                             </GridView.ItemsPanel>
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="local:ToolCardVm">
-                                    <Grid Width="200"
+                                    <local:CardRoot Width="200"
                                           Height="92"
                                           Margin="0,0,12,12"
                                           Background="Transparent"
@@ -321,7 +320,7 @@
                                                            TextTrimming="CharacterEllipsis" />
                                             </StackPanel>
                                         </Grid>
-                                    </Grid>
+                                    </local:CardRoot>
                                 </DataTemplate>
                             </GridView.ItemTemplate>
                         </GridView>

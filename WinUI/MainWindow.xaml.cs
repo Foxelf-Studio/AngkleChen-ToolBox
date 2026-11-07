@@ -386,6 +386,7 @@ public sealed partial class MainWindow : Window
             XamlRoot = RootGrid.XamlRoot
         };
 
+        FadeInDialog(dialog);
         return await dialog.ShowAsync() == ContentDialogResult.Primary;
     }
 
@@ -468,6 +469,7 @@ public sealed partial class MainWindow : Window
             XamlRoot = RootGrid.XamlRoot
         };
 
+        FadeInDialog(dialog);
         if (await dialog.ShowAsync() != ContentDialogResult.Primary) return;
 
         var name = nameBox.Text.Trim();
@@ -582,6 +584,7 @@ public sealed partial class MainWindow : Window
                 nameBox.Text = folder.Name;
         };
 
+        FadeInDialog(dialog);
         if (await dialog.ShowAsync() != ContentDialogResult.Primary) return;
 
         var source = pathBox.Text.Trim();
@@ -636,7 +639,7 @@ public sealed partial class MainWindow : Window
         var animation = new DoubleAnimation
         {
             To = target,
-            Duration = new Duration(TimeSpan.FromMilliseconds(200)),
+            Duration = new Duration(TimeSpan.FromMilliseconds(100)),
             EnableDependentAnimation = true
         };
 
@@ -649,6 +652,33 @@ public sealed partial class MainWindow : Window
         // 播完把基值落定，否则会回落到 XAML 里写的 0
         storyboard.Completed += (_, _) => layer.Opacity = target;
         storyboard.Begin();
+    }
+
+    /// <summary>
+    /// ContentDialog 的打开动画在 WinUI 3 里不稳定（关闭有、打开没有），
+    /// 这里自己补一段 160ms 淡入，保证两种方向观感一致。
+    /// 调用点必须在 ShowAsync 之前。
+    /// </summary>
+    private static void FadeInDialog(ContentDialog dialog)
+    {
+        dialog.Opacity = 0;
+
+        dialog.Opened += (_, _) =>
+        {
+            var animation = new DoubleAnimation
+            {
+                To = 1,
+                Duration = new Duration(TimeSpan.FromMilliseconds(160))
+            };
+
+            Storyboard.SetTarget(animation, dialog);
+            Storyboard.SetTargetProperty(animation, "Opacity");
+
+            var storyboard = new Storyboard();
+            storyboard.Children.Add(animation);
+            storyboard.Completed += (_, _) => dialog.Opacity = 1;
+            storyboard.Begin();
+        };
     }
 
     private static Border? FindHoverLayer(Grid card)

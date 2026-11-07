@@ -997,6 +997,10 @@ public class AppConfig
     /// </summary>
     public List<ToolInfo> GetAllTools()
     {
+        // 加锁：导入是在后台线程改集合的，UI 线程同时在这里遍历会踩到
+        // 「集合已修改」异常，而它发生在 async void 里就是整个进程崩掉
+        lock (_lock)
+        {
         var tools = new List<ToolInfo>();
         foreach (var category in Categories)
         {
@@ -1021,6 +1025,7 @@ public class AppConfig
             }
         }
         return tools;
+        }
     }
 
     /// <summary>
