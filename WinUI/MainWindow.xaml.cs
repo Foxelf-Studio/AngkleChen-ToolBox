@@ -7,7 +7,6 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Animation;
-using Windows.Storage.Pickers;
 using 陈叔叔工具箱.Helpers;
 using 陈叔叔工具箱.Models;
 using 陈叔叔工具箱.Services;
@@ -432,6 +431,14 @@ public sealed partial class MainWindow : Window
     }
 
     // ── 右键菜单 ────────────────────────────────────
+    // 右键菜单开关后把光标拨回箭头：
+    // 弹出层不设置光标时系统会沿用上一个形状，表现为一直转圈
+    private void OnCardMenuOpening(object? sender, object e) =>
+        DispatcherQueue.TryEnqueue(NativeCursor.ForceArrow);
+
+    private void OnCardMenuClosed(object? sender, object e) =>
+        DispatcherQueue.TryEnqueue(NativeCursor.ForceArrow);
+
     private static ToolCardVm? VmOf(object sender) =>
         (sender as FrameworkElement)?.DataContext as ToolCardVm;
 
@@ -553,35 +560,43 @@ public sealed partial class MainWindow : Window
             XamlRoot = RootGrid.XamlRoot
         };
 
-        browseFile.Click += async (_, _) =>
+        var owner = WinRT.Interop.WindowNative.GetWindowHandle(this);
+
+        browseFile.Click += (_, _) =>
         {
-            var picker = new FileOpenPicker();
-            WinRT.Interop.InitializeWithWindow.Initialize(picker, WinRT.Interop.WindowNative.GetWindowHandle(this));
-            picker.FileTypeFilter.Add(".exe");
-            picker.FileTypeFilter.Add(".bat");
-            picker.FileTypeFilter.Add(".msi");
-            picker.FileTypeFilter.Add(".lnk");
+            try
+            {
+                var path = NativeDialogs.PickFile(owner, NativeDialogs.BuildFilter(
+                    ("程序", "*.exe;*.bat;*.msi;*.lnk"),
+                    ("所有文件", "*.*")));
 
-            var file = await picker.PickSingleFileAsync();
-            if (file == null) return;
+                if (path == null) return;
 
-            pathBox.Text = file.Path;
-            if (nameBox.Text.Length == 0)
-                nameBox.Text = Path.GetFileNameWithoutExtension(file.Name);
+                pathBox.Text = path;
+                if (nameBox.Text.Length == 0)
+                    nameBox.Text = Path.GetFileNameWithoutExtension(path);
+            }
+            catch (Exception ex)
+            {
+                StatusTip.Text = $"打开文件选择器失败：{ex.Message}";
+            }
         };
 
-        browseFolder.Click += async (_, _) =>
+        browseFolder.Click += (_, _) =>
         {
-            var picker = new FolderPicker();
-            WinRT.Interop.InitializeWithWindow.Initialize(picker, WinRT.Interop.WindowNative.GetWindowHandle(this));
-            picker.FileTypeFilter.Add("*");
+            try
+            {
+                var path = NativeDialogs.PickFolder(owner, "选择工具所在的文件夹");
+                if (path == null) return;
 
-            var folder = await picker.PickSingleFolderAsync();
-            if (folder == null) return;
-
-            pathBox.Text = folder.Path;
-            if (nameBox.Text.Length == 0)
-                nameBox.Text = folder.Name;
+                pathBox.Text = path;
+                if (nameBox.Text.Length == 0)
+                    nameBox.Text = Path.GetFileName(path.TrimEnd(Path.DirectorySeparatorChar));
+            }
+            catch (Exception ex)
+            {
+                StatusTip.Text = $"打开文件夹选择器失败：{ex.Message}";
+            }
         };
 
         FadeInDialog(dialog);
@@ -604,8 +619,18 @@ public sealed partial class MainWindow : Window
         var name = nameBox.Text.Trim();
         if (name.Length == 0) name = Path.GetFileNameWithoutExtension(source);
 
-        var result = await Task.Run(() => ToolImporter.Import(
-            _config, AppPaths.Root, source, category, name, descBox.Text.Trim()));
+        ToolImporter.ImportResult result;
+        try
+        {
+            result = await Task.Run(() => ToolImporter.Import(
+                _config, AppPaths.Root, source, category, name, descBox.Text.Trim()));
+        }
+        catch (Exception ex)
+        {
+            // async void 里漏出去的异常会直接终止进程
+            StatusTip.Text = $"导入失败：{ex.Message}";
+            return;
+        }
 
         if (!result.Success)
         {

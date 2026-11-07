@@ -241,7 +241,7 @@
                                           PointerExited="OnCardPointerExited">
 
                                         <Grid.ContextFlyout>
-                                            <MenuFlyout>
+                                            <MenuFlyout Opening="OnCardMenuOpening" Closed="OnCardMenuClosed">
                                                 <MenuFlyoutItem Text="启动" Click="OnMenuLaunch">
                                                     <MenuFlyoutItem.Icon>
                                                         <FontIcon Glyph="&#xE768;" />
